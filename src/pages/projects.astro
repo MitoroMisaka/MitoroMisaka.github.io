@@ -1,46 +1,45 @@
 ---
 import BaseLayout from '../layouts/base-layout.astro';
 import ProjectCard from '../components/projects/project-card.astro';
-import { getPublishedProjects } from '../lib/content-helpers';
+import ProjectFilter from '../components/projects/project-filter';
+import { getPublishedProjects, getProjectSlug } from '../lib/content-helpers';
 
 const projects = await getPublishedProjects();
 
-// Group by status for static grouping (no React filter)
-const activeProjects = projects.filter((p) => p.data.status === 'active');
-const plannedProjects = projects.filter((p) => p.data.status === 'planned');
-const archivedProjects = projects.filter((p) => p.data.status === 'archived');
+const flatProjects = projects.map((p) => ({
+  id: p.id,
+  slug: getProjectSlug(p),
+  name: p.data.name,
+  description: p.data.description,
+  status: p.data.status,
+  stack: p.data.stack ?? [],
+}));
 ---
 
 <BaseLayout title="项目 | 静かな森" description="MitoroMisaka 的公开项目。">
   <section class="space-y-8">
     <h1 class="text-3xl font-semibold">项目</h1>
 
-    {activeProjects.length > 0 && (
-      <div class="space-y-3">
-        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">进行中</h2>
-        <div class="grid gap-4 md:grid-cols-2">
-          {activeProjects.map((project) => <ProjectCard project={project} />)}
-        </div>
+    <noscript>
+      <div class="space-y-6">
+        {['active', 'planned', 'archived'].map((status) => {
+          const items = projects.filter((p: any) => p.data.status === status);
+          if (items.length === 0) return null;
+          return (
+            <div class="space-y-3">
+              <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">
+                {status === 'active' ? '进行中' : status === 'planned' ? '计划中' : '已归档'}
+              </h2>
+              <div class="grid gap-4 md:grid-cols-2">
+                {items.map((project: any) => <ProjectCard project={project} />)}
+              </div>
+            </div>
+          );
+        })}
       </div>
-    )}
+    </noscript>
 
-    {plannedProjects.length > 0 && (
-      <div class="space-y-3">
-        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">计划中</h2>
-        <div class="grid gap-4 md:grid-cols-2">
-          {plannedProjects.map((project) => <ProjectCard project={project} />)}
-        </div>
-      </div>
-    )}
-
-    {archivedProjects.length > 0 && (
-      <div class="space-y-3">
-        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">已归档</h2>
-        <div class="grid gap-4 md:grid-cols-2">
-          {archivedProjects.map((project) => <ProjectCard project={project} />)}
-        </div>
-      </div>
-    )}
+    <ProjectFilter projects={flatProjects} client:load />
 
     {projects.length === 0 && (
       <div class="py-10 text-center text-sm text-[var(--fg-soft)]">暂无项目</div>
