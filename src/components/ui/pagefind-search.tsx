@@ -13,20 +13,41 @@ declare global {
   }
 }
 
+type SearchState = 'idle' | 'loading' | 'ready' | 'unavailable';
+
 export default function PagefindSearch() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [open, setOpen] = useState(false);
+  const [state, setState] = useState<SearchState>('idle');
   const loaded = useRef(false);
 
   useEffect(() => {
-    const load = async () => {
-      if (loaded.current || !document.querySelector('#pagefind-js')) {
-        loaded.current = true;
-        return;
+    if (loaded.current) return;
+    loaded.current = true;
+
+    // If pagefind is already on window (prerendered), skip dynamic load
+    if (window.pagefind) {
+      setState('ready');
+      return;
+    }
+
+    // Dynamically load pagefind runtime JS
+    setState('loading');
+    const script = document.createElement('script');
+    script.src = '/pagefind/pagefind.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.pagefind) {
+        setState('ready');
+      } else {
+        setState('unavailable');
       }
     };
-    load();
+    script.onerror = () => {
+      setState('unavailable');
+    };
+    document.head.appendChild(script);
   }, []);
 
   const search = useCallback(async (q: string) => {
@@ -35,15 +56,21 @@ export default function PagefindSearch() {
       setResults([]);
       return;
     }
+    const pf = window.pagefind;
+    if (!pf) return;
     try {
-      const pf = window.pagefind;
-      if (!pf) return;
       const { results } = await pf.search(q);
       setResults(results.slice(0, 8));
     } catch {
-      // pagefind not loaded yet
+      // pagefind search failed
     }
   }, []);
+
+  const clear = () => {
+    setQuery('');
+    setResults([]);
+    setOpen(false);
+  };
 
   return (
     <div className="relative">
@@ -54,12 +81,12 @@ export default function PagefindSearch() {
           onInput={(e) => { search((e.target as HTMLInputElement).value); setOpen(true); }}
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 200)}
-          placeholder="搜索文章..."
+          placeholder="搜索内容..."
           className="w-40 rounded-full border border-[var(--line)] bg-transparent px-3 py-1.5 text-xs text-[var(--fg)] placeholder-[var(--fg-soft)] outline-none focus:border-[var(--brand)] focus:w-56 transition-all"
         />
         {query && (
           <button
-            onClick={() => { setQuery(''); setResults([]); setOpen(false); }}
+            onClick={clear}
             className="text-xs text-[var(--fg-soft)] hover:text-[var(--fg)]"
             aria-label="Clear"
           >
@@ -67,8 +94,17 @@ export default function PagefindSearch() {
           </button>
         )}
       </div>
-      {open && results.length > 0 && (
+      {open && (
         <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-[var(--line)] bg-[var(--card)] shadow-xl p-2 z-50">
+          {state === 'loading' && (
+            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">搜索中...</p>
+          )}
+          {state === 'unavailable' && (
+            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">搜索不可用</p>
+          )}
+          {results.length === 0 && query.length >= 2 && state === 'ready' && (
+            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">无结果</p>
+          )}
           {results.map((r) => (
             <SearchItem key={r.id} result={r} />
           ))}

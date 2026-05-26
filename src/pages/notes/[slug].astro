@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/post-layout.astro';
 import { formatDate, getPublishedNotes } from '../../lib/content-helpers';
+import { getMoodLabel } from '../../lib/mood-labels';
 import { siteConfig } from '../../lib/site-config';
 import ReactionBar from '../../components/ui/reaction-bar';
 
@@ -23,7 +24,7 @@ const wordCount = note.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.ceil(wordCount / 300));
 ---
 
-<PostLayout title={`${title} | 碎念 | ${siteConfig.title}`} description={description}>
+<PostLayout title={`${title} | 碎念 | ${siteConfig.title}`} description={description} canonicalPath={`/notes/${note.data.slug}`}>
   <header class="space-y-3">
     <div class="flex items-center gap-3 text-xs text-[var(--fg-soft)]">
       <a href="/notes" class="hover:text-[var(--fg)]">← 碎念列表</a>
@@ -43,7 +44,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
       {note.data.mood && (
         <>
           <span>·</span>
-          <span>{note.data.mood}</span>
+          <span>{getMoodLabel(note.data.mood)}</span>
         </>
       )}
     </div>

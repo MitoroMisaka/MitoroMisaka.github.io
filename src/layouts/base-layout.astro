@@ -1,15 +1,19 @@
 ---
 import { siteConfig } from '../lib/site-config';
+import { getCanonicalUrl } from '../lib/seo';
 import SiteHeader from '../components/site/site-header.astro';
 import SiteFooter from '../components/site/site-footer.astro';
+import AnalyticsTracker from '../components/analytics/tracker';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  canonicalPath?: string;
 }
 
-const { title = siteConfig.title, description = siteConfig.description } = Astro.props;
+const { title = siteConfig.title, description = siteConfig.description, canonicalPath } = Astro.props;
+const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonicalUrl('/');
 ---
 
 <!doctype html>
@@ -21,9 +25,12 @@ const { title = siteConfig.title, description = siteConfig.description } = Astro
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content={siteConfig.title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title={siteConfig.title} />
+    <link rel="alternate" type="application/rss+xml" href="/notes.xml" title="静かな森 — 碎念" />
     <title>{title}</title>
   </head>
   <body>
@@ -34,5 +41,6 @@ const { title = siteConfig.title, description = siteConfig.description } = Astro
       </main>
       <SiteFooter />
     </div>
+    <AnalyticsTracker client:idle />
   </body>
 </html>

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { formatDate } from '../../lib/content-helpers';
+import { getMoodLabel } from '../../lib/mood-labels';
 
 interface Props {
   note: CollectionEntry<'notes'>;
@@ -24,7 +25,7 @@ const { slug, title, description, date, tags, mood, pinned } = note.data;
           )}
         </div>
       </div>
-      {mood && <span class="shrink-0 text-sm">{mood}</span>}
+      {mood && <span class="shrink-0 text-xs text-[var(--fg-soft)]">{getMoodLabel(mood)}</span>}
     </div>
 
     {showExcerpt && description && (

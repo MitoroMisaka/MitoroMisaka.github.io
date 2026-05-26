@@ -1,12 +1,9 @@
 ---
 import BaseLayout from '../../layouts/base-layout.astro';
 import NotesList from '../../components/notes/notes-list.astro';
-import { getPublishedNotes, getPinnedNotes } from '../../lib/content-helpers';
+import { getPublishedNotes } from '../../lib/content-helpers';
 
 const allNotes = await getPublishedNotes();
-const pinnedNotes = await getPinnedNotes();
-const pinnedSlugs = new Set(pinnedNotes.map((n) => n.data.slug));
-const regularNotes = allNotes.filter((n) => !pinnedSlugs.has(n.data.slug));
 
 const pageTitle = '碎念 | 静かな森';
 const pageDesc = '短想法、开发随笔、AI 工作流记录。';
@@ -17,18 +14,15 @@ const pageDesc = '短想法、开发随笔、AI 工作流记录。';
     <h1 class="text-3xl font-semibold">碎念</h1>
     <p class="text-sm text-[var(--fg-muted)]">{pageDesc}</p>
 
-    {pinnedNotes.length > 0 && (
-      <div class="space-y-2">
-        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">置顶</h2>
-        <NotesList notes={pinnedNotes} />
-      </div>
-    )}
-
     <div class="space-y-2">
       <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">
         全部碎念 ({allNotes.length})
       </h2>
-      <NotesList notes={regularNotes} />
+      {allNotes.length > 0 ? (
+        <NotesList notes={allNotes} />
+      ) : (
+        <p class="text-sm text-[var(--fg-soft)] py-4">暂无碎念</p>
+      )}
     </div>
   </section>
 </BaseLayout>

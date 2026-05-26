@@ -31,7 +31,7 @@ const wordCount = post.body?.split(/\s+/).length ?? 0;
 const readingTime = Math.max(1, Math.ceil(wordCount / 300));
 ---
 
-<PostLayout title={`${post.data.title} | ${siteConfig.title}`} description={post.data.description}>
+<PostLayout title={`${post.data.title} | ${siteConfig.title}`} description={post.data.description} canonicalPath={`/posts/${post.data.slug}`}>
   <ReadingProgress client:load />
   <TableOfContents client:load />
   <header class="space-y-3">

@@ -6,15 +6,15 @@
  * POST /api/reactions  { "target": "post:my-slug", "emoji": "heart" }
  */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type KVBinding = {
+  get(key: string): Promise<string | null>;
+  put(key: string, value: string): Promise<void>;
+};
+
 interface Env {
-  REACTIONS: KVNamespace;
+  REACTIONS: KVBinding;
 }
 
-// Cloudflare Workers runtime global — suppress TS error in local IDE
-declare const KVNamespace: any;
-
-const VALID_PREFIXES = new Set(['post', 'note', 'project']);
 const VALID_EMOJIS = new Set(['heart', 'clap', 'rocket', 'eyes']);
 
 function validateTarget(target: unknown): string | null {
@@ -23,7 +23,7 @@ function validateTarget(target: unknown): string | null {
   return match ? target : null;
 }
 
-async function getCounts(kv: KVNamespace, target: string): Promise<Record<string, number>> {
+async function getCounts(kv: KVBinding, target: string): Promise<Record<string, number>> {
   const counts: Record<string, number> = {};
   for (const emoji of VALID_EMOJIS) {
     const key = `reaction:v1:${target}:${emoji}`;
@@ -33,7 +33,7 @@ async function getCounts(kv: KVNamespace, target: string): Promise<Record<string
   return counts;
 }
 
-async function incrementCount(kv: KVNamespace, target: string, emoji: string): Promise<number> {
+async function incrementCount(kv: KVBinding, target: string, emoji: string): Promise<number> {
   const key = `reaction:v1:${target}:${emoji}`;
   const val = await kv.get(key);
   const count = (val ? parseInt(val, 10) || 0 : 0) + 1;

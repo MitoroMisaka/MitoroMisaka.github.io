@@ -2,6 +2,7 @@
 import { siteConfig } from '../../lib/site-config';
 import ThemeToggle from '../ui/theme-toggle';
 import PagefindSearch from '../ui/pagefind-search';
+import MobileNav from '../site/mobile-nav';
 ---
 
 <header class="mx-auto w-full max-w-5xl px-5 pt-6 md:px-8">
@@ -15,6 +16,7 @@ import PagefindSearch from '../ui/pagefind-search';
           </li>
         ))}
       </ul>
+      <MobileNav client:load />
       <PagefindSearch client:load />
       <ThemeToggle client:load />
     </div>

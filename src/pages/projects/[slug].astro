@@ -17,6 +17,22 @@ const { Content } = await render(project);
 
 const { name, description, status, stack, tags, repo, demo, links, role, date, updated } = project.data;
 
+// Merge and deduplicate links
+const allLinks: { label: string; href: string }[] = [];
+if (repo) allLinks.push({ label: 'GitHub', href: repo });
+if (demo) allLinks.push({ label: 'Demo', href: demo });
+if (links?.length > 0) {
+  for (const link of links) {
+    allLinks.push({ label: link.label, href: link.href });
+  }
+}
+const seen = new Set<string>();
+const uniqueLinks = allLinks.filter(l => {
+  if (seen.has(l.href)) return false;
+  seen.add(l.href);
+  return true;
+});
+
 const statusLabels: Record<string, string> = {
   active: '进行中',
   archived: '已归档',
@@ -30,7 +46,7 @@ const statusColors: Record<string, string> = {
 };
 ---
 
-<PostLayout title={`${name} | 项目 | ${siteConfig.title}`} description={description}>
+<PostLayout title={`${name} | 项目 | ${siteConfig.title}`} description={description} canonicalPath={`/projects/${Astro.params.slug}`}>
   <header class="space-y-3">
     <div class="flex items-center gap-3 text-xs text-[var(--fg-soft)]">
       <a href="/projects" class="hover:text-[var(--fg)]">← 项目列表</a>
@@ -80,19 +96,9 @@ const statusColors: Record<string, string> = {
       </div>
     )}
 
-    {(repo || demo || links?.length > 0) && (
+    {(uniqueLinks.length > 0) && (
       <div class="flex flex-wrap gap-3 pt-1">
-        {repo && (
-          <a href={repo} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
-            GitHub →
-          </a>
-        )}
-        {demo && (
-          <a href={demo} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
-            Demo →
-          </a>
-        )}
-        {links?.map((link: { label: string; href: string }) => (
+        {uniqueLinks.map(link => (
           <a href={link.href} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
             {link.label} →
           </a>
