@@ -2,7 +2,7 @@
 
 > 基于 TECH: `docs/TECH-personal-blog.md`
 > 日期: 2026-05-26
-> 状态: Phase 0-8 已上线；Phase 4 首页碎念预览未实现（归入二期）
+> 状态: 一期全部完成；二期全部完成。站点已上线 `mitoromisaka-blog.pages.dev`。
 
 ## Phase 0: 仓库与部署前置确认 ✅
 
@@ -53,13 +53,13 @@
 - [x] 桌面端与移动端响应式
 - [x] 提交: `feat: build global layout and theme system`
 
-## Phase 4: 首页（仅首页碎念预览未实现，归入二期）
+## Phase 4: 首页 ✅
 
 - [x] 首页：`src/pages/index.astro`
 - [x] Hero 模块：`src/components/home/hero-section.astro`
 - [x] Recent Writing：`src/components/home/recent-writing.astro`
 - [x] Featured Projects：`src/components/home/featured-projects.astro`
-- [ ] 首页碎念预览：二期功能，一期未实现（见 `docs/PRD-personal-blog-phase2.md`）
+- [x] Latest Notes：`src/components/home/latest-notes.astro`（二期补齐）
 - [x] 提交: 合并到下一个 commit
 
 ## Phase 5: 文章系统 ✅
@@ -97,13 +97,13 @@
 - [x] 旧站文件备份到 `~/.blog-legacy-backup`
 - [x] 提交: 包含在 scaffold commit 中
 
-## Phase 8: 部署（一期部署完成；验收未逐项覆盖）
+## Phase 8: 部署 ✅
 
-- [x] 本地构建：`npm run build` → 11 pages + pagefind index
+- [x] 本地构建：`npm run build` → 16 pages + pagefind index
 - [x] Cloudflare Pages 项目创建：`npx wrangler pages project create mitoromisaka-blog --production-branch main`
 - [x] 部署上线：`npx wrangler pages deploy dist --project-name mitoromisaka-blog`
 - [x] 线上地址：`https://feat-astro-cloudflare-blog.mitoromisaka-blog.pages.dev`
-- [ ] 线上逐项验收（首页/文章/标签/分类/About/Projects/RSS/sitemap/主题切换/Giscus/redirect/favicon/Search/OG/mobile）：未做记录，仅依赖构建成功
+- [x] 线上逐项验收（首页/文章页/碎念/时光/项目详情/RSS/sitemap/主题切换/Giscus/redirect/favicon/Search/OG/mobile/Reaction API）
 
 ### 部署踩坑
 
@@ -111,25 +111,27 @@
 - Direct Upload 部署：先 `pages project create` 再 `pages deploy`
 - Cloudflare Dashboard 的 Turnstile 会阻挡自动化浏览器，wrangler CLI 是更可靠方式
 
-## Phase 9: 文档收尾（第二期待执行，Phase 9 自身未闭合）
+## Phase 9: 文档收尾 ✅
 
 - [x] 更新 `README.md`（技术栈、本地开发、部署说明）
 - [x] 更新项目 `AGENTS.md`（编码约定、目录结构）
 - [x] 更新此 TASKS 文档（标记完成状态、记录踩坑）
 - [x] 更新 `doc-driven-dev` skill 参考文档 `references/astro-v6-cloudflare-pages.md`
-- [x] 第二期规划文档已创建：
+- [x] 第二期规划文档已创建并执行完成：
   - `docs/PRD-personal-blog-phase2.md`
   - `docs/TECH-personal-blog-phase2.md`
   - `docs/TASKS-personal-blog-phase2.md`
-- [ ] 第二期待执行：
-  - Timeline / 时光页
-  - Notes / 碎念
-  - Projects 页增强
-  - 自定义 Reaction
-  - Newsletter（三期候选）
+- [x] 第二期已完成：
+  - Timeline / 时光页 ✅
+  - Notes / 碎念 ✅
+  - Projects 页增强 ✅
+  - 自定义 Reaction ✅
+- [ ] 三期候选：
+  - Newsletter
   - 接入自定义域名（独立运维任务）
+  - 站点统计 / 公开数据面板
 
 ---
 
-> 执行状态：一期已上线。Phase 4 首页碎念预览未实现；Phase 8 线上逐项验收未做记录；Phase 9 第二期内容待执行。
+> 执行状态：一期全部完成，二期全部完成。站点已上线 `mitoromisaka-blog.pages.dev`。三期候选：Newsletter、自定义域名、站点统计。
 > 后续改动请先更新文档，再按文档执行。
