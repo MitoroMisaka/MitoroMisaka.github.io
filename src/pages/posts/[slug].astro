@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/base-layout.astro';
+import { formatDate } from '../../lib/content-helpers';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={`${post.data.title} | 静かな森`} description={post.data.description}>
+  <article class="mx-auto max-w-3xl space-y-6">
+    <header class="space-y-3">
+      <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
+      <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
+      <div class="flex items-center gap-2 text-xs text-[var(--fg-soft)]">
+        <span>{post.data.category}</span>
+        <span>·</span>
+        <time>{formatDate(post.data.date)}</time>
+      </div>
+    </header>
+    <div class="prose prose-zinc max-w-none dark:prose-invert">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

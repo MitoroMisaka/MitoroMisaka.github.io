@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/base-layout.astro';
+
+const projects = await getCollection('projects');
+---
+
+<BaseLayout title="项目 | 静かな森" description="MitoroMisaka 的公开项目。">
+  <section class="space-y-6">
+    <h1 class="text-3xl font-semibold">项目</h1>
+    <div class="grid gap-4 md:grid-cols-2">
+      {projects.map((project) => (
+        <article class="rounded-2xl border border-[var(--line)] bg-[var(--card)] px-4 py-4">
+          <h2 class="text-lg font-medium">{project.data.name}</h2>
+          <p class="mt-2 text-sm text-[var(--fg-muted)]">{project.data.description}</p>
+          <div class="mt-4 flex gap-4 text-sm">
+            {project.data.repo && <a href={project.data.repo}>GitHub</a>}
+            {project.data.demo && <a href={project.data.demo}>Demo</a>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

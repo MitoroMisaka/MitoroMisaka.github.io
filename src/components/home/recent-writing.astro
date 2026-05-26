@@ -1,0 +1,40 @@
+---
+import { formatDate } from '../../lib/content-helpers';
+
+interface PostPreview {
+  slug: string;
+  title: string;
+  date: Date;
+  category: string;
+}
+
+interface Props {
+  posts: PostPreview[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="mt-14">
+  <div class="mb-4 flex items-end justify-between">
+    <h2 class="text-xl font-semibold">Recent Writing</h2>
+    <a class="text-sm text-[var(--fg-muted)] hover:text-[var(--fg)]" href="/posts">查看全部</a>
+  </div>
+
+  <ol class="space-y-3">
+    {posts.map((post, index) => (
+      <li class="group rounded-2xl border border-[var(--line)] bg-[var(--card)] px-4 py-4 transition hover:border-[var(--line-strong)]">
+        <a href={`/posts/${post.slug}`} class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div class="flex items-start gap-4">
+            <span class="mt-0.5 text-xs text-[var(--fg-soft)]">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <p class="text-base font-medium group-hover:text-[var(--brand)]">{post.title}</p>
+              <p class="mt-1 text-xs text-[var(--fg-muted)]">{post.category}</p>
+            </div>
+          </div>
+          <time class="text-xs text-[var(--fg-soft)]">{formatDate(post.date)}</time>
+        </a>
+      </li>
+    ))}
+  </ol>
+</section>
