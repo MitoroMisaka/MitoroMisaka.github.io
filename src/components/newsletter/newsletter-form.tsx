@@ -22,14 +22,13 @@ export default function NewsletterForm() {
 
     const trimmed = email.trim();
     if (!isValidEmail(trimmed)) {
-    setMessage('请输入有效的邮箱地址。');
-    setStatus('error');
+      setMessage('请输入有效的邮箱地址。');
+      setStatus('error');
       return;
     }
 
     setStatus('loading');
     setMessage('');
-    setErrorType('');
 
     try {
       const res = await fetch('/api/newsletter/subscribe', {
@@ -47,8 +46,6 @@ export default function NewsletterForm() {
       }
 
       // 处理各种错误
-      setErrorType(data.error || 'provider_error');
-
       switch (data.error) {
         case 'already_subscribed':
           setMessage('该邮箱已订阅。');
@@ -65,7 +62,6 @@ export default function NewsletterForm() {
       }
       setStatus('error');
     } catch {
-      setErrorType('network_error');
       setMessage('订阅服务暂时不可用，请稍后再试。');
       setStatus('error');
     }
