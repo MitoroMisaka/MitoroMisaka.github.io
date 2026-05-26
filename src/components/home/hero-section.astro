@@ -1,19 +1,51 @@
 ---
 import { siteConfig } from '../../lib/site-config';
+import { getPublishedPosts } from '../../lib/content-helpers';
+
+const posts = await getPublishedPosts();
+const postCount = posts.length;
+// rough total word count
+let totalWords = 0;
+for (const post of posts) {
+  totalWords += (post.body?.split(/\s+/).length ?? 0);
+}
+const totalChars = Math.round(totalWords / 10000 * 10) / 10; // in 万字
+
+// days since first post (or site creation)
+const firstDate = posts.length > 0
+  ? posts[posts.length - 1].data.date
+  : new Date('2026-05-26');
+const daysRunning = Math.floor((Date.now() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
 ---
 
-<section class="space-y-6 pt-4 md:pt-8">
+<section class="space-y-6 pt-6 md:pt-12">
   <div class="space-y-3">
-    <p class="text-sm uppercase tracking-[0.2em] text-[var(--fg-soft)]">Shizukana Mori</p>
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">{siteConfig.title}</h1>
-    <p class="text-base text-[var(--fg-muted)] md:text-lg">{siteConfig.hero.subtitle}</p>
+    <p class="text-xs uppercase tracking-[0.25em] text-[var(--fg-soft)]">Shizukana Mori</p>
+    <h1 class="text-4xl font-semibold leading-tight tracking-tight md:text-6xl">
+      {siteConfig.title}
+    </h1>
+    <p class="text-base leading-relaxed text-[var(--fg-muted)] md:max-w-xl md:text-lg">
+      {siteConfig.hero.subtitle}
+    </p>
   </div>
 
-  <blockquote class="rounded-2xl border border-[var(--line)] bg-[var(--card)] px-4 py-4 text-sm text-[var(--fg-muted)]">
+  <blockquote class="rounded-2xl border border-[var(--line)] bg-[var(--card)] px-5 py-5 text-sm leading-relaxed text-[var(--fg-muted)] md:max-w-xl">
     {siteConfig.hero.quote}
   </blockquote>
 
-  <div class="flex flex-wrap gap-3 text-sm">
+  <div class="flex items-center gap-6 text-sm">
+    <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{postCount}</span> 篇</span>
+    {totalChars > 0 && (
+      <>
+        <span class="text-[var(--fg-soft)]">·</span>
+        <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{totalChars}</span> 万字</span>
+      </>
+    )}
+    <span class="text-[var(--fg-soft)]">·</span>
+    <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{daysRunning}</span> 天</span>
+  </div>
+
+  <div class="flex flex-wrap gap-2 text-sm">
     {siteConfig.social.map((item) => (
       <a href={item.href} class="rounded-full border border-[var(--line)] px-3 py-1.5 text-[var(--fg-muted)] transition hover:bg-[var(--card)] hover:text-[var(--fg)]">
         {item.label}

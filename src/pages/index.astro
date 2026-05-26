@@ -14,11 +14,12 @@ const postItems = recentPosts.map((post) => ({
   title: post.data.title,
   date: post.data.date,
   category: post.data.category,
+  description: post.data.description,
 }));
 ---
 
 <BaseLayout>
   <HeroSection />
   <RecentWriting posts={postItems} />
-  <FeaturedProjects projects={featuredProjects} />
+  {featuredProjects.length > 0 && <FeaturedProjects projects={featuredProjects} />}
 </BaseLayout>
