@@ -1,0 +1,107 @@
+---
+import { render } from 'astro:content';
+import PostLayout from '../../layouts/post-layout.astro';
+import { getPublishedProjects, getProjectSlug } from '../../lib/content-helpers';
+import { siteConfig } from '../../lib/site-config';
+
+export async function getStaticPaths() {
+  const projects = await getPublishedProjects();
+  return projects.map((project) => ({
+    params: { slug: getProjectSlug(project) },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props as { project: any };
+const { Content } = await render(project);
+
+const { name, description, status, stack, tags, repo, demo, links, role, date, updated } = project.data;
+
+const statusLabels: Record<string, string> = {
+  active: '进行中',
+  archived: '已归档',
+  planned: '计划中',
+};
+
+const statusColors: Record<string, string> = {
+  active: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+  archived: 'bg-zinc-500/10 text-zinc-500',
+  planned: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+};
+---
+
+<PostLayout title={`${name} | 项目 | ${siteConfig.title}`} description={description}>
+  <header class="space-y-3">
+    <div class="flex items-center gap-3 text-xs text-[var(--fg-soft)]">
+      <a href="/projects" class="hover:text-[var(--fg)]">← 项目列表</a>
+    </div>
+    <div class="flex items-start justify-between gap-3">
+      <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{name}</h1>
+      {status && (
+        <span class={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusColors[status] ?? ''}`}>
+          {statusLabels[status] ?? status}
+        </span>
+      )}
+    </div>
+    {description && (
+      <p class="text-sm text-[var(--fg-muted)]">{description}</p>
+    )}
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-[var(--fg-soft)]">
+      {date && <time>{(new Date(date)).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' })}</time>}
+      {role && (
+        <>
+          <span>·</span>
+          <span>{role}</span>
+        </>
+      )}
+      {updated && date !== updated && (
+        <>
+          <span>·</span>
+          <span>更新于 {(new Date(updated)).toLocaleDateString('zh-CN', { year: 'numeric', month: 'short' })}</span>
+        </>
+      )}
+    </div>
+
+    {stack.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 pt-1">
+        <span class="text-xs text-[var(--fg-soft)] font-medium">技术栈:</span>
+        {stack.map((s: string) => (
+          <span class="rounded-full border border-[var(--line)] px-2 py-px text-xs text-[var(--fg-muted)]">{s}</span>
+        ))}
+      </div>
+    )}
+
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 pt-1">
+        {tags.map((tag: string) => (
+          <span class="rounded-full border border-[var(--line)] px-2 py-0.5 text-xs text-[var(--fg-muted)]">#{tag}</span>
+        ))}
+      </div>
+    )}
+
+    {(repo || demo || links?.length > 0) && (
+      <div class="flex flex-wrap gap-3 pt-1">
+        {repo && (
+          <a href={repo} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
+            GitHub →
+          </a>
+        )}
+        {demo && (
+          <a href={demo} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
+            Demo →
+          </a>
+        )}
+        {links?.map((link: { label: string; href: string }) => (
+          <a href={link.href} class="rounded-full border border-[var(--line)] px-3 py-1 text-xs font-medium text-[var(--fg-muted)] hover:text-[var(--fg)] hover:border-[var(--line-strong)] transition">
+            {link.label} →
+          </a>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
+    <Content />
+  </div>
+</PostLayout>

@@ -1,24 +1,49 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/base-layout.astro';
+import ProjectCard from '../components/projects/project-card.astro';
+import { getPublishedProjects } from '../lib/content-helpers';
 
-const projects = await getCollection('projects');
+const projects = await getPublishedProjects();
+
+// Group by status for static grouping (no React filter)
+const activeProjects = projects.filter((p) => p.data.status === 'active');
+const plannedProjects = projects.filter((p) => p.data.status === 'planned');
+const archivedProjects = projects.filter((p) => p.data.status === 'archived');
 ---
 
 <BaseLayout title="项目 | 静かな森" description="MitoroMisaka 的公开项目。">
-  <section class="space-y-6">
+  <section class="space-y-8">
     <h1 class="text-3xl font-semibold">项目</h1>
-    <div class="grid gap-4 md:grid-cols-2">
-      {projects.map((project) => (
-        <article class="rounded-2xl border border-[var(--line)] bg-[var(--card)] px-4 py-4">
-          <h2 class="text-lg font-medium">{project.data.name}</h2>
-          <p class="mt-2 text-sm text-[var(--fg-muted)]">{project.data.description}</p>
-          <div class="mt-4 flex gap-4 text-sm">
-            {project.data.repo && <a href={project.data.repo}>GitHub</a>}
-            {project.data.demo && <a href={project.data.demo}>Demo</a>}
-          </div>
-        </article>
-      ))}
-    </div>
+
+    {activeProjects.length > 0 && (
+      <div class="space-y-3">
+        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">进行中</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          {activeProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </div>
+    )}
+
+    {plannedProjects.length > 0 && (
+      <div class="space-y-3">
+        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">计划中</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          {plannedProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </div>
+    )}
+
+    {archivedProjects.length > 0 && (
+      <div class="space-y-3">
+        <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">已归档</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          {archivedProjects.map((project) => <ProjectCard project={project} />)}
+        </div>
+      </div>
+    )}
+
+    {projects.length === 0 && (
+      <div class="py-10 text-center text-sm text-[var(--fg-soft)]">暂无项目</div>
+    )}
   </section>
 </BaseLayout>
