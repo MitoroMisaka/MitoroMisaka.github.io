@@ -6,6 +6,7 @@ import { siteConfig } from '../../lib/site-config';
 import TableOfContents from '../../components/post/table-of-contents';
 import ReadingProgress from '../../components/post/reading-progress';
 import GiscusComments from '../../components/post/giscus-comments';
+import ReactionBar from '../../components/ui/reaction-bar';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
@@ -73,4 +74,5 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
   </nav>
 
   <GiscusComments client:load />
+  <ReactionBar target={`post:${post.data.slug}`} client:load />
 </PostLayout>

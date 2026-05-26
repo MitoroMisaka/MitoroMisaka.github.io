@@ -2,5 +2,11 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "mitoromisaka-blog",
   "compatibility_date": "2026-05-26",
-  "pages_build_output_dir": "dist"
+  "pages_build_output_dir": "dist",
+  "kv_namespaces": [
+    {
+      "binding": "REACTIONS",
+      "id": "66a6f0b892864883b270d6ef246e3879"
+    }
+  ]
 }
