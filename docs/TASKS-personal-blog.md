@@ -59,14 +59,14 @@
 - [x] Hero 模块：`src/components/home/hero-section.astro`
 - [x] Recent Writing：`src/components/home/recent-writing.astro`
 - [x] Featured Projects：`src/components/home/featured-projects.astro`
-- [x] 首页碎念预览：暂未做（二期功能）
+- [ ] 首页碎念预览：二期功能，一期未实现（见 `docs/PRD-personal-blog-phase2.md`）
 - [x] 提交: 合并到下一个 commit
 
 ## Phase 5: 文章系统 ✅
 
 - [x] 文章详情页：`src/pages/posts/[slug].astro`
-- [x] 标签页：未单独创建（文章中标签可点击，暂无 `/tags/[tag].astro`）
-- [x] 分类页：未单独创建（暂无 `/categories/[category].astro`）
+- [x] 标签页：`src/pages/tags/[tag].astro`
+- [x] 分类页：`src/pages/categories/[category].astro`
 - [x] 目录 TOC：`src/components/post/table-of-contents.tsx`（React island，IntersectionObserver 高亮）
 - [x] 阅读进度：`src/components/post/reading-progress.tsx`（顶部进度条）
 - [x] 代码复制：由 astro-expressive-code 内置，无需单独组件
@@ -85,10 +85,10 @@
 - [x] OpenGraph / Twitter Card / RSS link
 - [x] 提交: `feat: add homepage hero, post reading experience, search and comments`
 
-### 未完成项
+### 后补完成项
 
-- [ ] Giscus 需要配置：GitHub repo 启用 Discussions + 在 giscus.app 生成 repo-id/category-id
-- [ ] `tags/[tag].astro` 和 `categories/[category].astro` 标签/分类聚合页（二期或后续补充）
+- [x] Giscus 已配置：GitHub repo 已启用 Discussions，`src/components/post/giscus-comments.tsx` 已填入 repo-id/category-id
+- [x] 标签/分类聚合页已补齐：`src/pages/tags/[tag].astro`、`src/pages/categories/[category].astro`
 
 ## Phase 7: 旧文迁移 ✅
 
@@ -117,14 +117,17 @@
 - [x] 更新项目 `AGENTS.md`（编码约定、目录结构）
 - [x] 更新此 TASKS 文档（标记完成状态、记录踩坑）
 - [x] 更新 `doc-driven-dev` skill 参考文档 `references/astro-v6-cloudflare-pages.md`
-- [x] 第二期 backlog：
+- [x] 第二期规划文档已创建：
+  - `docs/PRD-personal-blog-phase2.md`
+  - `docs/TECH-personal-blog-phase2.md`
+  - `docs/TASKS-personal-blog-phase2.md`
+- [ ] 第二期待执行：
   - Timeline / 时光页
   - Notes / 碎念
   - Projects 页增强
-  - 标签/分类聚合页
   - 自定义 Reaction
-  - Newsletter
-  - 接入自定义域名
+  - Newsletter（三期候选）
+  - 接入自定义域名（独立运维任务）
 
 ---
 
