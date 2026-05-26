@@ -11,6 +11,7 @@ const year = new Date().getFullYear();
       {siteConfig.social.map((item) => (
         <a class="text-[var(--fg-muted)] transition hover:text-[var(--fg)]" href={item.href}>{item.label}</a>
       ))}
+      <a class="text-[var(--fg-muted)] transition hover:text-[var(--fg)]" href="/timeline">时光</a>
     </div>
     <p class="mt-4 text-xs text-[var(--fg-soft)]">© 2026-{year} {siteConfig.author}</p>
   </div>

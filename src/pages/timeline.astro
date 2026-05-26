@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import TimelineList from '../components/timeline/timeline-list.astro';
+import { getAllTimelineEntries } from '../lib/content-helpers';
+
+const entries = await getAllTimelineEntries();
+
+const pageTitle = '时光 | 静かな森';
+const pageDesc = '文章、碎念、项目和里程碑的时间轨迹。';
+---
+
+<BaseLayout title={pageTitle} description={pageDesc}>
+  <section class="space-y-6">
+    <h1 class="text-3xl font-semibold">时光</h1>
+    <p class="text-sm text-[var(--fg-muted)]">{pageDesc}</p>
+
+    <TimelineList entries={entries} />
+  </section>
+</BaseLayout>

@@ -13,6 +13,7 @@ export const siteConfig = {
     { label: '首页', href: '/' },
     { label: '文章', href: '/posts' },
     { label: '碎念', href: '/notes' },
+    { label: '时光', href: '/timeline' },
     { label: '项目', href: '/projects' },
     { label: '关于', href: '/about' },
   ],

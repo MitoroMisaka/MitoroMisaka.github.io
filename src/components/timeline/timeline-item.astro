@@ -1,0 +1,71 @@
+---
+import type { UnifiedTimelineEntry } from '../../lib/content-helpers';
+import { formatDate } from '../../lib/content-helpers';
+
+interface Props {
+  entry: UnifiedTimelineEntry;
+}
+
+const { entry } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  post: '文章',
+  note: '碎念',
+  project: '项目',
+  milestone: '里程碑',
+  life: '生活',
+};
+
+const typeColors: Record<string, string> = {
+  post: 'text-blue-500',
+  note: 'text-emerald-500',
+  project: 'text-purple-500',
+  milestone: 'text-amber-500',
+  life: 'text-rose-500',
+};
+
+const typeIcons: Record<string, string> = {
+  post: '📝',
+  note: '💭',
+  project: '🚀',
+  milestone: '🏁',
+  life: '🌸',
+};
+---
+
+<li class="flex gap-4 py-3">
+  <div class="flex flex-col items-center shrink-0">
+    <span class="text-sm" title={typeLabels[entry.type] ?? entry.type}>{typeIcons[entry.type] ?? '•'}</span>
+    <div class="w-px flex-1 bg-[var(--line)] mt-1" />
+  </div>
+  <div class="min-w-0 pb-4">
+    <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <time class="text-xs text-[var(--fg-soft)] shrink-0">{formatDate(entry.date)}</time>
+      <span class={`text-[10px] uppercase tracking-wide font-medium ${typeColors[entry.type] ?? 'text-[var(--fg-soft)]'}`}>
+        {typeLabels[entry.type] ?? entry.type}
+      </span>
+    </div>
+
+    {entry.url ? (
+      <a href={entry.url} class="mt-0.5 block text-sm font-medium text-[var(--fg)] hover:text-[var(--brand)] transition">
+        {entry.title}
+      </a>
+    ) : (
+      <p class="mt-0.5 text-sm font-medium text-[var(--fg)]">{entry.title}</p>
+    )}
+
+    {entry.description && (
+      <p class="mt-0.5 text-xs text-[var(--fg-muted)] line-clamp-2">{entry.description}</p>
+    )}
+
+    {entry.tags.length > 0 && (
+      <div class="mt-1.5 flex flex-wrap gap-1">
+        {entry.tags.map((tag: string) => (
+          <span class="rounded-full border border-[var(--line)] px-1.5 py-px text-[10px] text-[var(--fg-soft)]">
+            #{tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</li>

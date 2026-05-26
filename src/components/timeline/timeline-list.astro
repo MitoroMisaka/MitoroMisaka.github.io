@@ -1,0 +1,33 @@
+---
+import type { UnifiedTimelineEntry } from '../../lib/content-helpers';
+import { groupTimelineEntriesByYear } from '../../lib/content-helpers';
+import TimelineItem from './timeline-item.astro';
+
+interface Props {
+  entries: UnifiedTimelineEntry[];
+}
+
+const { entries } = Astro.props;
+const grouped = groupTimelineEntriesByYear(entries);
+---
+
+{
+  entries.length === 0 ? (
+    <div class="py-10 text-center text-sm text-[var(--fg-soft)]">暂无记录</div>
+  ) : (
+    <div class="space-y-8">
+      {[...grouped.entries()].map(([year, yearEntries]) => (
+        <section>
+          <h2 class="text-lg font-semibold text-[var(--fg)] mb-2 sticky top-4 bg-[var(--bg)]/80 backdrop-blur px-1 py-1 z-10">
+            {year}
+          </h2>
+          <ul class="space-y-0">
+            {yearEntries.map((entry) => (
+              <TimelineItem entry={entry} />
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )
+}
