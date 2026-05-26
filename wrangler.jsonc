@@ -7,9 +7,11 @@
     {
       "binding": "REACTIONS",
       "id": "66a6f0b892864883b270d6ef246e3879"
+    },
+    {
+      "binding": "ANALYTICS",
+      "id": "71b964e0d8324338b921464708fdbc6c"
     }
-    // ANALYTICS KV namespace 待创建。创建后添加:
-    // { "binding": "ANALYTICS", "id": "<namespace-id>" }
   ]
   // 环境变量 (Cloudflare Pages 后台 → Settings → Environment variables):
   // BUTTONDOWN_API_KEY — Buttondown API key，以 sk- 开头
