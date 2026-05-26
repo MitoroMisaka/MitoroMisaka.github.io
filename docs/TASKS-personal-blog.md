@@ -2,7 +2,7 @@
 
 > 基于 TECH: `docs/TECH-personal-blog.md`
 > 日期: 2026-05-26
-> 状态: Phase 0-8 完成，已上线
+> 状态: Phase 0-8 已上线；Phase 4 首页碎念预览未实现（归入二期）
 
 ## Phase 0: 仓库与部署前置确认 ✅
 
@@ -53,7 +53,7 @@
 - [x] 桌面端与移动端响应式
 - [x] 提交: `feat: build global layout and theme system`
 
-## Phase 4: 首页 ✅
+## Phase 4: 首页（仅首页碎念预览未实现，归入二期）
 
 - [x] 首页：`src/pages/index.astro`
 - [x] Hero 模块：`src/components/home/hero-section.astro`
@@ -97,13 +97,13 @@
 - [x] 旧站文件备份到 `~/.blog-legacy-backup`
 - [x] 提交: 包含在 scaffold commit 中
 
-## Phase 8: 部署 ✅
+## Phase 8: 部署（一期部署完成；验收未逐项覆盖）
 
-- [x] 本地构建：`npm run build` → 5 pages + pagefind index
+- [x] 本地构建：`npm run build` → 11 pages + pagefind index
 - [x] Cloudflare Pages 项目创建：`npx wrangler pages project create mitoromisaka-blog --production-branch main`
 - [x] 部署上线：`npx wrangler pages deploy dist --project-name mitoromisaka-blog`
 - [x] 线上地址：`https://feat-astro-cloudflare-blog.mitoromisaka-blog.pages.dev`
-- [x] 提交: 无需额外提交（部署是运维操作）
+- [ ] 线上逐项验收（首页/文章/标签/分类/About/Projects/RSS/sitemap/主题切换/Giscus/redirect/favicon/Search/OG/mobile）：未做记录，仅依赖构建成功
 
 ### 部署踩坑
 
@@ -111,7 +111,7 @@
 - Direct Upload 部署：先 `pages project create` 再 `pages deploy`
 - Cloudflare Dashboard 的 Turnstile 会阻挡自动化浏览器，wrangler CLI 是更可靠方式
 
-## Phase 9: 文档收尾 ✅
+## Phase 9: 文档收尾（第二期待执行，Phase 9 自身未闭合）
 
 - [x] 更新 `README.md`（技术栈、本地开发、部署说明）
 - [x] 更新项目 `AGENTS.md`（编码约定、目录结构）
@@ -131,5 +131,5 @@
 
 ---
 
-> 执行状态：Plan 全部完成，站点已上线 `mitoromisaka-blog.pages.dev`。
+> 执行状态：一期已上线。Phase 4 首页碎念预览未实现；Phase 8 线上逐项验收未做记录；Phase 9 第二期内容待执行。
 > 后续改动请先更新文档，再按文档执行。
