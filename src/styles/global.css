@@ -51,3 +51,19 @@ a {
 .prose a {
   color: var(--brand);
 }
+
+/* heading anchor links — hidden until hover */
+.heading-anchor {
+  opacity: 0;
+  padding-left: 0.25em;
+  font-size: 0.85em;
+  transition: opacity 0.15s;
+}
+h2:hover .heading-anchor,
+h3:hover .heading-anchor {
+  opacity: 0.4;
+}
+h2 .heading-anchor:hover,
+h3 .heading-anchor:hover {
+  opacity: 1;
+}

@@ -4,7 +4,7 @@
 
 - 项目目标：重建个人技术博客，替换旧 Jekyll 站点。
 - 技术栈：Astro + MDX + React islands + TailwindCSS。
-- 部署目标：Cloudflare Pages（第一期默认 `*.pages.dev`）。
+- 部署目标：Cloudflare Pages（`mitoromisaka-blog.pages.dev`）。
 
 ## 目录结构说明
 
@@ -13,21 +13,19 @@
 - `src/layouts/`：基础布局与文章布局
 - `src/lib/`：站点配置、内容工具函数
 - `src/pages/`：页面路由
-- `docs/`：PRD / TECH / TASKS 文档
+- `docs/`：PRD / TECH / TASKS / WRITING
 
 ## 构建与运行命令
 
 - 开发：`npm run dev`
-- 构建：`npm run build`
-- 预览：`npm run preview`
-- Cloudflare 构建：`npm run build`（含 Pagefind postbuild）
-- Cloudflare 部署：`npm run deploy:cf`
+- 构建：`npm run build`（含 Pagefind postbuild）
+- 部署：`npx wrangler pages deploy dist --project-name mitoromisaka-blog`
 
 ## 编码约定
 
 - TypeScript 严格模式，优先使用明确类型。
 - 单文件尽量不超过 500 行。
-- 非显而易见逻辑添加注释，必要时写 `# Reason:`。
+- 添加新文章参考 `docs/WRITING.md`。
 - 风格目标：日系极简、高留白、内容优先。
 
 ## 外部依赖说明
