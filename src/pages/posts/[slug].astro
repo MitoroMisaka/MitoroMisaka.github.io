@@ -1,21 +1,29 @@
 ---
 import { render, getCollection } from 'astro:content';
 import PostLayout from '../../layouts/post-layout.astro';
-import { formatDate } from '../../lib/content-helpers';
+import { formatDate, getPublishedPosts } from '../../lib/content-helpers';
 import { siteConfig } from '../../lib/site-config';
 import TableOfContents from '../../components/post/table-of-contents';
 import ReadingProgress from '../../components/post/reading-progress';
 import GiscusComments from '../../components/post/giscus-comments';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  const posts = await getPublishedPosts();
+  return posts.map((post, idx) => ({
     params: { slug: post.data.slug },
-    props: { post },
+    props: {
+      post,
+      prev: idx > 0 ? posts[idx - 1] : null,
+      next: idx < posts.length - 1 ? posts[idx + 1] : null,
+    },
   }));
 }
 
-const { post } = Astro.props;
+interface NavPost {
+  data: { title: string; slug: string };
+}
+
+const { post, prev, next } = Astro.props as { post: any; prev: NavPost | null; next: NavPost | null };
 const { Content } = await render(post);
 
 const wordCount = post.body?.split(/\s+/).length ?? 0;
@@ -29,7 +37,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
     <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
     <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
     <div class="flex flex-wrap items-center gap-2 text-xs text-[var(--fg-soft)]">
-      <span>{post.data.category}</span>
+      <a href={`/categories/${post.data.category}`} class="hover:text-[var(--fg)]">{post.data.category}</a>
       <span>·</span>
       <time>{formatDate(post.data.date)}</time>
       <span>·</span>
@@ -48,5 +56,21 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
   <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
     <Content />
   </div>
+
+  <nav class="mt-10 grid grid-cols-2 gap-4 border-t border-[var(--line)] pt-6">
+    {prev ? (
+      <a href={`/posts/${prev.data.slug}`} class="rounded-xl border border-[var(--line)] px-4 py-3 text-left transition hover:border-[var(--line-strong)]">
+        <span class="text-xs text-[var(--fg-soft)]">← 上一篇</span>
+        <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">{prev.data.title}</p>
+      </a>
+    ) : <div />}
+    {next ? (
+      <a href={`/posts/${next.data.slug}`} class="rounded-xl border border-[var(--line)] px-4 py-3 text-right transition hover:border-[var(--line-strong)]">
+        <span class="text-xs text-[var(--fg-soft)]">下一篇 →</span>
+        <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">{next.data.title}</p>
+      </a>
+    ) : <div />}
+  </nav>
+
   <GiscusComments client:load />
 </PostLayout>
