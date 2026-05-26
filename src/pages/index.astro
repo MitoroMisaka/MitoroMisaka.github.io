@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/base-layout.astro';
 import HeroSection from '../components/home/hero-section.astro';
 import RecentWriting from '../components/home/recent-writing.astro';
+import LatestNotes from '../components/home/latest-notes.astro';
 import FeaturedProjects from '../components/home/featured-projects.astro';
 import { getRecentPosts } from '../lib/content-helpers';
 
@@ -21,5 +22,6 @@ const postItems = recentPosts.map((post) => ({
 <BaseLayout>
   <HeroSection />
   <RecentWriting posts={postItems} />
+  <LatestNotes />
   {featuredProjects.length > 0 && <FeaturedProjects projects={featuredProjects} />}
 </BaseLayout>

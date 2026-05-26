@@ -1,0 +1,20 @@
+---
+import { getRecentNotes } from '../../lib/content-helpers';
+import NoteCard from '../notes/note-card.astro';
+
+const notes = await getRecentNotes(3);
+---
+
+{notes.length > 0 && (
+  <section class="mt-14">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-xl font-semibold">Recent Notes</h2>
+      <a href="/notes" class="text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] transition">
+        全部碎念 →
+      </a>
+    </div>
+    <div class="space-y-3">
+      {notes.map((note) => <NoteCard note={note} showExcerpt={true} />)}
+    </div>
+  </section>
+)}

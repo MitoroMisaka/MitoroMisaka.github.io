@@ -12,6 +12,7 @@ export const siteConfig = {
   nav: [
     { label: '首页', href: '/' },
     { label: '文章', href: '/posts' },
+    { label: '碎念', href: '/notes' },
     { label: '项目', href: '/projects' },
     { label: '关于', href: '/about' },
   ],

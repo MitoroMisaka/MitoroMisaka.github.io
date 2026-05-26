@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import NoteCard from './note-card.astro';
+
+interface Props {
+  notes: CollectionEntry<'notes'>[];
+}
+
+const { notes } = Astro.props;
+---
+
+{
+  notes.length === 0 ? (
+    <div class="py-10 text-center text-sm text-[var(--fg-soft)]">暂无碎念</div>
+  ) : (
+    <div class="space-y-3">
+      {notes.map((note) => <NoteCard note={note} />)}
+    </div>
+  )
+}
