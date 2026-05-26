@@ -81,7 +81,7 @@
 - [x] Project 详情页展示：name、description、status、stack、tags、links、repo、demo、正文 MDX。
 - [x] Projects 列表按 status 分组展示（进行中/计划中/已归档）。
 - [x] Projects 列表展示 active / planned / archived 状态。
-- [ ] React 筛选：不做。当前仅 2 个项目，静态分组已足够。React 筛选会增加不必要的 JS 体积。
+- [x] React 筛选：`src/components/projects/project-filter.tsx`（React island，按 status + stack 筛选，URL 参数同步）。
 - [x] 更新首页 Featured Projects，链接到项目详情页而非只跳外链。
 - [x] 本地验证：Projects 列表、Project 详情、首页项目链接。
 - [x] 本地验证：`PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`。
@@ -116,7 +116,7 @@
 ## Phase 6: RSS、搜索、SEO 与写作指南 ✅
 
 - [x] 确认 Pagefind 搜索覆盖 Notes、Timeline、Project 详情。
-- [ ] Notes RSS：未创建。碎念内容量少，主 RSS 保持正式文章。后续有需要再加。
+- [x] 新增 `src/pages/notes.xml.ts`：Notes RSS。
 - [x] 新增页面已有 title、description、canonical、OpenGraph（通过 BaseLayout/PostLayout）。
 - [x] 更新 `docs/WRITING.md`：新增 Notes、Timeline、Projects 写作与维护规范。
 - [x] 更新 `README.md`：补充二期页面和动态 reaction 说明、目录结构、目录树。
