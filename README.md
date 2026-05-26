@@ -1,19 +1,32 @@
 # 静かな森 (MitoroMisaka.github.io)
 
-个人技术博客重建项目。
-
-目标：从旧 Jekyll 站点迁移到 Astro + Cloudflare Pages 的内容优先架构，聚焦 AI workflow、开发实践和技术写作。
+个人技术博客。从旧 Jekyll 站点迁移到 Astro + Cloudflare Pages 的内容优先架构，聚焦 AI workflow、开发实践和技术写作。
 
 ## 技术栈
 
-- Astro
+- Astro v6
 - MDX + Content Collections
 - React islands
-- TailwindCSS
+- TailwindCSS v4
 - astro-expressive-code
-- Pagefind
-- Giscus
+- Pagefind (静态搜索)
+- Giscus (评论)
+- Cloudflare Pages Functions + KV (Reaction)
 - Cloudflare Pages + Wrangler
+
+## 页面
+
+| 路径 | 说明 |
+|------|------|
+| `/` | 首页：Hero、Recent Writing、Latest Notes、Featured Projects |
+| `/posts` / `/posts/<slug>` | 文章列表与详情（含 TOC、阅读进度、Reaction、Giscus 评论） |
+| `/notes` / `/notes/<slug>` | 碎念列表与详情（含 Reaction） |
+| `/timeline` | 聚合时间线（posts + notes + projects + 手动事件） |
+| `/projects` / `/projects/<slug>` | 项目列表与详情（技术栈、状态、链接） |
+| `/tags/<tag>` | 标签聚合 |
+| `/categories/<category>` | 分类聚合 |
+| `/about` | 关于 |
+| `/rss.xml` | RSS 订阅 |
 
 ## 本地开发
 
@@ -42,23 +55,45 @@ npm run deploy:cf  # 部署到 Cloudflare Pages
 
 ```text
 .
-├── docs/                  # PRD / TECH / TASKS
+├── docs/                    # PRD / TECH / TASKS / WRITING
+├── functions/               # Cloudflare Pages Functions
+│   └── api/reactions.ts     # Reaction API (GET + POST)
 ├── src/
-│   ├── content/           # posts / projects 内容源
-│   ├── components/        # 组件
-│   ├── layouts/           # 页面布局
-│   ├── lib/               # 配置和工具函数
-│   └── pages/             # 路由页面
+│   ├── content/             # posts / notes / projects / timeline
+│   ├── components/          # 组件
+│   │   ├── home/            # 首页模块
+│   │   ├── notes/           # Notes 组件
+│   │   ├── post/            # 文章组件
+│   │   ├── projects/        # 项目组件
+│   │   ├── site/            # header / footer
+│   │   ├── timeline/        # Timeline 组件
+│   │   └── ui/              # theme-toggle / search / reaction-bar
+│   ├── layouts/             # base-layout / post-layout
+│   ├── lib/                 # 配置和工具函数
+│   └── pages/               # 路由页面
 ├── public/
 ├── astro.config.mjs
-└── wrangler.jsonc
+└── wrangler.jsonc           # Cloudflare 配置 (含 KV binding)
 ```
 
 ## 部署说明
 
 当前默认目标为 Cloudflare Pages，项目名：`mitoromisaka-blog`。
 
-注意：`mitoromisaka.github.io` 域名无法直接由 Cloudflare Pages 托管。
+- 线上地址：`mitoromisaka-blog.pages.dev`
+- 别名地址：`feat-astro-cloudflare-blog.mitoromisaka-blog.pages.dev`
+- 部署命令：`npm run deploy:cf` 或 `npx wrangler pages deploy dist --project-name mitoromisaka-blog`
 
-- 临时可使用 `*.pages.dev` 上线
-- 后续可绑定自定义域名
+注意：`mitoromisaka.github.io` 域名无法直接由 Cloudflare Pages 托管。
+后续可绑定自定义域名。
+
+## Reaction API
+
+- `GET  /api/reactions?target=post:<slug>` — 获取计数
+- `POST /api/reactions` `{"target":"post:<slug>","emoji":"heart"}` — 计数 +1
+- 支持 emoji：❤️(heart) / 👏(clap) / 🚀(rocket) / 👀(eyes)
+- 存储：Cloudflare KV (`REACTIONS` binding)
+
+## 写作指南
+
+参见 `docs/WRITING.md`。
