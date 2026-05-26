@@ -3,6 +3,9 @@ import { render, getCollection } from 'astro:content';
 import PostLayout from '../../layouts/post-layout.astro';
 import { formatDate } from '../../lib/content-helpers';
 import { siteConfig } from '../../lib/site-config';
+import TableOfContents from '../../components/post/table-of-contents';
+import ReadingProgress from '../../components/post/reading-progress';
+import GiscusComments from '../../components/post/giscus-comments';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -20,6 +23,8 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
 ---
 
 <PostLayout title={`${post.data.title} | ${siteConfig.title}`} description={post.data.description}>
+  <ReadingProgress client:load />
+  <TableOfContents client:load />
   <header class="space-y-3">
     <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
     <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
@@ -43,4 +48,5 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
   <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
     <Content />
   </div>
+  <GiscusComments client:load />
 </PostLayout>

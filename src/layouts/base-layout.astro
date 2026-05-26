@@ -23,6 +23,7 @@ const { title = siteConfig.title, description = siteConfig.description } = Astro
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteConfig.title} />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" href="/rss.xml" title={siteConfig.title} />
     <title>{title}</title>
   </head>
   <body>
