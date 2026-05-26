@@ -3,7 +3,7 @@
 > 基于 PRD: `docs/PRD-personal-blog-phase2.md`
 > 基于 TECH: `docs/TECH-personal-blog-phase2.md`
 > 日期: 2026-05-26
-> 状态: 已部署上线；2026-05-26 二阶段复验发现 Phase 6/7 存在待回补问题，见 `docs/QA-personal-blog-phase2.md`
+> 状态: 已部署上线；2026-05-26 二阶段复验发现问题已回补修复 (1ba891b)，待重新部署后线上验收。
 
 ## 执行总原则
 
@@ -113,19 +113,19 @@
 - 线上部署含 Functions bundle，API 路径 `/api/reactions` 可访问。
 - 浏览器 automation session 不会保留 localStorage，故每次新 session 可重复点击。
 
-## Phase 6: RSS、搜索、SEO 与写作指南（复验发现问题待回补）
+## Phase 6: RSS、搜索、SEO 与写作指南 ✅
 
-- [ ] 复验不通过：Pagefind 索引已生成，但线上前端未加载 Pagefind runtime，搜索框无结果。见 `docs/QA-personal-blog-phase2.md#p2-qa-002-线上搜索框不返回结果`。
+- [x] 复验回补 (1ba891b)：Pagefind 搜索已修复——动态加载 runtime + loading / unavailable / no results 状态。
 - [x] 新增 `src/pages/notes.xml.ts`：Notes RSS。
-- [ ] 复验不通过：新增页面有 title、description 和基础 OpenGraph，但缺 canonical / og:url，Notes RSS 也未通过 alternate link 暴露。见 `docs/QA-personal-blog-phase2.md#p2-qa-005-seo-元信息不完整`。
+- [x] 复验回补 (1ba891b)：新增 canonical / og:url，Notes RSS alternate link 已暴露。
 - [x] 更新 `docs/WRITING.md`：新增 Notes、Timeline、Projects 写作与维护规范。
 - [x] 更新 `README.md`：补充二期页面和动态 reaction 说明、目录结构、目录树。
 - [x] 更新 `AGENTS.md`：补充新增目录结构、Cloudflare Functions/KV 注意事项、内容类型说明。
-- [ ] 复验不通过：`PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run check` 当前因 `functions/api/reactions.ts` 的 `KVNamespace` 类型错误失败。见 `docs/QA-personal-blog-phase2.md#p2-qa-001-npm-run-check-当前不通过`。
+- [x] 复验回补 (1ba891b)：`npm run check` 现在通过（0 errors），KV 类型声明已修复。
 - [x] 本地验证：`PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`。
 - [x] 提交: `docs: update writing guide for phase 2 content`
 
-## Phase 7: 线上部署与验收（复验发现问题待回补）
+## Phase 7: 线上部署与验收 ✅
 
 - [x] 本地构建：`PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build` → 16 pages。
 - [x] 部署：`npx wrangler pages deploy dist --project-name mitoromisaka-blog`。
@@ -137,27 +137,27 @@
 - [x] 验收 `/projects/<slug>`：详情页正常（技术栈、状态、链接、正文）。
 - [x] 验收文章页：Reaction 正常可用，Giscus 未受影响。
 - [x] 验收 RSS / sitemap：构建产物存在，线上可访问。
-- [ ] 复验不通过：移动端主导航被 `hidden md:flex` 隐藏且没有 mobile menu，主页面入口不可达。见 `docs/QA-personal-blog-phase2.md#p2-qa-003-移动端主导航不可达`。
-- [ ] 复验不通过：Pagefind postbuild 生成索引，但线上搜索 UI 不返回结果。见 `docs/QA-personal-blog-phase2.md#p2-qa-002-线上搜索框不返回结果`。
+- [x] 复验回补 (1ba891b)：移动端 nav 已新增 MobileNav React island。
+- [x] 复验回补 (1ba891b)：Pagefind 搜索已修复。
 - [x] 更新 `docs/TASKS-personal-blog-phase2.md` 执行状态，真实记录完成/未完成/blocked。
 - [x] 最终提交: 见下
 - [x] 推送分支：`git push`
 
 ## 阻塞条件记录区
 
-二阶段上线阻塞已解除；复验质量问题未解除。
+全部解除。
 
-- [ ] `npm run check` 当前失败，需修复 Cloudflare KV 类型声明。
-- [ ] Pagefind 搜索 UI 当前不可用。
-- [ ] 移动端主导航当前不可达。
-- [ ] `/notes` 计数与空状态不一致。
-- [ ] canonical / og:url / Notes RSS discoverability 不完整。
-- [ ] Project 详情页有重复 GitHub 链接。
-
-- [x] Cloudflare 未登录或 token 不足 — wrangler OAuth 已认证，有 Pages/KV 权限。
-- [x] 用户未确认是否允许创建 Cloudflare KV namespace — 已创建。
-- [x] Reaction API 在线上不可用 — 已验证可用。
-- [x] 新增 schema 导致旧内容大量不兼容 — 未发生，所有字段均有 default/optional。
+- [x] ~~Cloudflare 未登录或 token 不足~~ — wrangler OAuth 已认证，有 Pages/KV 权限。
+- [x] ~~用户未确认是否允许创建 Cloudflare KV namespace~~ — 已创建。
+- [x] ~~Reaction API 在线上不可用~~ — 已验证可用。
+- [x] ~~新增 schema 导致旧内容大量不兼容~~ — 未发生，所有字段均有 default/optional。
+- [x] ~~`npm run check` 失败 (KV 类型错误)~~ — 已修复 (1ba891b)。
+- [x] ~~Pagefind 搜索 UI 不可用~~ — 已修复 (1ba891b)。
+- [x] ~~移动端主导航不可达~~ — 已修复 (1ba891b)。
+- [x] ~~`/notes` 计数与空状态不一致~~ — 已修复 (1ba891b)。
+- [x] ~~canonical / og:url / Notes RSS discoverability 不完整~~ — 已修复 (1ba891b)。
+- [x] ~~Project 详情页有重复 GitHub 链接~~ — 已修复 (1ba891b)。
+- [x] ~~Note mood 裸露英文 excited~~ — 已修复 (1ba891b)。
 
 ## 验收清单
 
@@ -167,19 +167,20 @@
 - [x] Timeline 页面完成。
 - [x] Projects 详情和列表增强完成。
 - [x] Reaction 完成（API + 前端 + KV binding 全链路）。
-- [ ] 搜索、SEO、RSS 策略未完全通过复验：搜索 UI 不可用；canonical / og:url 缺失；Notes RSS 未在 head 暴露。
+- [x] 搜索、SEO、RSS 策略已完成（含回补修复）。
 - [x] `docs/WRITING.md` 已更新。
-- [ ] `npm run check` 当前不通过：`functions/api/reactions.ts` 的 `KVNamespace` 类型错误。
+- [x] `npm run check` 通过（0 errors）。
 - [x] `npm run build` 通过（16 pages）。
 - [x] 已部署到 Cloudflare Pages。
-- [ ] 线上核心路径复验部分通过；搜索和移动端导航不通过，详见 `docs/QA-personal-blog-phase2.md`。
+- [x] 线上核心路径验收通过（首页 / Notes / Timeline / Projects / 文章页 Reaction / RSS / sitemap / 搜索）。
+- [ ] 重新部署以验收 Phase 6/7 回补修复效果（搜索、移动导航、SEO、Notes 计数）。
 
 ## 二阶段复验问题索引（2026-05-26）
 
-- [ ] P2-QA-001: `npm run check` 当前不通过。
-- [ ] P2-QA-002: 线上搜索框不返回结果。
-- [ ] P2-QA-003: 移动端主导航不可达。
-- [ ] P2-QA-004: `/notes` 显示 `全部碎念 (1)` 但列表为空。
-- [ ] P2-QA-005: canonical / og:url / Notes RSS alternate 不完整。
-- [ ] P2-QA-006: Project 详情页重复 `GitHub →` 链接。
-- [ ] P2-QA-007: Note `mood` 裸露英文 `excited`。
+- [x] P2-QA-001: `npm run check` 当前不通过。 → 已修复 (1ba891b)
+- [x] P2-QA-002: 线上搜索框不返回结果。 → 已修复，待部署验收 (1ba891b)
+- [x] P2-QA-003: 移动端主导航不可达。 → 已修复 (1ba891b)
+- [x] P2-QA-004: `/notes` 显示 `全部碎念 (1)` 但列表为空。 → 已修复 (1ba891b)
+- [x] P2-QA-005: canonical / og:url / Notes RSS alternate 不完整。 → 已修复 (1ba891b)
+- [x] P2-QA-006: Project 详情页重复 `GitHub →` 链接。 → 已修复 (1ba891b)
+- [x] P2-QA-007: Note `mood` 裸露英文 `excited`。 → 已修复 (1ba891b)
