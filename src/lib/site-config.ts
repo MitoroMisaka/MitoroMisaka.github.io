@@ -16,6 +16,8 @@ export const siteConfig = {
     { label: '时光', href: '/timeline' },
     { label: '项目', href: '/projects' },
     { label: '关于', href: '/about' },
+    { label: 'Newsletter', href: '/newsletter' },
+    { label: '数据', href: '/stats' },
   ],
   social: [
     { label: 'GitHub', href: 'https://github.com/MitoroMisaka' },

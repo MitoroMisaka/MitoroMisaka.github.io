@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import NewsletterForm from '../components/newsletter/newsletter-form';
+---
+
+<BaseLayout
+  title=" Newsletter | 静かな森"
+  description="通过邮件接收博客最新文章。"
+  canonicalPath="/newsletter"
+>
+  <section class="mx-auto max-w-2xl space-y-6">
+    <h1 class="text-3xl font-semibold">邮件订阅</h1>
+
+    <p class="text-[var(--fg-muted)]">
+      通过邮件接收博客最新文章，不发垃圾邮件，不泄露你的邮箱地址。
+    </p>
+
+    <ul class="list-disc space-y-2 pl-5 text-[var(--fg-muted)]">
+      <li>仅推送正式文章更新，碎念不推送到邮件</li>
+      <li>可在任意邮件中一键退订</li>
+      <li>每周最多一封</li>
+    </ul>
+
+    <div class="rounded-lg border border-[var(--line)] bg-[var(--card)] p-6">
+      <NewsletterForm client:load />
+    </div>
+  </section>
+</BaseLayout>

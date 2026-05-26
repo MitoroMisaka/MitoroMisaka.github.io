@@ -12,5 +12,7 @@
       "binding": "ANALYTICS",
       "id": ""
     }
-  ]
+  ],
+  // 添加环境变量: BUTTONDOWN_API_KEY (Buttondown API key, 以 sk- 开头)
+  // 在 Cloudflare Pages 后台 → Settings → Environment variables 中配置
 }

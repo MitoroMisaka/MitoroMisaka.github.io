@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import StatsDashboard from '../components/stats/stats-dashboard';
+---
+
+<BaseLayout title="数据 | 静かな森" description="隐私友好的聚合统计，不追踪个人身份。">
+  <section class="mx-auto max-w-3xl space-y-8">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-semibold">站点数据</h1>
+      <p class="text-[var(--fg-muted)]">
+        隐私友好的聚合统计，不追踪个人身份。
+      </p>
+    </header>
+
+    <StatsDashboard client:load />
+
+    <footer class="border-t border-[var(--line)] pt-6 text-xs text-[var(--fg-soft)] leading-relaxed">
+      <p>数据基于页面浏览事件聚合，每日更新，可能有数分钟延迟。</p>
+      <p>不存储 IP、User-Agent 或任何个人可识别信息。</p>
+    </footer>
+  </section>
+</BaseLayout>
