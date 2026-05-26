@@ -144,6 +144,31 @@ weight: 10                         # 排序权重，越大越前
 
 ---
 
+## Newsletter 内容
+
+站点的 Newsletter 通过 Buttondown 提供邮件订阅服务。
+
+### 哪些内容会发送到 Newsletter
+
+- 只有 `src/content/posts/` 中的正式文章会自动出现在 `/rss.xml` 中。
+- RSS 可作为 Buttondown 的自动导入源（如用户后续配置了 auto-import），实现文章发布后自动推送。
+- 碎念（notes）、时间线事件（timeline）、项目（projects）不会进入 RSS，因此也不会被 Newsletter 推送。
+
+### 当前工作模式
+
+Newsletter 当前为手动触发模式：
+
+1. 文章发布到站点后，作者登录 Buttondown 后台手动撰写邮件并发送。
+2. 如果未来配置了 Buttondown 的 RSS-to-email 功能，则文章发布后会自动触发推送。
+
+### 订阅入口
+
+- 站点 `/newsletter` 页面提供邮件订阅表单。
+- 订阅 API：`POST /api/newsletter/subscribe`，传入 `{"email": "..."}`。
+- 部署前需在 Cloudflare Pages 环境变量中配置 `BUTTONDOWN_API_KEY`。
+
+---
+
 ## 本地预览
 
 ```bash
