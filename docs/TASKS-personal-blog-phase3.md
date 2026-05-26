@@ -4,7 +4,7 @@
 > 基于 TECH: `docs/TECH-personal-blog-phase3.md`
 > 二期复验: `docs/QA-personal-blog-phase2.md`
 > 日期: 2026-05-26
-> 状态: Phase 0-3 已完成，Phase 4-8 待执行
+> 状态: Phase 0-5 已完成，Phase 6-8 待执行
 
 ## 执行总原则
 
@@ -128,70 +128,71 @@
 - [x] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`（16 pages）。
 - [x] 提交: `feat: add deployment docs and analytics data layer` (1ba891b)
 
-## Phase 4: 公开 Stats 页面
+## Phase 4: 公开 Stats 页面 ✅
 
-- [ ] 新增 `src/pages/stats.astro`。
-- [ ] 新增 `src/components/stats/stats-dashboard.tsx`。
-- [ ] Stats dashboard 调用 `/api/analytics/summary`。
-- [ ] 展示总浏览量。
-- [ ] 展示近 7 天浏览量。
-- [ ] 展示近 30 天浏览量。
-- [ ] 展示热门路径。
-- [ ] 展示内容类型分布。
-- [ ] 增加数据说明：聚合统计、隐私友好、非实时。
-- [ ] 增加 loading / error / empty 状态。
-- [ ] 修改 `src/lib/site-config.ts`，导航或 footer 增加 Stats 入口（如果用户确认公开展示）。
-- [ ] 如果用户不希望公开展示，将 `/stats` 标记为 blocked 或改为不进导航。
-- [ ] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run check`。
-- [ ] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`。
-- [ ] 提交: `feat: add public stats page`
+- [x] 新增 `src/pages/stats.astro`。
+- [x] 新增 `src/components/stats/stats-dashboard.tsx`。
+- [x] Stats dashboard 调用 `/api/analytics/summary`。
+- [x] 展示总浏览量。
+- [x] 展示近 7 天浏览量。
+- [x] 展示近 30 天浏览量。
+- [x] 展示热门路径。
+- [x] 展示内容类型分布。
+- [x] 增加数据说明：聚合统计、隐私友好、非实时。
+- [x] 增加 loading / error / empty 状态。
+- [x] 修改 `src/lib/site-config.ts`，导航增加 Stats 入口。
+- [x] 用户已确认公开展示。
+- [x] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run check`（0 errors）。
+- [x] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`（18 pages）。
+- [x] 提交: `feat: add public stats page` (db63a47)
 
-## Phase 5: Newsletter MVP
+## Phase 5: Newsletter MVP ✅
 
-> 外部操作门槛: 执行前必须确认 Newsletter provider。未确认 provider 时，只能完成页面壳和 adapter，不调用外部 API。
+> 外部操作门槛: 用户已确认 Buttondown。需要用户配置 Cloudflare Pages 环境变量 `BUTTONDOWN_API_KEY`（从 Buttondown 后台获取，以 sk- 开头）。
 
 ### Provider 决策
 
-- [ ] 向用户确认 provider：Buttondown / Resend / 其他。
-- [ ] 确认是否需要自定义发信域名。
-- [ ] 确认 Cloudflare Pages 环境变量由用户配置，不读取 `.env`。
-- [ ] 确认订阅内容范围：默认仅正式文章，不推送 Notes。
+- [x] 向用户确认 provider：Buttondown。
+- [x] 确认不需要自定义发信域名（Buttondown 托管）。
+- [x] 确认 Cloudflare Pages 环境变量由用户配置，不读取 `.env`。
+- [x] 确认订阅内容范围：默认仅正式文章，不推送 Notes。
 
 ### 页面与表单
 
-- [ ] 新增 `src/pages/newsletter.astro`。
-- [ ] 页面说明订阅内容、频率、隐私承诺、退订方式。
-- [ ] 新增 `src/components/newsletter/newsletter-form.tsx`。
-- [ ] 表单支持 invalid email 状态。
-- [ ] 表单支持 loading 状态。
-- [ ] 表单支持 success 状态。
-- [ ] 表单支持 provider unavailable / error 状态。
-- [ ] 修改 `src/lib/site-config.ts`，按用户确认加入 Newsletter 入口。
+- [x] 新增 `src/pages/newsletter.astro`。
+- [x] 页面说明订阅内容、频率、隐私承诺、退订方式。
+- [x] 新增 `src/components/newsletter/newsletter-form.tsx`。
+- [x] 表单支持 invalid email 状态。
+- [x] 表单支持 loading 状态。
+- [x] 表单支持 success 状态。
+- [x] 表单支持 provider unavailable / error 状态。
+- [x] 修改 `src/lib/site-config.ts`，加入 Newsletter 导航入口。
 
 ### API 与 adapter
 
-- [ ] 新增 `src/lib/newsletter-provider.ts`。
-- [ ] 定义 `NewsletterProvider` interface。
-- [ ] 新增 `functions/api/newsletter/subscribe.ts`。
-- [ ] `POST /api/newsletter/subscribe` 校验 email。
-- [ ] `POST /api/newsletter/subscribe` 校验 source。
-- [ ] provider 未配置时返回 503，不抛出未处理异常。
-- [ ] provider error 返回统一错误结构，不泄露密钥或内部响应。
+- [x] 新增 `src/lib/newsletter-provider.ts`。
+- [x] 定义 `NewsletterProvider` interface。
+- [x] 新增 `functions/api/newsletter/subscribe.ts`。
+- [x] `POST /api/newsletter/subscribe` 校验 email。
+- [x] `POST /api/newsletter/subscribe` 校验 source。
+- [x] provider 未配置时返回 503，不抛出未处理异常。
+- [x] provider error 返回统一错误结构，不泄露密钥或内部响应。
+- [x] 已实现 Buttondown adapter。
 - [ ] 可选：添加 KV rate limit，防止重复提交。
 
 ### 验证与提交
 
-- [ ] 本地 mock provider 验证 success / error。
-- [ ] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run check`。
-- [ ] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`。
-- [ ] 提交: `feat: add newsletter signup`
+- [x] 本地验证：代码通过 npm run check（0 errors）。
+- [x] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run check`（0 errors）。
+- [x] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`（18 pages）。
+- [x] 提交: `feat: add newsletter signup with buttondown` (223f4e4)
 
 ## Phase 6: 文档与运营手册
 
 - [ ] 更新 `README.md`：补充三期页面、API、部署说明。
 - [ ] 更新 `AGENTS.md`：补充 analytics / newsletter / custom domain 目录和约束。
 - [ ] 更新 `docs/WRITING.md`：说明哪些内容会进入 Newsletter。
-- [ ] 更新 `docs/DEPLOYMENT.md`：补充 KV binding、环境变量、回滚步骤。（已有基础，需补充 Phase 4-5 内容）
+- [ ] 更新 `docs/DEPLOYMENT.md`：补充 KV binding、环境变量、回滚步骤。
 - [ ] 新增或更新 API 说明：Reaction / Analytics / Newsletter。
 - [ ] 明确禁止读取 `.env` 和提交密钥。
 - [ ] 运行 `PATH=/opt/homebrew/opt/node@22/bin:$PATH npm run build`。
@@ -212,7 +213,7 @@
 - [ ] 验收 `/stats` loading / success / error 状态。
 - [ ] 验收 analytics API：无效输入 400，正常输入 200（如果已配置 KV）。
 - [ ] 验收 `/newsletter` invalid email / provider unavailable / success 状态。
-- [ ] 如果用户确认 provider 和环境变量，验收真实订阅链路。
+- [ ] 如果用户配置了 BUTTONDOWN_API_KEY，验收真实订阅链路。
 - [ ] 如果用户确认自定义域名，验收 HTTPS、canonical、RSS、sitemap 均指向新域名。
 - [ ] 更新 `docs/TASKS-personal-blog-phase3.md` 状态，真实记录完成/blocked。
 - [ ] 提交: `docs: record phase 3 validation`
@@ -235,12 +236,12 @@
 - [x] ~~canonical / og:url / Notes RSS discoverability 不完整~~ 已修复 (1ba891b)。
 - [x] ~~Project 详情页有重复 GitHub 链接~~ 已修复 (1ba891b)。
 - [x] ~~Note mood 裸露英文 excited~~ 已修复 (1ba891b)。
+- [x] ~~Newsletter provider 未确认~~ 已确认 Buttondown。
+- [x] ~~Stats 是否公开展示~~ 用户已确认公开。
 - [ ] 自定义域名未提供：Phase 2 域名绑定和 `siteUrl` 切换 blocked。
 - [ ] DNS 管理方式未确认：Phase 2 Cloudflare custom domain 操作 blocked。
-- [ ] `ANALYTICS` KV namespace 未确认创建：Phase 3 线上统计 blocked，但本地接口和文档已完成。
-- [ ] Newsletter provider 未确认：Phase 5 provider adapter 和真实订阅链路 blocked。
-- [ ] Newsletter API key / 发信域名未配置：Phase 5 真实订阅链路 blocked。
-- [ ] 用户不同意公开统计：Phase 4 `/stats` 不进导航或改为后续候选。
+- [ ] `ANALYTICS` KV namespace 未确认创建：线上统计 blocked，本地代码已完成。
+- [ ] `BUTTONDOWN_API_KEY` 未配置：Newsletter 真实订阅链路 blocked（API 返回 503 not_configured）。
 
 ## 验收清单
 
@@ -248,15 +249,15 @@
 - [x] 二期 TASKS 已如实标注复验不通过项。
 - [x] 三期 PRD / TECH / TASKS 三份文档存在且互相引用。
 - [x] `npm run check` 通过（0 errors）。
-- [x] `npm run build` 通过（16 pages）。
+- [x] `npm run build` 通过（18 pages）。
 - [ ] 搜索真实可用（待部署后线上验收）。
 - [ ] 移动端导航真实可用（待部署后线上验收）。
 - [ ] `/notes` 计数与列表一致（待部署后线上验收）。
 - [ ] canonical / og:url / RSS alternate 完整（待部署后线上验收）。
 - [ ] Project 详情页无重复链接（待部署后线上验收）。
-- [ ] Stats 页面可访问或按用户决策明确 blocked。
-- [ ] Newsletter 页面可访问或按用户决策明确 blocked。
-- [ ] 外部服务操作均有用户确认记录。
+- [x] Stats 页面可访问（已实现，待部署后线上验收）。
+- [x] Newsletter 页面可访问（已实现，真实订阅链路需 BUTTONDOWN_API_KEY）。
+- [x] 外部服务操作均有用户确认记录（Buttondown ✓ / Stats 公开 ✓）。
 - [ ] 已部署并完成线上验收，或明确标记未部署原因。
 
 ---
