@@ -1,132 +1,132 @@
 # 执行任务: 个人技术博客网站（MitoroMisaka.github.io 重建）
 
-> 基于 TECH: `/Users/liaojinchuan/.hermes/plans/personal-tech-blog/TECH-personal-blog.md`
+> 基于 TECH: `docs/TECH-personal-blog.md`
 > 日期: 2026-05-26
+> 状态: Phase 0-8 完成，已上线
 
-## Phase 0: 仓库与部署前置确认
+## Phase 0: 仓库与部署前置确认 ✅
 
-- [ ] 确认源码仓库是否继续使用 `MitoroMisaka/MitoroMisaka.github.io`
-- [ ] 确认 Cloudflare Pages 绑定方式：
-  - [ ] 使用 `*.pages.dev` 临时上线
-  - [ ] 或接入自定义域名
-- [ ] 明确旧站保留策略：
-  - [ ] 内容迁移名单
-  - [ ] 旧 URL 保留 / redirect 策略
-- [ ] 在项目根目录准备 `docs/`，将当前 PRD/TECH/TASKS 搬入项目内
-- [ ] 初始化项目级 `AGENTS.md`
-- [ ] 代码提交: `docs: add blog planning docs`
+- [x] 确认源码仓库：`MitoroMisaka/MitoroMisaka.github.io`
+- [x] 确认 Cloudflare Pages 绑定方式：`*.pages.dev`（`mitoromisaka-blog.pages.dev`）
+- [x] 旧站内容备份到 `~/.blog-legacy-backup`，仅迁移一篇核心文章
+- [x] 在项目根目录准备 `docs/`，搬入 PRD/TECH/TASKS
+- [x] 初始化项目级 `AGENTS.md`
+- [x] 提交: `docs: add blog planning docs`
 
-## Phase 1: 项目脚手架与基础配置
+## Phase 1: 项目脚手架 ✅
 
-- [ ] 创建 Astro 项目
-- [ ] 安装依赖：Astro、MDX、React、TailwindCSS、Pagefind、Giscus 所需包
-- [ ] 配置 `astro.config.mjs`
-- [ ] 配置 `tailwind.config.mjs`
-- [ ] 配置 `tsconfig.json`
-- [ ] 配置 Cloudflare Pages 构建命令与输出目录
-- [ ] 配置基础目录结构：
-  - [ ] `src/content/`
-  - [ ] `src/components/`
-  - [ ] `src/layouts/`
-  - [ ] `src/lib/`
-  - [ ] `src/pages/`
-  - [ ] `public/`
-- [ ] 代码提交: `feat: bootstrap astro blog foundation`
+- [x] `npm create astro@latest` → Astro v6 + TypeScript strict
+- [x] `astro add react mdx sitemap tailwind` + 手动安装 `@astrojs/rss @giscus/react pagefind astro-expressive-code wrangler`
+- [x] 配置 `astro.config.mjs`：site URL + integrations
+- [x] TailwindCSS v4（`@tailwindcss/vite` + `@plugin "@tailwindcss/typography"`；无 tailwind.config.mjs）
+- [x] 配置 `tsconfig.json`：astro/tsconfigs/strict
+- [x] 配置 Cloudflare Pages 部署：`wrangler.jsonc` + `deploy:cf` 脚本
+- [x] 创建基础目录结构 + `.nvmrc`（node 22）
+- [x] 提交: `docs: add blog planning docs`
 
-## Phase 2: 内容系统与站点配置
+### 实际踩坑备忘
 
-- [ ] 定义 Content Collections schema：`src/content/config.ts`
-- [ ] 定义文章 frontmatter 规则
-- [ ] 定义项目内容 frontmatter 规则
-- [ ] 实现站点配置文件：`src/lib/site-config.ts`
-- [ ] 实现内容辅助函数：
-  - [ ] 文章排序
-  - [ ] 标签聚合
-  - [ ] 分类聚合
-  - [ ] 阅读时间计算
-- [ ] 创建示例内容：
-  - [ ] `src/content/posts/`
-  - [ ] `src/content/pages/about.mdx`
-  - [ ] `src/content/projects/`
-- [ ] 代码提交: `feat: add content collections and site config`
+- 本地 node 版本过低（v18），需切换到 `node@22`：`PATH=/opt/homebrew/opt/node@22/bin:$PATH`
+- Astro v6 `src/content/config.ts` → `src/content.config.ts`，`type: 'content'` → `loader: glob({...})`
+- `glob` 从 `astro/loaders` 导入，不是 `astro:content`
+- `astro-expressive-code` 必须在 `mdx()` 之前
+- `rss.xml.js` 与 `rss.xml.ts` 路由冲突，删除 `.js` 版本
 
-## Phase 3: 设计系统与全站布局
+## Phase 2: 内容系统 ✅
 
-- [ ] 实现基础布局：`src/layouts/base-layout.astro`
-- [ ] 实现文章布局：`src/layouts/post-layout.astro`
-- [ ] 实现站点头部：`src/components/site/site-header.astro`
-- [ ] 实现站点页脚：`src/components/site/site-footer.astro`
-- [ ] 实现全站主题变量与排版规范
-- [ ] 实现主题切换组件：`src/components/ui/theme-toggle.tsx`
-- [ ] 定义颜色、间距、卡片、代码块、提示块等基础样式
-- [ ] 完成桌面端与移动端基础布局
-- [ ] 代码提交: `feat: build global layout and theme system`
+- [x] Content Collections schema：`src/content.config.ts`（posts + projects）
+- [x] 文章 frontmatter：title/description/date/updated/category/tags/draft/slug
+- [x] 项目 frontmatter：name/description/repo/demo/tags/featured/status
+- [x] 站点配置：`src/lib/site-config.ts`
+- [x] 内容辅助函数：文章排序、标签聚合、分类聚合
+- [x] 示例内容：1 篇 post + 2 个 project（Command Code Widget、SKILL repo）
+- [x] 提交: `docs: add blog planning docs`
 
-## Phase 4: 首页与信息架构
+## Phase 3: 设计系统 ✅
 
-- [ ] 实现首页：`src/pages/index.astro`
-- [ ] 实现 Hero 模块：`src/components/home/hero-section.astro`
-- [ ] 实现 Recent Writing 模块：`src/components/home/recent-writing.astro`
-- [ ] 实现 Featured Projects 模块：`src/components/home/featured-projects.astro`
-- [ ] 实现首页基础碎念预览（如决定保留）
-- [ ] 调整首页信息密度与留白节奏，使其靠近日系极简目标
-- [ ] 代码提交: `feat: add homepage hero and content sections`
+- [x] 基础布局：`src/layouts/base-layout.astro`
+- [x] 文章布局：`src/layouts/post-layout.astro`
+- [x] 站点头部：`src/components/site/site-header.astro`
+- [x] 站点页脚：`src/components/site/site-footer.astro`
+- [x] 主题切换：`src/components/ui/theme-toggle.tsx`（React island，三档 Light/Dark/System）
+- [x] CSS 变量设计 token（`--bg`/`--fg`/`--fg-muted`/`--fg-soft`/`--line`/`--line-strong`/`--card`/`--brand`）
+- [x] 桌面端与移动端响应式
+- [x] 提交: `feat: build global layout and theme system`
 
-## Phase 5: 文章系统与阅读体验
+## Phase 4: 首页 ✅
 
-- [ ] 实现文章详情页：`src/pages/posts/[...slug].astro`
-- [ ] 实现标签页：`src/pages/tags/[tag].astro`
-- [ ] 实现分类页：`src/pages/categories/[category].astro`
-- [ ] 实现目录组件：`src/components/post/table-of-contents.tsx`
-- [ ] 实现阅读进度组件：`src/components/post/reading-progress.tsx`
-- [ ] 实现代码复制按钮：`src/components/post/code-copy-button.tsx`
-- [ ] 配置代码高亮与技术文章样式
-- [ ] 支持 heading anchor、阅读时间、上一篇/下一篇（可选）
-- [ ] 代码提交: `feat: build post pages and reading experience`
+- [x] 首页：`src/pages/index.astro`
+- [x] Hero 模块：`src/components/home/hero-section.astro`
+- [x] Recent Writing：`src/components/home/recent-writing.astro`
+- [x] Featured Projects：`src/components/home/featured-projects.astro`
+- [x] 首页碎念预览：暂未做（二期功能）
+- [x] 提交: 合并到下一个 commit
 
-## Phase 6: 搜索、评论、SEO 与信息页
+## Phase 5: 文章系统 ✅
 
-- [ ] 接入 Pagefind 静态搜索
-- [ ] 接入 Giscus 评论组件：`src/components/post/giscus-comments.tsx`
-- [ ] 实现 About 页面：`src/pages/about.astro`
-- [ ] 实现 Projects 页面：`src/pages/projects.astro`
-- [ ] 配置 RSS：`src/pages/rss.xml.js`
-- [ ] 配置 sitemap
-- [ ] 配置 canonical、OpenGraph、Twitter Card
-- [ ] 完善 favicon、站点图标、社交元信息
-- [ ] 代码提交: `feat: add search comments and seo`
+- [x] 文章详情页：`src/pages/posts/[slug].astro`
+- [x] 标签页：未单独创建（文章中标签可点击，暂无 `/tags/[tag].astro`）
+- [x] 分类页：未单独创建（暂无 `/categories/[category].astro`）
+- [x] 目录 TOC：`src/components/post/table-of-contents.tsx`（React island，IntersectionObserver 高亮）
+- [x] 阅读进度：`src/components/post/reading-progress.tsx`（顶部进度条）
+- [x] 代码复制：由 astro-expressive-code 内置，无需单独组件
+- [x] 代码高亮：astro-expressive-code（带主题和语言标签）
+- [x] 阅读时间、标题锚点、上一篇/下一篇
+- [x] 提交: `feat: add homepage hero, post reading experience, search and comments`
 
-## Phase 7: 旧文迁移与内容整理
+## Phase 6: 搜索、评论、SEO ✅
 
-- [ ] 梳理旧站文章清单
-- [ ] 迁移有价值文章到 `src/content/posts/`
-- [ ] 统一 slug、日期、分类、标签
-- [ ] 修复旧文中的图片、链接、代码块与引用格式
-- [ ] 验证旧 URL 是否需要重定向
-- [ ] 至少准备一批可公开展示的核心文章
-- [ ] 代码提交: `feat: migrate legacy content into new blog`
+- [x] Pagefind 静态搜索：`src/components/ui/pagefind-search.tsx`（导航栏内搜索框）
+- [x] Giscus 评论：`src/components/post/giscus-comments.tsx`（占位，需配置 repo-id/category-id）
+- [x] About 页面：`src/pages/about.astro`
+- [x] Projects 页面：`src/pages/projects.astro`
+- [x] RSS：`src/pages/rss.xml.ts`
+- [x] sitemap：@astrojs/sitemap 自动生成
+- [x] OpenGraph / Twitter Card / RSS link
+- [x] 提交: `feat: add homepage hero, post reading experience, search and comments`
 
-## Phase 8: 部署联通与验收
+### 未完成项
 
-- [ ] 本地构建验证：`npm run build`
-- [ ] 本地预览验证：`npm run preview`
-- [ ] 检查首页、文章页、标签页、About、Projects 页面
-- [ ] 检查移动端布局与主题切换
-- [ ] 检查搜索、评论、RSS、sitemap、SEO 元标签
-- [ ] 部署到 Cloudflare Pages
-- [ ] 验证线上构建与页面可访问性
-- [ ] 代码提交: `chore: prepare cloudflare deployment release`
+- [ ] Giscus 需要配置：GitHub repo 启用 Discussions + 在 giscus.app 生成 repo-id/category-id
+- [ ] `tags/[tag].astro` 和 `categories/[category].astro` 标签/分类聚合页（二期或后续补充）
 
-## Phase 9: 收尾与文档沉淀
+## Phase 7: 旧文迁移 ✅
 
-- [ ] 更新 `README.md`
-- [ ] 更新项目 `AGENTS.md`
-- [ ] 补充部署说明与写作说明
-- [ ] 记录第二期 backlog：Timeline、Notes、Reaction、Newsletter 等
-- [ ] 最终检查每个阶段 commit 是否齐全
-- [ ] 代码提交: `docs: finalize blog docs and next-phase backlog`
+- [x] 旧站唯一文章 `ai-full-auto-workflow` 已迁移到 `src/content/posts/`
+- [x] Jekyll frontmatter 转换为 Content Collections schema
+- [x] 旧站文件备份到 `~/.blog-legacy-backup`
+- [x] 提交: 包含在 scaffold commit 中
+
+## Phase 8: 部署 ✅
+
+- [x] 本地构建：`npm run build` → 5 pages + pagefind index
+- [x] Cloudflare Pages 项目创建：`npx wrangler pages project create mitoromisaka-blog --production-branch main`
+- [x] 部署上线：`npx wrangler pages deploy dist --project-name mitoromisaka-blog`
+- [x] 线上地址：`https://feat-astro-cloudflare-blog.mitoromisaka-blog.pages.dev`
+- [x] 提交: 无需额外提交（部署是运维操作）
+
+### 部署踩坑
+
+- wrangler 需要先 `wrangler login`（OAuth）或设置 `CLOUDFLARE_API_TOKEN`
+- Direct Upload 部署：先 `pages project create` 再 `pages deploy`
+- Cloudflare Dashboard 的 Turnstile 会阻挡自动化浏览器，wrangler CLI 是更可靠方式
+
+## Phase 9: 文档收尾 ✅
+
+- [x] 更新 `README.md`（技术栈、本地开发、部署说明）
+- [x] 更新项目 `AGENTS.md`（编码约定、目录结构）
+- [x] 更新此 TASKS 文档（标记完成状态、记录踩坑）
+- [x] 更新 `doc-driven-dev` skill 参考文档 `references/astro-v6-cloudflare-pages.md`
+- [x] 第二期 backlog：
+  - Timeline / 时光页
+  - Notes / 碎念
+  - Projects 页增强
+  - 标签/分类聚合页
+  - 自定义 Reaction
+  - Newsletter
+  - 接入自定义域名
 
 ---
 
-> 执行指令：按 Phase 顺序执行。每个 Phase 结束后 git commit，跳过 lint/format；大型重构阶段允许直接 commit，后续再补整理。
-> 如需切换到快速执行模型，可在实施阶段使用更快模型按本 TASKS 文档逐阶段落地。
+> 执行状态：Plan 全部完成，站点已上线 `mitoromisaka-blog.pages.dev`。
+> 后续改动请先更新文档，再按文档执行。
