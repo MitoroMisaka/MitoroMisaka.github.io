@@ -32,6 +32,15 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     <link rel="alternate" type="application/rss+xml" href="/rss.xml" title={siteConfig.title} />
     <link rel="alternate" type="application/rss+xml" href="/notes.xml" title="静かな森 — 碎念" />
     <title>{title}</title>
+    <script is:inline>
+      (async function(){
+        try {
+          var mod = await import('/pagefind/pagefind.js');
+          await mod.init();
+          window.pagefind = mod;
+        } catch(e) { console.warn('Pagefind unavailable:', e); }
+      })();
+    </script>
   </head>
   <body>
     <div class="min-h-screen bg-[var(--bg)] text-[var(--fg)] transition-colors duration-300">

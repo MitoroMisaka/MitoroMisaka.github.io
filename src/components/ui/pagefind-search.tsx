@@ -26,28 +26,27 @@ export default function PagefindSearch() {
     if (loaded.current) return;
     loaded.current = true;
 
-    // If pagefind is already on window (prerendered), skip dynamic load
+    // If pagefind is already available (prerendered or loaded via layout script)
     if (window.pagefind) {
       setState('ready');
       return;
     }
 
-    // Dynamically load pagefind runtime JS
+    // Poll for pagefind (loaded via <script type="module"> in layout head)
     setState('loading');
-    const script = document.createElement('script');
-    script.src = '/pagefind/pagefind.js';
-    script.async = true;
-    script.onload = () => {
+    let attempts = 0;
+    const maxAttempts = 50; // ~5 seconds
+    const interval = setInterval(() => {
+      attempts++;
       if (window.pagefind) {
+        clearInterval(interval);
         setState('ready');
-      } else {
+      } else if (attempts >= maxAttempts) {
+        clearInterval(interval);
         setState('unavailable');
       }
-    };
-    script.onerror = () => {
-      setState('unavailable');
-    };
-    document.head.appendChild(script);
+    }, 100);
+    return () => clearInterval(interval);
   }, []);
 
   const search = useCallback(async (q: string) => {
