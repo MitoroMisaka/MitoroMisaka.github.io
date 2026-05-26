@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
   --bg: #f7f8fb;
@@ -11,8 +12,20 @@
   --brand: #6e78f5;
 }
 
+[data-theme='dark'] {
+  --bg: #0f131a;
+  --fg: #ecf0f7;
+  --fg-muted: #b1bccb;
+  --fg-soft: #7b8798;
+  --line: #232c3a;
+  --line-strong: #334156;
+  --card: #141a24;
+  --brand: #8a92ff;
+}
+
+/* system preference fallback when no data-theme is set */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --bg: #0f131a;
     --fg: #ecf0f7;
     --fg-muted: #b1bccb;

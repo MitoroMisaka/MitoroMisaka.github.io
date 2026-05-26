@@ -1,7 +1,8 @@
 ---
-import { getCollection, render } from 'astro:content';
-import BaseLayout from '../../layouts/base-layout.astro';
+import { render, getCollection } from 'astro:content';
+import PostLayout from '../../layouts/post-layout.astro';
 import { formatDate } from '../../lib/content-helpers';
+import { siteConfig } from '../../lib/site-config';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -13,21 +14,33 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const wordCount = post.body?.split(/\s+/).length ?? 0;
+const readingTime = Math.max(1, Math.ceil(wordCount / 300));
 ---
 
-<BaseLayout title={`${post.data.title} | 静かな森`} description={post.data.description}>
-  <article class="mx-auto max-w-3xl space-y-6">
-    <header class="space-y-3">
-      <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
-      <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
-      <div class="flex items-center gap-2 text-xs text-[var(--fg-soft)]">
-        <span>{post.data.category}</span>
-        <span>·</span>
-        <time>{formatDate(post.data.date)}</time>
-      </div>
-    </header>
-    <div class="prose prose-zinc max-w-none dark:prose-invert">
-      <Content />
+<PostLayout title={`${post.data.title} | ${siteConfig.title}`} description={post.data.description}>
+  <header class="space-y-3">
+    <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
+    <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
+    <div class="flex flex-wrap items-center gap-2 text-xs text-[var(--fg-soft)]">
+      <span>{post.data.category}</span>
+      <span>·</span>
+      <time>{formatDate(post.data.date)}</time>
+      <span>·</span>
+      <span>{readingTime} min read</span>
     </div>
-  </article>
-</BaseLayout>
+    {post.data.tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 pt-1">
+        {post.data.tags.map((tag: string) => (
+          <a href={`/tags/${tag}`} class="rounded-full border border-[var(--line)] px-2 py-0.5 text-xs text-[var(--fg-muted)] hover:bg-[var(--card)]">
+            #{tag}
+          </a>
+        ))}
+      </div>
+    )}
+  </header>
+  <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
+    <Content />
+  </div>
+</PostLayout>
