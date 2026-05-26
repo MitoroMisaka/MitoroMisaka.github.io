@@ -18,7 +18,7 @@ export const siteConfig = {
   social: [
     { label: 'GitHub', href: 'https://github.com/MitoroMisaka' },
     { label: 'RSS', href: '/rss.xml' },
-    { label: 'Email', href: 'mailto:liaojinchuan@users.noreply.github.com' },
+    { label: 'Email', href: 'mailto:ljc2472319246@gmail.com' },
   ],
 };
 
