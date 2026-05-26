@@ -1,9 +1,27 @@
 import { useEffect, useRef } from 'react';
 
-export default function GiscusComments({ repo = 'MitoroMisaka/MitoroMisaka.github.io', repoId = '', category = 'General', categoryId = '', mapping = 'pathname' }) {
+interface Props {
+  repo?: string;
+  repoId?: string;
+  category?: string;
+  categoryId?: string;
+  mapping?: string;
+}
+
+export default function GiscusComments({
+  repo = 'MitoroMisaka/MitoroMisaka.github.io',
+  repoId = 'R_kgDOSoDQEg',
+  category = 'General',
+  categoryId = 'DIC_kwDOSoDQEs4C9364',
+  mapping = 'pathname',
+}: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!repoId || !categoryId) return;
+    const existing = document.querySelector('script[src*="giscus.app"]');
+    if (existing) return;
+
     const giscus = document.createElement('script');
     giscus.src = 'https://giscus.app/client.js';
     giscus.setAttribute('data-repo', repo);
