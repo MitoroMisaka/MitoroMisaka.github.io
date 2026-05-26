@@ -19,3 +19,24 @@ export function formatDate(date: Date): string {
     day: 'numeric',
   }).format(date);
 }
+
+export async function getAllTags(): Promise<Map<string, number>> {
+  const posts = await getPublishedPosts();
+  const tagCounts = new Map<string, number>();
+  for (const post of posts) {
+    for (const tag of post.data.tags) {
+      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+    }
+  }
+  return new Map([...tagCounts.entries()].sort((a, b) => a[0].localeCompare(b[0])));
+}
+
+export async function getAllCategories(): Promise<Map<string, number>> {
+  const posts = await getPublishedPosts();
+  const catCounts = new Map<string, number>();
+  for (const post of posts) {
+    const cat = post.data.category;
+    catCounts.set(cat, (catCounts.get(cat) || 0) + 1);
+  }
+  return catCounts;
+}
