@@ -39,9 +39,9 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
   <header class="space-y-3">
     <SeriesIndicator post={post} />
     <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{post.data.title}</h1>
-    <p class="text-sm text-[var(--fg-muted)]">{post.data.description}</p>
-    <div class="flex flex-wrap items-center gap-2 text-xs text-[var(--fg-soft)]">
-      <a href={`/categories/${post.data.category}`} class="hover:text-[var(--fg)]">{post.data.category}</a>
+    <p class="text-sm text-neutral-7">{post.data.description}</p>
+    <div class="flex flex-wrap items-center gap-2 text-xs text-neutral-7">
+      <a href={`/categories/${post.data.category}`} class="hover:text-neutral-9">{post.data.category}</a>
       <span>·</span>
       <time>{formatDate(post.data.date)}</time>
       <span>·</span>
@@ -50,7 +50,7 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
     {post.data.tags.length > 0 && (
       <div class="flex flex-wrap gap-2 pt-1">
         {post.data.tags.map((tag: string) => (
-          <a href={`/tags/${tag}`} class="rounded-full border border-[var(--line)] px-2 py-0.5 text-xs text-[var(--fg-muted)] hover:bg-[var(--card)]">
+          <a href={`/tags/${tag}`} class="rounded-full border border-neutral-3 px-2 py-0.5 text-xs text-neutral-7 hover:bg-neutral-1">
             #{tag}
           </a>
         ))}
@@ -63,17 +63,17 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
 
   <SeriesNav post={post} />
 
-  <nav class="mt-10 grid grid-cols-2 gap-4 border-t border-[var(--line)] pt-6">
+  <nav class="mt-10 grid grid-cols-2 gap-4 border-t border-neutral-3 pt-6">
     {prev ? (
-      <a href={`/posts/${prev.data.slug}`} class="rounded-xl border border-[var(--line)] px-4 py-3 text-left transition hover:border-[var(--line-strong)]">
-        <span class="text-xs text-[var(--fg-soft)]">← 上一篇</span>
-        <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">{prev.data.title}</p>
+      <a href={`/posts/${prev.data.slug}`} class="rounded-xl border border-neutral-3 px-4 py-3 text-left transition hover:border-neutral-4">
+        <span class="text-xs text-neutral-7">← 上一篇</span>
+        <p class="mt-1 text-sm font-medium text-neutral-9 line-clamp-1">{prev.data.title}</p>
       </a>
     ) : <div />}
     {next ? (
-      <a href={`/posts/${next.data.slug}`} class="rounded-xl border border-[var(--line)] px-4 py-3 text-right transition hover:border-[var(--line-strong)]">
-        <span class="text-xs text-[var(--fg-soft)]">下一篇 →</span>
-        <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">{next.data.title}</p>
+      <a href={`/posts/${next.data.slug}`} class="rounded-xl border border-neutral-3 px-4 py-3 text-right transition hover:border-neutral-4">
+        <span class="text-xs text-neutral-7">下一篇 →</span>
+        <p class="mt-1 text-sm font-medium text-neutral-9 line-clamp-1">{next.data.title}</p>
       </a>
     ) : <div />}
   </nav>

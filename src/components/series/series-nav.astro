@@ -31,10 +31,10 @@ if (!prev && !next) {
   {prev ? (
     <a
       href={`/posts/${prev.data.slug}`}
-      class="rounded-xl border border-[var(--line)] px-4 py-3 text-left transition hover:border-[var(--line-strong)]"
+      class="rounded-xl border border-neutral-3 px-4 py-3 text-left transition hover:border-neutral-4"
     >
-      <span class="text-xs text-[var(--fg-soft)]">← 上一篇</span>
-      <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">
+      <span class="text-xs text-neutral-7">← 上一篇</span>
+      <p class="mt-1 text-sm font-medium text-neutral-9 line-clamp-1">
         {prev.data.title}
       </p>
     </a>
@@ -44,10 +44,10 @@ if (!prev && !next) {
   {next ? (
     <a
       href={`/posts/${next.data.slug}`}
-      class="rounded-xl border border-[var(--line)] px-4 py-3 text-right transition hover:border-[var(--line-strong)]"
+      class="rounded-xl border border-neutral-3 px-4 py-3 text-right transition hover:border-neutral-4"
     >
-      <span class="text-xs text-[var(--fg-soft)]">下一篇 →</span>
-      <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">
+      <span class="text-xs text-neutral-7">下一篇 →</span>
+      <p class="mt-1 text-sm font-medium text-neutral-9 line-clamp-1">
         {next.data.title}
       </p>
     </a>

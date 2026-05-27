@@ -24,25 +24,25 @@ const statusColors: Record<string, string> = {
 };
 ---
 
-<article class="rounded-2xl border border-[var(--line)] bg-[var(--card)] px-5 py-4 transition hover:border-[var(--line-strong)]">
+<article class="rounded-2xl border border-neutral-3 bg-neutral-1 px-5 py-4 transition hover:border-neutral-4">
   <a href={`/projects/${projectSlug}`} class="block">
     <div class="flex items-start justify-between gap-2">
-      <h3 class="text-base font-medium text-[var(--fg)]">{name}</h3>
+      <h3 class="text-base font-medium text-neutral-9">{name}</h3>
       {status && (
-        <span class={`shrink-0 rounded-full px-2 py-px text-[10px] font-medium ${statusColors[status] ?? 'text-[var(--fg-soft)]'}`}>
+        <span class={`shrink-0 rounded-full px-2 py-px text-[10px] font-medium ${statusColors[status] ?? 'text-neutral-7'}`}>
           {statusLabels[status] ?? status}
         </span>
       )}
     </div>
 
     {description && (
-      <p class={`mt-2 text-sm text-[var(--fg-muted)] ${compact ? 'line-clamp-2' : ''}`}>{description}</p>
+      <p class={`mt-2 text-sm text-neutral-7 ${compact ? 'line-clamp-2' : ''}`}>{description}</p>
     )}
 
     {!compact && stack.length > 0 && (
       <div class="mt-2 flex flex-wrap gap-1">
         {stack.map((s: string) => (
-          <span class="rounded-full border border-[var(--line)] px-1.5 py-px text-[10px] text-[var(--fg-soft)]">
+          <span class="rounded-full border border-neutral-3 px-1.5 py-px text-[10px] text-neutral-7">
             {s}
           </span>
         ))}
@@ -51,24 +51,24 @@ const statusColors: Record<string, string> = {
 
     <div class="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
       {tags.map((tag: string) => (
-        <span class="text-[var(--fg-soft)]">#{tag}</span>
+        <span class="text-neutral-7">#{tag}</span>
       ))}
     </div>
 
     {!compact && (
       <div class="mt-3 flex flex-wrap gap-3 text-xs">
         {repo && (
-          <a href={repo} class="text-[var(--fg-muted)] hover:text-[var(--fg)] transition" onclick="event.stopPropagation()">
+          <a href={repo} class="text-neutral-7 hover:text-neutral-9 transition" onclick="event.stopPropagation()">
             GitHub
           </a>
         )}
         {demo && (
-          <a href={demo} class="text-[var(--fg-muted)] hover:text-[var(--fg)] transition" onclick="event.stopPropagation()">
+          <a href={demo} class="text-neutral-7 hover:text-neutral-9 transition" onclick="event.stopPropagation()">
             Demo
           </a>
         )}
         {links.map((link: { label: string; href: string }) => (
-          <a href={link.href} class="text-[var(--fg-muted)] hover:text-[var(--fg)] transition" onclick="event.stopPropagation()">
+          <a href={link.href} class="text-neutral-7 hover:text-neutral-9 transition" onclick="event.stopPropagation()">
             {link.label}
           </a>
         ))}

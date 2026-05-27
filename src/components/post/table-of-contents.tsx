@@ -42,8 +42,8 @@ export default function TableOfContents() {
 
   return (
     <nav className="hidden lg:block fixed right-[max(2rem,calc((100vw-64rem)/2))] top-32 w-52">
-      <p className="text-xs font-semibold text-[var(--fg-soft)] uppercase tracking-wide mb-2">目录</p>
-      <ul className="space-y-1 border-l border-[var(--line)] pl-3">
+      <p className="text-xs font-semibold text-neutral-7 uppercase tracking-wide mb-2">目录</p>
+      <ul className="space-y-1 border-l border-neutral-3 pl-3">
         {items.map((item) => (
           <li key={item.id}>
             <a
@@ -52,8 +52,8 @@ export default function TableOfContents() {
                 item.level === 3 ? 'pl-3' : ''
               } ${
                 activeId === item.id
-                  ? 'text-[var(--brand)] font-medium'
-                  : 'text-[var(--fg-muted)] hover:text-[var(--fg)]'
+                  ? 'text-accent font-medium'
+                  : 'text-neutral-7 hover:text-neutral-9'
               }`}
             >
               {item.text}

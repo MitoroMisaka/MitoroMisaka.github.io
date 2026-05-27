@@ -81,10 +81,10 @@ export default function ReactionBar({ target }: ReactionBarProps) {
 
   if (status === 'loading') {
     return (
-      <div className="mt-8 border-t border-[var(--line)] pt-6">
+      <div className="mt-8 border-t border-neutral-3 pt-6">
         <div className="flex gap-2">
           {REACTION_EMOJI_LIST.map((key) => (
-            <span key={key} className="rounded-full border border-[var(--line)] px-3 py-1 text-sm opacity-40">
+            <span key={key} className="rounded-full border border-neutral-3 px-3 py-1 text-sm opacity-40">
               {REACTION_EMOJIS[key].emoji} 0
             </span>
           ))}
@@ -95,21 +95,21 @@ export default function ReactionBar({ target }: ReactionBarProps) {
 
   if (status === 'unavailable') {
     return (
-      <div className="mt-8 border-t border-[var(--line)] pt-6">
+      <div className="mt-8 border-t border-neutral-3 pt-6">
         <div className="flex gap-2">
           {REACTION_EMOJI_LIST.map((key) => (
-            <span key={key} className="rounded-full border border-[var(--line)] px-3 py-1 text-sm opacity-30">
+            <span key={key} className="rounded-full border border-neutral-3 px-3 py-1 text-sm opacity-30">
               {REACTION_EMOJIS[key].emoji} —
             </span>
           ))}
         </div>
-        <p className="mt-2 text-xs text-[var(--fg-soft)]">Reactions unavailable</p>
+        <p className="mt-2 text-xs text-neutral-7">Reactions unavailable</p>
       </div>
     );
   }
 
   return (
-    <div className="mt-8 border-t border-[var(--line)] pt-6">
+    <div className="mt-8 border-t border-neutral-3 pt-6">
       <div className="flex flex-wrap gap-2">
         {REACTION_EMOJI_LIST.map((key) => {
           const count = counts[key] ?? 0;
@@ -122,8 +122,8 @@ export default function ReactionBar({ target }: ReactionBarProps) {
               disabled={isClicked || isSubmitting}
               className={`rounded-full border px-3 py-1 text-sm transition ${
                 isClicked
-                  ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
-                  : 'border-[var(--line)] hover:border-[var(--line-strong)] hover:bg-[var(--card)]'
+                  ? 'border-accent bg-accent/10 text-accent'
+                  : 'border-neutral-3 hover:border-neutral-4 hover:bg-neutral-1'
               } ${isSubmitting ? 'animate-pulse opacity-60' : ''} disabled:cursor-default`}
               title={REACTION_EMOJIS[key].label}
             >
@@ -133,7 +133,7 @@ export default function ReactionBar({ target }: ReactionBarProps) {
         })}
       </div>
       {status === 'error' && (
-        <p className="mt-2 text-xs text-[var(--fg-soft)]">Failed to update. Try again?</p>
+        <p className="mt-2 text-xs text-neutral-7">Failed to update. Try again?</p>
       )}
     </div>
   );

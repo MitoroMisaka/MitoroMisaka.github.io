@@ -43,7 +43,7 @@ export default function GiscusComments({
   }, []);
 
   return (
-    <div className="mt-12 border-t border-[var(--line)] pt-8">
+    <div className="mt-12 border-t border-neutral-3 pt-8">
       <div ref={ref} />
     </div>
   );

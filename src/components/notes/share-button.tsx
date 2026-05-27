@@ -12,10 +12,10 @@ export default function ShareButton({ title }: ShareButtonProps) {
   }, [title]);
 
   return (
-    <div className="mt-6 border-t border-[var(--line)] pt-4">
+    <div className="mt-6 border-t border-neutral-3 pt-4">
       <button
         onClick={handleShare}
-        className="inline-flex items-center gap-1.5 rounded-full border border-[var(--line)] px-3 py-1.5 text-sm text-[var(--fg-muted)] transition hover:border-[var(--line-strong)] hover:bg-[var(--card)] hover:text-[var(--fg)]"
+        className="inline-flex items-center gap-1.5 rounded-full border border-neutral-3 px-3 py-1.5 text-sm text-neutral-7 transition hover:border-neutral-4 hover:bg-neutral-1 hover:text-neutral-9"
         title="分享到 X"
       >
         <span role="img" aria-label="share to X">

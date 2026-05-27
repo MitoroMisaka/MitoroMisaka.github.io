@@ -27,7 +27,7 @@ const flatProjects = projects.map((p) => ({
           if (items.length === 0) return null;
           return (
             <div class="space-y-3">
-              <h2 class="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">
+              <h2 class="text-sm font-medium text-neutral-7 uppercase tracking-wide">
                 {status === 'active' ? '进行中' : status === 'planned' ? '计划中' : '已归档'}
               </h2>
               <div class="grid gap-4 md:grid-cols-2">
@@ -42,7 +42,7 @@ const flatProjects = projects.map((p) => ({
     <ProjectFilter projects={flatProjects} client:load />
 
     {projects.length === 0 && (
-      <div class="py-10 text-center text-sm text-[var(--fg-soft)]">暂无项目</div>
+      <div class="py-10 text-center text-sm text-neutral-7">暂无项目</div>
     )}
   </section>
 </BaseLayout>

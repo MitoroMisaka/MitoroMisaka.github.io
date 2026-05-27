@@ -6,13 +6,13 @@ import MobileNav from '../site/mobile-nav';
 ---
 
 <header class="mx-auto w-full max-w-5xl px-5 pt-6 md:px-8">
-  <nav class="flex items-center justify-between rounded-2xl border border-[var(--line)] bg-[var(--card)]/80 px-4 py-3 backdrop-blur">
-    <a href="/" class="text-sm font-semibold tracking-wide text-[var(--fg)]">{siteConfig.title}</a>
+  <nav class="flex items-center justify-between rounded-2xl border border-neutral-3 bg-neutral-1/80 px-4 py-3 backdrop-blur">
+    <a href="/" class="text-sm font-semibold tracking-wide text-neutral-9">{siteConfig.title}</a>
     <div class="flex items-center gap-4">
-      <ul class="hidden md:flex items-center gap-4 text-sm text-[var(--fg-muted)]">
+      <ul class="hidden md:flex items-center gap-4 text-sm text-neutral-7">
         {siteConfig.nav.map((item) => (
           <li>
-            <a class="transition hover:text-[var(--fg)]" href={item.href}>{item.label}</a>
+            <a class="transition hover:text-neutral-9" href={item.href}>{item.label}</a>
           </li>
         ))}
       </ul>

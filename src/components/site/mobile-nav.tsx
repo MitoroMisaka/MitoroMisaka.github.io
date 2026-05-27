@@ -60,21 +60,21 @@ export default function MobileNav() {
         aria-expanded={open}
         aria-controls="mobile-nav-menu"
         aria-label={open ? '关闭菜单' : '打开菜单'}
-        className="text-lg text-[var(--fg-muted)] hover:text-[var(--fg)] transition-colors"
+        className="text-lg text-neutral-7 hover:text-neutral-9 transition-colors"
       >
         {open ? '✕' : '☰'}
       </button>
       {open && (
         <div
           id="mobile-nav-menu"
-          className="absolute right-0 top-full mt-2 w-44 rounded-2xl border border-[var(--line)] bg-[var(--card)] shadow-xl py-2 z-50"
+          className="absolute right-0 top-full mt-2 w-44 rounded-2xl border border-neutral-3 bg-neutral-1 shadow-xl py-2 z-50"
         >
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={close}
-              className="block px-4 py-2 text-sm text-[var(--fg-muted)] hover:bg-[var(--bg)] hover:text-[var(--fg)] transition-colors"
+              className="block px-4 py-2 text-sm text-neutral-7 hover:bg-neutral-1 hover:text-neutral-9 transition-colors"
             >
               {item.label}
             </a>

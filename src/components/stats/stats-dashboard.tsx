@@ -44,9 +44,9 @@ const TYPE_LABELS: Record<string, string> = {
 
 function SkeletonCard() {
   return (
-    <div className="animate-pulse rounded-lg border border-[var(--line)] bg-[var(--card)] p-5 space-y-2">
-      <div className="h-4 w-16 rounded bg-[var(--line)]" />
-      <div className="h-8 w-24 rounded bg-[var(--line)]" />
+    <div className="animate-pulse rounded-lg border border-neutral-3 bg-neutral-1 p-5 space-y-2">
+      <div className="h-4 w-16 rounded bg-neutral-3" />
+      <div className="h-8 w-24 rounded bg-neutral-3" />
     </div>
   );
 }
@@ -65,14 +65,14 @@ function BarItem({
   const pct = maxCount > 0 ? Math.round((count / maxCount) * 100) : 0;
   return (
     <div className="flex items-center gap-3">
-      <span className="w-12 shrink-0 text-sm text-[var(--fg-muted)]">{label}</span>
-      <div className="flex-1 h-5 rounded-sm bg-[var(--line)]/30 overflow-hidden">
+      <span className="w-12 shrink-0 text-sm text-neutral-7">{label}</span>
+      <div className="flex-1 h-5 rounded-sm bg-neutral-3/30 overflow-hidden">
         <div
-          className="h-full rounded-sm bg-[var(--brand)]/70 transition-all duration-500"
+          className="h-full rounded-sm bg-accent/70 transition-all duration-500"
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="w-16 shrink-0 text-right text-sm text-[var(--fg-muted)] tabular-nums">
+      <span className="w-16 shrink-0 text-right text-sm text-neutral-7 tabular-nums">
         {count.toLocaleString()}
       </span>
     </div>
@@ -130,8 +130,8 @@ export default function StatsDashboard() {
 
   if (status === 'error') {
     return (
-      <div className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-10 text-center">
-        <p className="text-[var(--fg-muted)]">数据暂时不可用</p>
+      <div className="rounded-lg border border-neutral-3 bg-neutral-1 p-10 text-center">
+        <p className="text-neutral-7">数据暂时不可用</p>
       </div>
     );
   }
@@ -140,8 +140,8 @@ export default function StatsDashboard() {
 
   if (status === 'empty' || !data) {
     return (
-      <div className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-10 text-center">
-        <p className="text-[var(--fg-muted)]">尚无统计数据</p>
+      <div className="rounded-lg border border-neutral-3 bg-neutral-1 p-10 text-center">
+        <p className="text-neutral-7">尚无统计数据</p>
       </div>
     );
   }
@@ -164,28 +164,28 @@ export default function StatsDashboard() {
     <div className="space-y-10">
       {/* ===== 顶部卡片 ===== */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-5">
-          <p className="text-xs uppercase tracking-wide text-[var(--fg-soft)]">总浏览量</p>
+        <div className="rounded-lg border border-neutral-3 bg-neutral-1 p-5">
+          <p className="text-xs uppercase tracking-wide text-neutral-7">总浏览量</p>
           <p className="mt-1 text-3xl font-semibold tabular-nums">
             {total.toLocaleString()}
           </p>
         </div>
-        <div className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-5">
-          <p className="text-xs uppercase tracking-wide text-[var(--fg-soft)]">近 7 天</p>
+        <div className="rounded-lg border border-neutral-3 bg-neutral-1 p-5">
+          <p className="text-xs uppercase tracking-wide text-neutral-7">近 7 天</p>
           <p className="mt-1 text-3xl font-semibold tabular-nums">
             {last7Total.toLocaleString()}
           </p>
           {last7Days.length === 0 && (
-            <p className="mt-1 text-xs text-[var(--fg-soft)]">暂无数据</p>
+            <p className="mt-1 text-xs text-neutral-7">暂无数据</p>
           )}
         </div>
-        <div className="rounded-lg border border-[var(--line)] bg-[var(--card)] p-5">
-          <p className="text-xs uppercase tracking-wide text-[var(--fg-soft)]">近 30 天</p>
+        <div className="rounded-lg border border-neutral-3 bg-neutral-1 p-5">
+          <p className="text-xs uppercase tracking-wide text-neutral-7">近 30 天</p>
           <p className="mt-1 text-3xl font-semibold tabular-nums">
             {last30Total.toLocaleString()}
           </p>
           {last30Days.length === 0 && (
-            <p className="mt-1 text-xs text-[var(--fg-soft)]">暂无数据</p>
+            <p className="mt-1 text-xs text-neutral-7">暂无数据</p>
           )}
         </div>
       </div>
@@ -194,26 +194,26 @@ export default function StatsDashboard() {
       <section>
         <h2 className="text-lg font-semibold mb-4">热门内容</h2>
         {sortedPaths.length === 0 ? (
-          <p className="text-sm text-[var(--fg-muted)]">暂无数据</p>
+          <p className="text-sm text-neutral-7">暂无数据</p>
         ) : (
-          <div className="divide-y divide-[var(--line)] border border-[var(--line)] rounded-lg bg-[var(--card)]">
+          <div className="divide-y divide-neutral-3 border border-neutral-3 rounded-lg bg-neutral-1">
             {sortedPaths.map((item, idx) => (
               <div
                 key={item.path}
                 className="flex items-center justify-between px-4 py-2.5"
               >
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="text-xs w-6 text-right tabular-nums text-[var(--fg-soft)]">
+                  <span className="text-xs w-6 text-right tabular-nums text-neutral-7">
                     {idx + 1}
                   </span>
                   <a
                     href={item.path}
-                    className="truncate text-sm text-[var(--fg)] hover:text-[var(--brand)] transition-colors"
+                    className="truncate text-sm text-neutral-9 hover:text-accent transition-colors"
                   >
                     {item.path}
                   </a>
                 </div>
-                <span className="ml-3 shrink-0 text-sm tabular-nums text-[var(--fg-muted)]">
+                <span className="ml-3 shrink-0 text-sm tabular-nums text-neutral-7">
                   {item.count.toLocaleString()}
                 </span>
               </div>
@@ -226,9 +226,9 @@ export default function StatsDashboard() {
       <section>
         <h2 className="text-lg font-semibold mb-4">内容类型</h2>
         {typeEntries.length === 0 ? (
-          <p className="text-sm text-[var(--fg-muted)]">暂无数据</p>
+          <p className="text-sm text-neutral-7">暂无数据</p>
         ) : (
-          <div className="space-y-2 rounded-lg border border-[var(--line)] bg-[var(--card)] p-5">
+          <div className="space-y-2 rounded-lg border border-neutral-3 bg-neutral-1 p-5">
             {typeEntries.map(([type, count]) => (
               <BarItem
                 key={type}

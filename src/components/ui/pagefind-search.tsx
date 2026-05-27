@@ -81,12 +81,12 @@ export default function PagefindSearch() {
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 200)}
           placeholder="搜索内容..."
-          className="w-40 rounded-full border border-[var(--line)] bg-transparent px-3 py-1.5 text-xs text-[var(--fg)] placeholder-[var(--fg-soft)] outline-none focus:border-[var(--brand)] focus:w-56 transition-all"
+          className="w-40 rounded-full border border-neutral-3 bg-transparent px-3 py-1.5 text-xs text-neutral-9 placeholder-neutral-7 outline-none focus:border-accent focus:w-56 transition-all"
         />
         {query && (
           <button
             onClick={clear}
-            className="text-xs text-[var(--fg-soft)] hover:text-[var(--fg)]"
+            className="text-xs text-neutral-7 hover:text-neutral-9"
             aria-label="Clear"
           >
             ✕
@@ -94,15 +94,15 @@ export default function PagefindSearch() {
         )}
       </div>
       {open && (
-        <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-[var(--line)] bg-[var(--card)] shadow-xl p-2 z-50">
+        <div className="absolute right-0 mt-2 w-72 rounded-2xl border border-neutral-3 bg-neutral-1 shadow-xl p-2 z-50">
           {state === 'loading' && (
-            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">搜索中...</p>
+            <p className="px-3 py-2 text-xs text-neutral-7">搜索中...</p>
           )}
           {state === 'unavailable' && (
-            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">搜索不可用</p>
+            <p className="px-3 py-2 text-xs text-neutral-7">搜索不可用</p>
           )}
           {results.length === 0 && query.length >= 2 && state === 'ready' && (
-            <p className="px-3 py-2 text-xs text-[var(--fg-soft)]">无结果</p>
+            <p className="px-3 py-2 text-xs text-neutral-7">无结果</p>
           )}
           {results.map((r) => (
             <SearchItem key={r.id} result={r} />
@@ -123,9 +123,9 @@ function SearchItem({ result }: { result: SearchResult }) {
   if (!data) return null;
 
   return (
-    <a href={data.url} className="block rounded-xl px-3 py-2 text-sm hover:bg-[var(--bg)] transition-colors">
-      <p className="font-medium text-[var(--fg)]">{data.meta.title}</p>
-      <p className="mt-1 text-xs text-[var(--fg-muted)] line-clamp-2" dangerouslySetInnerHTML={{ __html: data.excerpt }} />
+    <a href={data.url} className="block rounded-xl px-3 py-2 text-sm hover:bg-neutral-1 transition-colors">
+      <p className="font-medium text-neutral-9">{data.meta.title}</p>
+      <p className="mt-1 text-xs text-neutral-7 line-clamp-2" dangerouslySetInnerHTML={{ __html: data.excerpt }} />
     </a>
   );
 }

@@ -77,13 +77,13 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
       <div className="flex flex-wrap gap-4 mb-6">
         {/* Status filter */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-medium text-[var(--fg-soft)] mr-1">状态:</span>
+          <span className="text-xs font-medium text-neutral-7 mr-1">状态:</span>
           <button
             onClick={() => setSelectedStatus(null)}
             className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
               !selectedStatus
-                ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
-                : 'border-[var(--line)] text-[var(--fg-muted)] hover:border-[var(--line-strong)]'
+                ? 'border-accent bg-accent/10 text-accent'
+                : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
             }`}
           >
             全部
@@ -96,8 +96,8 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                 onClick={() => setSelectedStatus(s)}
                 className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
                   selectedStatus === s
-                    ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
-                    : 'border-[var(--line)] text-[var(--fg-muted)] hover:border-[var(--line-strong)]'
+                    ? 'border-accent bg-accent/10 text-accent'
+                    : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
                 }`}
               >
                 {STATUS_LABELS[s]} {count}
@@ -109,13 +109,13 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
         {/* Stack filter */}
         {availableStacks.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-medium text-[var(--fg-soft)] mr-1">技术栈:</span>
+            <span className="text-xs font-medium text-neutral-7 mr-1">技术栈:</span>
             <button
               onClick={() => setSelectedStack(null)}
               className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
                 !selectedStack
-                  ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
-                  : 'border-[var(--line)] text-[var(--fg-muted)] hover:border-[var(--line-strong)]'
+                  ? 'border-accent bg-accent/10 text-accent'
+                  : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
               }`}
             >
               全部
@@ -126,8 +126,8 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                 onClick={() => setSelectedStack(s)}
                 className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
                   selectedStack === s
-                    ? 'border-[var(--brand)] bg-[var(--brand)]/10 text-[var(--brand)]'
-                    : 'border-[var(--line)] text-[var(--fg-muted)] hover:border-[var(--line-strong)]'
+                    ? 'border-accent bg-accent/10 text-accent'
+                    : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
                 }`}
               >
                 {s}
@@ -139,7 +139,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
 
       {/* Project grid */}
       {filteredProjects.length === 0 ? (
-        <div className="py-10 text-center text-sm text-[var(--fg-soft)]">
+        <div className="py-10 text-center text-sm text-neutral-7">
           没有符合条件的项目
         </div>
       ) : (
@@ -150,7 +150,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
             return (
               <div key={status} className="space-y-3">
                 {selectedStatus === null && (
-                  <h2 className="text-sm font-medium text-[var(--fg-soft)] uppercase tracking-wide">
+                  <h2 className="text-sm font-medium text-neutral-7 uppercase tracking-wide">
                     {STATUS_LABELS[status]}
                   </h2>
                 )}
@@ -159,10 +159,10 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                     <a
                       key={project.id}
                       href={`/projects/${project.slug}`}
-                      className="rounded-xl border border-[var(--line)] px-5 py-4 transition hover:border-[var(--line-strong)] hover:bg-[var(--card)]"
+                      className="rounded-xl border border-neutral-3 px-5 py-4 transition hover:border-neutral-4 hover:bg-neutral-1"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <h3 className="font-semibold text-[var(--fg)]">{project.name}</h3>
+                        <h3 className="font-semibold text-neutral-9">{project.name}</h3>
                         <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
                           project.status === 'active' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
                           project.status === 'planned' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' :
@@ -172,7 +172,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                         </span>
                       </div>
                       {project.description && (
-                        <p className="mt-2 text-sm text-[var(--fg-muted)] line-clamp-2">
+                        <p className="mt-2 text-sm text-neutral-7 line-clamp-2">
                           {project.description}
                         </p>
                       )}
@@ -181,7 +181,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                           {project.stack.map((s: string) => (
                             <span
                               key={s}
-                              className="rounded-full border border-[var(--line)] px-2 py-px text-xs text-[var(--fg-muted)]"
+                              className="rounded-full border border-neutral-3 px-2 py-px text-xs text-neutral-7"
                             >
                               {s}
                             </span>
