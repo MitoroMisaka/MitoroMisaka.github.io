@@ -29,6 +29,24 @@
   --bg-opacity: rgba(28, 28, 30, 0.72);
   --color-border: #3f3f46;
 
+  /* Neutral scale — inverted for dark mode (pure gray, R=G=B) */
+  --color-neutral-1: #141414;
+  --color-neutral-2: #1a1a1a;
+  --color-neutral-3: #242424;
+  --color-neutral-4: #2e2e2e;
+  --color-neutral-5: #555555;
+  --color-neutral-6: #787878;
+  --color-neutral-7: #a0a0a0;
+  --color-neutral-8: #c0c0c0;
+  --color-neutral-9: #e8e8e8;
+  --color-neutral-10: #f8f8f8;
+
+  /* Semantic — slightly desaturated for dark surfaces */
+  --color-info: #5a8ec0;
+  --color-success: #6daf8e;
+  --color-warning: #c09a5d;
+  --color-error: #c06060;
+
   --heatmap-bg: #1c2333;
   --heatmap-1: #1e2940;
   --heatmap-2: #2a3a6b;
@@ -41,6 +59,17 @@
     --surface-paper: #242424;
     --bg-opacity: rgba(28, 28, 30, 0.72);
     --color-border: #3f3f46;
+
+    --color-neutral-1: #141414;
+    --color-neutral-2: #1a1a1a;
+    --color-neutral-3: #242424;
+    --color-neutral-4: #2e2e2e;
+    --color-neutral-5: #555555;
+    --color-neutral-6: #787878;
+    --color-neutral-7: #a0a0a0;
+    --color-neutral-8: #c0c0c0;
+    --color-neutral-9: #e8e8e8;
+    --color-neutral-10: #f8f8f8;
 
     --heatmap-bg: #1c2333;
     --heatmap-1: #1e2940;
