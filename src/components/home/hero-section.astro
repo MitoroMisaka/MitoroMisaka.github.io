@@ -8,82 +8,77 @@ const posts = await getPublishedPosts();
 const postCount = posts.length;
 const [totalWords, totalDays] = await Promise.all([getTotalWordCount(), getTotalDays()]);
 const totalChars = Math.round(totalWords / 10000 * 10) / 10; // in 万字
-
-const socialColors: Record<string, string> = {
-  GitHub: '#181717',
-  RSS: '#FFA500',
-  Email: '#D44638',
-};
 ---
 
 <section class="hero-blob overflow-hidden relative pt-16 pb-8 md:pt-28 md:pb-14">
   <HeroAnimated client:load>
-    <!-- each direct child gets staggered fade-in -->
-    <div class="flex justify-center">
-      <img
-        src="/avatar.png"
-        alt={siteConfig.author}
-        class="mb-8 size-20 rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] lg:size-28"
-      />
-    </div>
+    <div class="flex flex-col lg:flex-row lg:items-center lg:gap-12">
+      <!-- 左列: 文字内容 -->
+      <div class="flex-1 text-center lg:text-left">
+        <h1 class="text-title-24 font-normal leading-[4] text-neutral-9 lg:text-display-48 lg:leading-snug" style="animation: none; opacity: 1;">
+          {siteConfig.title.split('').map((char, i) => (
+            <span class="inline-block hero-char" style={`--i: ${i}`}>{char === ' ' ? '\u00A0' : char}</span>
+          ))}
+        </h1>
 
-    <h1 class="text-center text-title-24 font-normal leading-relaxed text-neutral-9 lg:text-display-48 lg:leading-snug" style="animation: none; opacity: 1;">
-      {siteConfig.title.split('').map((char, i) => (
-        <span class="inline-block hero-char" style={`--i: ${i}`}>{char === ' ' ? '\u00A0' : char}</span>
-      ))}
-    </h1>
+        <p class="mt-3 text-copy-16 text-neutral-7">
+          {siteConfig.hero.subtitle}
+        </p>
 
-    <p class="mt-3 text-center text-copy-16 text-neutral-7">
-      {siteConfig.hero.subtitle}
-    </p>
+        <div class="flex lg:justify-start justify-center">
+          <span class="ai-tag-pill mt-4">
+            <span class="ai-star mr-1.5">✦</span>
+            AI ⚙ Workflow
+          </span>
+        </div>
 
-    <div class="flex justify-center">
-      <span class="ai-tag-pill mt-4">
-        <span class="ai-star mr-1.5">✦</span>
-        AI ⚙ Workflow
-      </span>
-    </div>
+        <blockquote class="mt-8 font-[family-name:var(--font-serif)] italic text-copy-14 text-neutral-7 max-w-md lg:mx-0 mx-auto leading-relaxed">
+          {siteConfig.hero.quote}
+        </blockquote>
 
-    <blockquote class="mt-8 text-center font-[family-name:var(--font-serif)] italic text-copy-14 text-neutral-7 max-w-md mx-auto leading-relaxed">
-      {siteConfig.hero.quote}
-    </blockquote>
+        <div class="mt-8 flex items-center lg:justify-start justify-center gap-6 text-copy-14">
+          <span class="text-neutral-7">
+            <span class="tabular-nums font-medium text-neutral-9">{postCount}</span> 篇
+          </span>
+          <span class="text-neutral-5 select-none">&middot;</span>
+          <span class="text-neutral-7">
+            <span class="tabular-nums font-medium text-neutral-9">{totalChars}</span> 万字
+          </span>
+          <span class="text-neutral-5 select-none">&middot;</span>
+          <span class="text-neutral-7">
+            <span class="tabular-nums font-medium text-neutral-9">{totalDays}</span> 天
+          </span>
+        </div>
 
-    <div class="mt-8 flex items-center justify-center gap-6 text-copy-14">
-      <span class="text-neutral-7">
-        <span class="tabular-nums font-medium text-neutral-9">{postCount}</span> 篇
-      </span>
-      <span class="text-neutral-5 select-none">&middot;</span>
-      <span class="text-neutral-7">
-        <span class="tabular-nums font-medium text-neutral-9">{totalChars}</span> 万字
-      </span>
-      <span class="text-neutral-5 select-none">&middot;</span>
-      <span class="text-neutral-7">
-        <span class="tabular-nums font-medium text-neutral-9">{totalDays}</span> 天
-      </span>
-    </div>
+        <div class="mt-8 flex items-center lg:justify-start justify-center gap-3">
+          {siteConfig.social.map((item) => (
+            <a
+              href={item.href}
+              aria-label={item.label}
+              class="flex size-[31.5px] items-center justify-center rounded-full text-neutral-7 transition hover:text-neutral-9"
+            >
+              {item.label === 'GitHub' && (
+                <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
+              )}
+              {item.label === 'RSS' && (
+                <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/></svg>
+              )}
+              {item.label === 'Email' && (
+                <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
 
-    <div class="mt-8 flex items-center justify-center gap-3">
-      {siteConfig.social.map((item) => {
-        const bg = socialColors[item.label] || '#555';
-        return (
-          <a
-            href={item.href}
-            aria-label={item.label}
-            class="flex size-9 items-center justify-center rounded-full text-white transition hover:scale-110"
-            style={`background: ${bg}`}
-          >
-            {item.label === 'GitHub' && (
-              <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.205.085 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.762-1.604-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-            )}
-            {item.label === 'RSS' && (
-              <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/></svg>
-            )}
-            {item.label === 'Email' && (
-              <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-            )}
-          </a>
-        );
-      })}
+      <!-- 右列: 头像 (移动端在上) -->
+      <div class="flex justify-center lg:order-none order-first mb-8 lg:mb-0">
+        <img
+          src="/avatar.png"
+          alt={siteConfig.author}
+          class="size-20 rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.06)] lg:size-[200px]"
+        />
+      </div>
     </div>
   </HeroAnimated>
 </section>
