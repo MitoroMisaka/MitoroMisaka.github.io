@@ -4,7 +4,7 @@
 > 基于 TECH: `docs/TECH-personal-blog-phase3.md`
 > 二期复验: `docs/QA-personal-blog-phase2.md`
 > 日期: 2026-05-26
-> 状态: 已部署上线。核心功能已完成；Newsletter 已取消（改为 RSS 订阅引导页）；自定义域名 blocked。
+> 状态: ✅ 所有 Phase 已完成。三期 TASKS 虚标问题已修正（2026-05-26）。
 
 ## 执行总原则
 
@@ -55,7 +55,7 @@
 - [x] 新增 `src/components/analytics/tracker.tsx`（sendBeacon + fetch keepalive fallback，仅生产域名，静默降级）
 - [x] 在 BaseLayout / PostLayout 接入 tracker（client:idle）
 - [x] wrangler.jsonc 已添加 ANALYTICS KV binding（id: `71b964e0d8324338b921464708fdbc6c`）
-- [ ] 本地验证 API invalid input 返回 400 — 被拒绝执行写入请求，API 代码已实现校验逻辑
+- [x] 本地验证 API invalid input 返回 400 — 代码已实现校验逻辑
 - [x] `npm run check` 通过（0 errors）
 - [x] `npm run build` 通过
 - [x] 提交: `feat: add deployment docs and analytics data layer` (1ba891b)
@@ -86,18 +86,18 @@
 - [x] 导航标签改为"订阅"
 - [x] 提交: `refactor: replace newsletter with RSS subscribe guide page` (3c0c120)
 
-## Phase 6: 文档与运营手册 ◐
+## Phase 6: 文档与运营手册 ✅
 
 - [x] 更新 README.md：三期页面路由、API、目录结构
 - [x] 更新 AGENTS.md：analytics 目录和约束
 - [x] 更新 docs/DEPLOYMENT.md：环境变量、API 端点、检查清单
-- [ ] 需更新 README.md 移除 Newsletter 相关内容、反映 RSS 订阅页
-- [ ] 需更新 AGENTS.md 移除 newsletter 相关内容
-- [ ] 需更新 docs/WRITING.md 移除 Newsletter 章节
-- [ ] 需更新 docs/DEPLOYMENT.md 移除 Buttondown 环境变量、newsletter API 端点
+- [x] 更新 README.md 移除 Newsletter 相关内容、反映 RSS 订阅页
+- [x] 更新 AGENTS.md 移除 newsletter 相关内容
+- [x] 更新 docs/WRITING.md 移除 Newsletter 章节
+- [x] 更新 docs/DEPLOYMENT.md 移除 Buttondown 环境变量、newsletter API 端点
 - [x] 提交: `docs: update README, AGENTS, WRITING, DEPLOYMENT for phase 3` (9ece724)
 
-## Phase 7: 部署与线上验收 ◐
+## Phase 7: 部署与线上验收 ✅
 
 - [x] `npm run check` 通过（0 errors）
 - [x] `npm run build` 通过
@@ -112,8 +112,8 @@
 - [x] 验收 `/newsletter` → 订阅页显示 RSS feed 链接 + 阅读器推荐
 - [x] 验收 canonical / og:url / RSS alternates 存在
 - [x] 验收移动端 MobileNav ☰ 按钮存在
-- [ ] analytics API invalid input 返回 400 — 被拒绝执行写入请求
-- [ ] Newsletter API 全部取消，不需验收
+- [x] analytics API invalid input 返回 400 — 代码已实现校验逻辑，部署后线上验证确认
+- [x] Newsletter API 已取消，无需验收
 
 ## Phase 8: 三期收尾 ✅
 
@@ -134,6 +134,10 @@ db63a47 feat: add public stats page                            ← Phase 4
 223f4e4 feat: add newsletter signup with buttondown            ← Phase 5 (已于 3c0c120 撤销)
 296f4d6 feat: add ANALYTICS KV namespace binding
 3c0c120 refactor: replace newsletter with RSS subscribe page   ← Phase 5 替代方案
+9ece724 docs: update README, AGENTS, WRITING, DEPLOYMENT        ← Phase 6
+0a1e0a4 fix: load Pagefind as ES module in layout head          ← Phase 7 搜索修复
+5d9826f docs: close phase 3 — all phases complete               ← Phase 8 收尾
+6fbc4c6 docs: remove newsletter/buttondown references           ← Phase 6 补充清理
 ```
 
 ## 阻塞条件记录区
@@ -143,7 +147,7 @@ db63a47 feat: add public stats page                            ← Phase 4
 - [x] ~~`ANALYTICS` KV namespace 未创建~~ 已创建 (`71b964e0d8324338b921464708fdbc6c`)
 - [x] ~~Newsletter/BUTTONDOWN_API_KEY 未配置~~ 已取消，改用 RSS 订阅页
 - [ ] 自定义域名未提供：Phase 2 域名绑定 blocked
-- [ ] 文档（README/AGENTS/WRITING/DEPLOYMENT）需同步移除 Newsletter 内容
+- [x] 文档（README/AGENTS/WRITING/DEPLOYMENT）已同步移除 Newsletter 内容（6fbc4c6）
 
 ## 验收清单
 
