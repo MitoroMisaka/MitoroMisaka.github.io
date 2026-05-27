@@ -386,21 +386,55 @@ innei.in 结构（浏览器实测）：
 - `src/pages/projects.astro`：增强（GitHub 链接 + 计数）
 - `src/styles/yohaku-extras.css`：樱花相关 CSS + 时间线样式
 
-## v2 ADR
+**决定**: 选 C，与 Shiro 同协议，确保源码公开但禁止闭源商用。
 
-### ADR-P5-004: 技术栈保持 Astro，不迁移到 Next.js
+### ADR-P5-004: 技术栈评估 — Astro 还是 Next.js
 
 **背景**: 用户提出"想修改技术栈为 innei 一样的 Node.js"。innei.in 基于 Shiro（React Router Framework Mode / Next.js）+ Mix Space CMS + 后端 API。
 
-**选项**:
-- A: 迁移到 Next.js + React Router Framework Mode — 与 Shiro 同构，但引入 SSR、后端 API、CMS 依赖，运维复杂度剧增
-- B: 保持 Astro v6 SSG — 零运行时 JS、Cloudflare Pages 免费部署、内容通过 Git 管理
+**分析**:
 
-**决定**: 选 B。原因：
-1. 本博客仅 2 篇文章 + 少量内容，SSG 完全满足且无运维开销
-2. Mix Space CMS 需要独立部署后端服务，违背零运维目标
-3. innei.in 的视觉效果（樱花、排版、动画）均可在 Astro 中复现，不依赖于特定框架
-4. 如果未来需要 SSR 功能（动态内容、API），Astro 原生支持 SSR + Cloudflare Pages Functions，无需换框架
+innei.in 技术栈清单（Shiro 源码 + 浏览器实测）：
+- 框架: Next.js / React Router Framework Mode（SSR 优先）
+- CMS: Mix Space（自建博客 CMS 后端，提供 REST API）
+- 后端: NestJS / Fastify（Node.js 微服务）
+- 数据库: MongoDB（通过 prisma ORM）
+- 状态管理: Jotai + @tanstack/react-query（useInfiniteQuery 用于无限滚动）
+- 动画: Framer Motion（motion/react）+ CSS @keyframes
+- 字体: next/font 内联 Instrument Sans + OperatorMono
+- 认证: Auth.js (NextAuth) + GitHub OAuth
+- 搜索: 自定义搜索面板（SearchFAB，全屏 overlay）
+- 部署: Vercel / 自托管（Node.js 服务 + 独立 API 服务器）
+- 组件库: Radix UI + 自建组件库（Windsock, ActivityScreen, Paper, ScrollArea 等）
+- 主题: next-themes（三态切换：light/system/dark）+ View Transition API 过渡动画
+- 国际化: next-intl（zh/en/ja 三语）
+- TMDB 自动 enrich: TMDB API（思考页链接自动展开为富媒体卡片）
+- 自定义粒子动画: Canvas（通过 ScriptInjectProvider 运行时注入）
+
+### 对 Astro 来说"太静态"的问题
+
+用户认为"Astro 太静态了"。但实际上 innei.in 的"动态感"来自以下组件——它们在 Astro 中都可以用 React island 实现，不依赖于 Next.js：
+
+| innei.in 组件 | 技术 | Astro 中实现 |
+|--------------|------|------------|
+| 樱花粒子 Canvas | Canvas JS | React island + client:load |
+| 入场动画（逐字上浮等） | Framer Motion | CSS @keyframes 或轻量 React |
+| 搜索面板 | 全屏 overlay + hotkey | Pagefind（已有）|
+| 无限滚动（思考页） | useInfiniteQuery | `client:load` React island 或 SSG 分页 |
+| 主题切换动画 | View Transition API | CSS-only（已支持）|
+| 评论系统 | Mix Space API | Giscus（已有）|
+| Reaction 按钮 | Mix Space API | Cloudflare KV（已有）|
+| 数据面板/统计 | API 数据 | Astro content collections 预计算 |
+| 图片 Lightbox | 自定义组件 | React island（已有）|
+| 代码块复制/语法高亮 | Shiki | astro-expressive-code（已有）|
+
+**结论**: innei.in 80% 的视觉效果和交互在 Astro 中可用 React island 实现，20% 依赖 CMS 后端（评论、Reaction、无限滚动）本博客可用已有方案替代或跳过。不迁移技术栈，但保留未来如果需要时迁移的路径（Astro SSR + Cloudflare Pages Functions）。
+
+**ADR-P5-004 修订**: 
+- 保持 Astro v6 SSG 架构。
+- 将 innei.in 研究发现的"动态感"组件逐一映射为 Astro React island。
+- 需要后端数据的功能（Reaction、统计）继续使用 Cloudflare KV + Functions。
+- 如果未来需要真正的 Server Components / streaming / Suspense 等 React 特性，可以迁移到 Next.js。目前不需要。
 
 ### ADR-P5-005: 樱花动画 Canvas 方案
 

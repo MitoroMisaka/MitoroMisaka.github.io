@@ -133,13 +133,51 @@ v1 聚焦于 Yohaku token 迁移和 Hero 重塑。v2 补充：
 - innei.in（Shiro + Yohaku）: 全局设计语言、排版节奏、动效哲学
 - `@yohaku/design-system` CHEATSHEET.md: 10 条不变量 + 颜色/字号速查表
 - `docs/ANALYSIS-design-phase5.md`: Shiro 源码级 CSS 实现细节
-- innei.in 各页面（浏览器实测 + Shiro 源码对照）:
-  - `/` 首页: body `max-w-[1280px]`, 内容 `max-w-7xl` (1120px), Hero + ActivityScreen(三栏) + Windsock
-  - `/posts` 文稿列表: 置顶 mark + 排序 + 右侧标签云 + 分页
-  - `/notes` 手记: 年鉴式（ANNO 2026 · N LETTERS）+ 首篇展开 + 心情图标 + 分页
-  - `/timeline` 时光: 纵向时间线 + 混合内容类型 + 年份分组
-  - `/thinking` 思考: 社交动态流 + TMDB 富媒体卡片 + 互动按钮 + 无限滚动
-  - `/projects` 项目: 网格卡片 + GitHub 链接 + 计数
+
+### innei.in 全站页面参考清单（2026-05-28 浏览器实测 + Shiro 源码对照）
+
+共参考 **12 个页面**：
+
+| # | 页面 | 路径 | 结构要点 | 关键技术点 |
+|---|------|------|---------|-----------|
+| 1 | 首页 | `/` | body `max-w-[1280px]`, `max-w-7xl`, Hero + ActivityScreen(三栏) + HomePageTimeLine + Windsock | Framer Motion 逐字动画, FABContainer, 搜索热键 |
+| 2 | 文稿列表 | `/posts` | 顶部标签 "BLOG" + H1 "文章", 置顶文章 accent strip, 排序(最新/最早/最近更新), 右侧标签云, 分页(第 N 页/共 M 页) | PostLooseItem, MagneticHoverEffect, PostMetaBar(👁阅读数+👍点赞数), FloatPopover 标签弹窗 |
+| 3 | 文稿详情 | `/posts/<category>/<slug>` | 三栏布局: 左侧系列导航 / 正文 / 右侧 TOC, 代码块+复制按钮, (已编辑) tooltip, 系列系列前后导航 | Shiki 语法高亮, Markdown 渲染, 阅读量统计, Creative Commons 声明 |
+| 4 | 手记列表 | `/notes` | 年鉴式: "ANNO 2026 · N LETTERS", 首篇完整渲染, 日期徽章(日·月·周几), 心情图标(天气/五味瓶), LETTER № + "阅读全文 →" | NoteHeadCover(封面图), NoteTimeline(同题笔记), 分页 |
+| 5 | 手记详情 | `/notes/<id>` | 三栏: NoteLeftSidebar(封面+同题笔记) / 正文(markdown--note) / NoteFooterNav(上/下篇), AI 摘要("关键洞察") | NoteMarkdownRenderer, 互动按钮(点赞/分享/评论/捐赠), 多语言切换 |
+| 6 | 时光 | `/timeline` | 纵向时间线, 年份分组, 混合类型(文章/手记/项目/动态), 类型图标+日期+标题+描述 | CSS timeline-reveal mask 动画 |
+| 7 | 思考 | `/thinking` | 社交动态流, 每条: 头像+用户名+相对时间+正文+TMDB卡片+互动(喜欢/踩/评论), 无限滚动, 登录后可发布 | useInfiniteQuery, TMDB API enrich(自动展开链接为富媒体电影/电视剧卡片), PostBox 乐观更新 |
+| 8 | 思考详情 | `/thinking/<id>` | 展开单条思考 + 评论列表 + 回复框 | 评论系统, 互动统计 |
+| 9 | 项目 | `/projects` | 头部 "项目 — github.com/XXX ↗", 2列网格, 项目卡片(图标+名称+描述+标签), 计数 "14 projects" | GitHub API (stars 数据), 磁吸 hover |
+| 10 | 友链 | `/friends` | 两类: 友链(随机排列) / 收藏(固定顺序), 申请表单(名称/URL/描述/头像), 友链规则 Markdown | shuffle()随机排序, Form+FormInput, Markdown渲染 |
+| 11 | 自述 | `/about` | 个人信息(现状/名字由来/域名/联系方式/设备), DisclosureTriangle折叠面板, GitHub 贡献图表 | 自定义页面路由 `[slug]`, Markdown渲染 |
+| 12 | 一言 | `/says` | 随机语录展示(Hiokoto), 刷新按钮获取新语录 | API fetch, 动画过渡 |
+| + | 404 | `/*` | 大号 3D 文字 "404" + "返回首页" 链接 | hit-the-floor text-shadow 多层渐进阴影 |
+| + | 站点地图 | `/sitemap` | XML sitemap | 自动生成 |
+| + | RSS/Feed | `/feed` | RSS 2.0 / Atom | API 生成 |
+| + | 订阅 | `/subscribe` | 邮件订阅表单 | API |
+| + | 监控 | 外部 dashboard | Grafana/自建监控 | 外部链接 |
+| + | 照片廊 | 外部 | 图库 | 外部链接 |
+
+### innei.in 核心 Shiro 组件清单（源码发现）
+
+| 组件 | 路径 | 作用 |
+|------|------|------|
+| MagneticHoverEffect | `components/ui/effect/MagneticHoverEffect.tsx` | 卡片磁吸微动效 |
+| FloatPopover | `components/ui/float-popover/FloatPopover.tsx` | 悬浮弹窗 |
+| TextUpTransitionView | `components/ui/transition/TextUpTransitionView.tsx` | 逐字上浮动画 |
+| BottomToUpTransitionView | `components/ui/transition/BottomToUpTransitionView.tsx` | 元素从下方淡入 |
+| NumberSmoothTransition | `components/ui/number-transition/NumberSmoothTransition.tsx` | 数字平滑过渡 |
+| ScrollArea | `components/ui/scroll-area/ScrollArea.tsx` | 滚动容器 + mask-scroller |
+| Paper | `components/layout/container/Paper.tsx` | 毛玻璃纸张容器 |
+| ActivityScreen | `components/home/ActivityScreen` | 首页三栏(笔墨/碎念/来信) |
+| HomePageTimeLine | `components/home/HomePageTimeLine` | 首页时间线流 |
+| Windsock | `components/home/Windsock` | 首页底部导航网格(8个图标) |
+| NoteTimeline | `components/modules/note/NoteTimelineItem.tsx` | 手记同题系列侧栏 |
+| NoteHeadCover | `components/modules/note/NoteHeadCover.tsx` | 手记封面图 |
+| Markdown | `components/ui/markdown/Markdown.tsx` | Markdown 渲染(含 Shiki 语法高亮) |
+| VideoPlayer | `components/ui/media/VideoPlayer.tsx` | 视频播放器 |
+| LinkCard | `components/ui/link-card/LinkCard.tsx` | 链接卡片(TMDB enrich 等) |
 
 ## 版本边界
 
