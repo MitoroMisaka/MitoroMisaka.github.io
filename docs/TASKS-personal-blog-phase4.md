@@ -21,37 +21,26 @@
 - [ ] 信息检查: `src/content.config.ts`、`package.json`、`astro.config.mjs`、`tailwind` 配置。
 - [ ] 提交: `docs: add phase 4 PRD, TECH, TASKS`（本次三份文档的首次提交）
 
-## Phase 1: 基础设施 — content schema + 导航
+## Phase 1: 基础设施 — content schema + 导航 ✅
 
-- [ ] `src/content.config.ts`：
-  - [ ] posts schema 追加 `series: z.string().optional()` + `seriesOrder: z.number().optional()`。
-  - [ ] 新增 garden collection（schema 见 TECH，loader 为 glob，base `./src/content/garden`）。
-- [ ] 创建 `src/content/garden/` 目录。
-- [ ] `src/lib/series-config.ts`：系列 slug → 名称/描述的映射表（初始含 1 个示例系列）。
-- [ ] `src/lib/site-config.ts`：导航新增 `{ label: ' Garden', href: '/garden' }`。
-- [ ] `npm run check` 通过，`npm run build` 包含 garden collection。
-- [ ] 提交: `feat: add garden collection and series schema`
+- [x] `src/content.config.ts`：posts schema 追加 series/seriesOrder，新增 garden collection
+- [x] 创建 `src/content/garden/` 目录
+- [x] `src/lib/series-config.ts`：系列 slug → 名称/描述映射
+- [x] `src/lib/site-config.ts`：导航新增 Garden 入口
+- [x] `npm run check` 通过，`npm run build` 20 pages 含 garden collection
+- [x] 提交: `feat: add garden collection and series schema` (1737341)
 
-## Phase 2: Feature 1 — 内容专题/系列文章
+## Phase 2: Feature 1 — 内容专题/系列文章 ✅
 
-- [ ] `src/lib/content-helpers.ts`：
-  - [ ] `getSeriesList()`：从 posts 中按 `series` 分组返回 `Map<string, {posts, config}>`。
-  - [ ] `getPostsInSeries(seriesSlug)`：返回该系列所有已发布文章，按 `seriesOrder` 排序。
-  - [ ] `getSeriesNeighbors(slug, seriesSlug)`：返回系列中某篇文章的上一篇/下一篇。
-- [ ] `src/pages/series.astro`：
-  - [ ] 列出所有系列卡片（系列名、描述、文章计数、最近更新）。
-  - [ ] 空态：若无系列文章，显示优雅空提示。
-- [ ] `src/pages/series/[slug].astro`：
-  - [ ] `getStaticPaths` 返回所有 series slug。
-  - [ ] 展示系列标题、描述、文章列表（含日期），进度 "N 篇已完成"。
-- [ ] `src/components/series/series-indicator.astro`：
-  - [ ] 在文章头部渲染：系列名 + "第 N 篇 / 共 M 篇" 进度条。
-- [ ] `src/components/series/series-nav.astro`：
-  - [ ] 文章底部渲染：← 上一篇 | 下一篇 →，首篇隐藏 ←，末篇隐藏 →。
-- [ ] `src/pages/posts/[slug].astro`：接入 series-indicator + series-nav（从 frontmatter 读取 series + seriesOrder）。
-- [ ] 验证：为已存在的文章（如 `ai-full-auto-workflow`）加上 series 字段（示例），确认 `/series` 和文章详情展示正常。
-- [ ] `npm run check && npm run build` 通过。
-- [ ] 提交: `feat: add content series with prev/next navigation`
+- [x] `src/lib/content-helpers.ts`：getSeriesList/getPostsInSeries/getSeriesNeighbors
+- [x] `src/pages/series.astro`：系列列表页
+- [x] `src/pages/series/[slug].astro`：系列详情页 + "N 篇已完成"进度
+- [x] `src/components/series/series-indicator.astro`：文章头部系列进度
+- [x] `src/components/series/series-nav.astro`：文章底部上一篇/下一篇
+- [x] `src/pages/posts/[slug].astro`：接入 series-indicator + series-nav
+- [x] 示例：`ai-full-auto-workflow.mdx` 加 series: "ai-workflow" + seriesOrder: 1
+- [x] `npm run check` 0 errors，`npm run build` 20 pages
+- [x] 提交: `feat: add content series with prev/next navigation` (89b2c5b)
 
 ## Phase 3: Feature 2 — 知识库/Digital Garden
 
