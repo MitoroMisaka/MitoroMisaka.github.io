@@ -13,6 +13,4 @@
       "id": "71b964e0d8324338b921464708fdbc6c"
     }
   ]
-  // 环境变量 (Cloudflare Pages 后台 → Settings → Environment variables):
-  // BUTTONDOWN_API_KEY — Buttondown API key，以 sk- 开头
 }
