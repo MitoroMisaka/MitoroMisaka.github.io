@@ -18,22 +18,22 @@ const { posts } = Astro.props;
 
 <section class="mt-16">
   <div class="mb-6 flex items-end justify-between">
-    <h2 class="text-xl font-semibold">Recent Writing</h2>
-    <a class="text-sm text-neutral-7 hover:text-neutral-9" href="/posts">查看全部</a>
+    <h2 class="text-title-24 font-medium">Recent Writing</h2>
+    <a class="text-copy-14 text-neutral-7 hover:text-neutral-9 link-underline" href="/posts">查看全部</a>
   </div>
 
-  <ol class="space-y-4">
+  <ol class="space-y-6">
     {posts.map((post, index) => (
-      <li class="group rounded-2xl border border-neutral-3 bg-neutral-1 px-5 py-5 transition hover:border-neutral-4">
+      <li class="group">
         <a href={`/posts/${post.slug}`} class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
           <div class="flex items-start gap-4">
-            <span class="mt-0.5 text-xs tabular-nums text-neutral-7">{String(index + 1).padStart(2, '0')}</span>
+            <span class="mt-0.5 text-label-12 tabular-nums text-neutral-7">{String(index + 1).padStart(2, '0')}</span>
             <div>
-              <p class="text-base font-medium leading-snug transition-colors group-hover:text-accent">{post.title}</p>
+              <p class="text-title-20 font-medium leading-snug transition-colors group-hover:text-accent">{post.title}</p>
               {post.description && (
-                <p class="mt-2 text-sm leading-relaxed text-neutral-7 line-clamp-2">{post.description}</p>
+                <p class="mt-2 text-copy-14 leading-relaxed text-neutral-7 line-clamp-2 ring-1 ring-accent/10 rounded-md px-4 py-2">{post.description}</p>
               )}
-              <div class="mt-2 flex items-center gap-2 text-xs">
+              <div class="mt-2 flex items-center gap-2 text-label-12">
                 <span class="text-neutral-7">{post.category}</span>
                 <span class="text-neutral-7">·</span>
                 <time class="text-neutral-7">{formatDate(post.date)}</time>

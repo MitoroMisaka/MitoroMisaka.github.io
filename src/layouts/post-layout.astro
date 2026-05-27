@@ -11,9 +11,10 @@ interface Props {
   title: string;
   description: string;
   canonicalPath?: string;
+  variant?: 'note';
 }
 
-const { title, description, canonicalPath } = Astro.props;
+const { title, description, canonicalPath, variant } = Astro.props;
 const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonicalUrl('/');
 ---
 
@@ -38,7 +39,7 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     <div class="min-h-screen bg-neutral-1 text-neutral-9 transition-colors duration-300">
       <SiteHeader />
       <main class="mx-auto w-full max-w-5xl px-5 py-10 md:px-8">
-        <article class="mx-auto max-w-3xl">
+        <article class={`mx-auto max-w-3xl${variant === 'note' ? ' markdown--note' : ''}`}>
           <slot />
         </article>
       </main>

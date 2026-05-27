@@ -8,24 +8,24 @@
 
 ## Phase 1: 基础设施 — Design Token 迁移
 
-- [ ] `npm install @yohaku/design-system` — 已完成 ✅
-- [ ] 重写 `src/styles/global.css`：移除旧颜色变量 `--bg/--fg/--card/--brand`，替换为 Yohaku Token
+- [x] `npm install @yohaku/design-system` — 已完成 ✅
+- [x] 重写 `src/styles/global.css`：移除旧颜色变量 `--bg/--fg/--card/--brand`，替换为 Yohaku Token
   - `@import "@yohaku/design-system/tokens.css";`
   - `@import "tailwindcss";`
   - `html { font-size: 14px; }`
   - `[data-theme='dark']` 块：覆盖 `--surface-paper`、`--color-neutral-*`、`--bg-opacity`、`--color-border`
   - 保留热力图变量 `--heatmap-*`（与 Yohaku 不冲突）
   - 保留 `.prose a`、`.heading-anchor`、`.pending` 样式
-- [ ] 创建 `src/styles/yohaku-extras.css`：
+- [x] 创建 `src/styles/yohaku-extras.css`：
   - `.hero-blob` 光斑动画（`blob-entrance` + `blob-float` keyframes）
   - `.link-underline` 下划线展开动画
   - `.markdown--note` 手记排版变体（衬线 + 首字下沉 + 段落缩进）
   - `*::-webkit-scrollbar` 定制（6px 圆角）
   - `[data-hide-print]` 打印样式
   - Header 毛玻璃 `.site-header-glass`
-- [ ] 字体加载：`base-layout.astro` 添加 `<link>` 预加载 Instrument Sans + Noto Serif SC
-- [ ] 全局字体栈更新：`--font-sans` 包含 Instrument Sans 回退链
-- [ ] 构建验证：`npm run build`，确认无 broken token 引用
+- [x] 字体加载：`base-layout.astro` 添加 `<link>` 预加载 Instrument Sans + Noto Serif SC
+- [x] 全局字体栈更新：`--font-sans` 包含 Instrument Sans 回退链
+- [x] 构建验证：`npm run build`，确认无 broken token 引用
 - [ ] 提交: `feat: phase5 infra — Yohaku tokens + extras CSS`
 
 ## Phase 2: 首页 Hero 重塑
@@ -45,21 +45,21 @@
 
 ## Phase 3: 排版与组件视觉打磨
 
-- [ ] 文章列表卡片样式：
+- [x] 文章列表卡片样式：
   - 移除 card 背景（如有），使用纯文本排版
   - 标题字号 `text-title-20`
   - 摘要区添加 `ring-1 ring-accent/10 rounded-md px-4 py-2`
-  - "阅读全文 →" 链接加 `.link-underline` class
-- [ ] 手记内容排版变体：
+  - "查看全部" 链接加 `.link-underline` class
+- [x] 手记内容排版变体：
   - `post-layout.astro` 中判断 content type，手记添加 `markdown--note` class
   - 验证衬线体 + 首字下沉 + 段落缩进渲染正确
-- [ ] Header 毛玻璃：
+- [x] Header 毛玻璃：
   - `site-header.astro` 添加 `.site-header-glass` class
   - `backdrop-filter: blur(12px)` + 半透明背景
-- [ ] Footer 更新：
+- [x] Footer 更新：
   - 添加 "Built with Astro · Powered by 余白 / Yohaku" 文字
   - 链接到 `https://github.com/Innei/Yohaku`
-- [ ] 构建验证
+- [x] 构建验证
 - [ ] 视觉验收：亮/暗色模式下各页面确认
 - [ ] 提交: `feat: phase5 visual polish — typography + header + footer`
 
@@ -82,11 +82,11 @@
 
 ## Phase 5: 文档更新
 
-- [ ] 更新 `README.md`：
+- [x] 更新 `README.md`：
   - 设计理念：日系极简 · 余白排版 · 内容优先
   - 技术栈加入 `@yohaku/design-system`
   - 页脚标注 "Powered by 余白 / Yohaku"
-- [ ] 更新 `AGENTS.md`：
+- [x] 更新 `AGENTS.md`：
   - 编码约定中加入 Yohaku Token 禁用规则
   - 颜色使用约束：禁止 `text-neutral-50…950`，禁止 `text-neutral-5`
   - 字号使用约束：禁止 `text-xs/sm/base/lg/xl/2xl/3xl`，只用 `text-copy-N/text-title-N`
