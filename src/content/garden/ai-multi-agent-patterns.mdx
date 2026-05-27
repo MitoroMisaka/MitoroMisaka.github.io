@@ -1,0 +1,53 @@
+---
+title: AI 多智能体协作模式
+description: 探索 AI Agent 之间的协作模式：顺序流水线、并行协作、主从模式、以及自我纠错循环。记录在 Hermes Agent 和 CommandCode 项目中的实践经验。
+category: AI 工作流
+tags:
+  - ai
+  - multi-agent
+  - workflow
+stage: seedling
+related:
+  - swift-concurrency-pitfalls
+  - astro-v6-cf-pages
+date: 2026-04-15
+updated: 2026-05-20
+---
+
+# AI 多智能体协作模式
+
+在构建 AI 驱动的开发工具时，单个 Agent 往往难以完成复杂任务。多智能体协作成为关键。
+
+## 主要模式
+
+### 顺序流水线
+
+多个 Agent 按顺序执行，每个 Agent 完成一个子任务后交给下一个。这与 [[ai-full-auto-workflow]] 的思路一致——将复杂任务分解为多个阶段。
+
+### 并行协作
+
+当子任务之间无依赖时，可以同时派发多个 Agent 并行工作，最后合并结果。
+
+### 主从模式
+
+一个"主 Agent"负责任务分解和调度，多个"从 Agent"执行具体子任务。类似 map-reduce 思想。
+
+### 自我纠错循环
+
+Agent 输出结果后，由另一个 Agent（或同一个 Agent 以不同角色）进行审查和修正，循环直到满足质量标准。
+
+## 实践经验
+
+在 [[astro-v6-cf-pages]] 项目中，我们使用多 Agent 协作完成了博客从 Hexo 到 Astro v6 的迁移，包括：
+
+- 内容迁移 Agent：解析 Hexo markdown，转换为 Astro Content Collections
+- 主题适配 Agent：将原有主题样式迁移到 TailwindCSS v4
+- 部署配置 Agent：配置 Cloudflare Pages + Wrangler
+
+三个 Agent 以顺序流水线方式协作，每个 Agent 的输出作为下一个的输入。
+
+## 待探索
+
+- Agent 之间如何共享上下文（shared memory / message bus）
+- 如何评估多 Agent 协作的效率（与单 Agent 对比）
+- 错误恢复：某个 Agent 失败时如何回滚或重试

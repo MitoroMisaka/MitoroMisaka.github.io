@@ -1,0 +1,74 @@
+---
+title: Swift 并发陷阱与最佳实践
+description: 记录在使用 Swift Concurrency (async/await, Task, Actor, Sendable) 过程中遇到的常见陷阱和解决方案。从真实项目中总结的经验。
+category: Swift/Apple
+tags:
+  - swift
+  - concurrency
+  - ios
+stage: budding
+related:
+  - ai-multi-agent-patterns
+date: 2026-05-10
+updated: 2026-05-22
+---
+
+# Swift 并发陷阱与最佳实践
+
+Swift 5.5 引入的 `async/await` 和结构化并发极大简化了异步编程，但也带来了一些容易忽略的陷阱。
+
+## 陷阱一：MainActor 边界模糊
+
+```swift
+// ❌ 错误：在非 MainActor 上下文中更新 UI
+func fetchData() async {
+    let data = await api.getData()
+    self.label.text = data.title // 可能在后台线程执行
+}
+
+// ✅ 正确：显式标注 MainActor
+@MainActor
+func fetchData() async {
+    let data = await api.getData()
+    self.label.text = data.title
+}
+```
+
+## 陷阱二：Task 的生命周期
+
+`Task` 是结构化并发的基本单元，但创建后如果不持有引用，可能被意外取消或无法取消。
+
+```swift
+// ❌ 悬空 Task，无法取消
+Button("开始") {
+    Task {
+        await longRunningWork()
+    }
+}
+
+// ✅ 持有 Task 引用，可以在 deinit 或用户操作时取消
+@State private var workTask: Task<Void, Never>?
+
+Button("开始") {
+    workTask = Task {
+        await longRunningWork()
+    }
+}
+```
+
+## 陷阱三：Sendable 检查的隐式要求
+
+编译器对 `Sendable` 的要求越来越严格。传递非 Sendable 类型跨越 actor 边界会导致警告或错误。
+
+## 与 AI 工作流的交集
+
+在构建 iOS 端的 AI Agent 工具时，Swift 并发模型与 [[ai-multi-agent-patterns]] 中的多 Agent 调度有有趣的对应关系：
+
+- `TaskGroup` 对应并行协作模式
+- `Actor` 的串行执行对应主从模式中的调度器
+- `AsyncStream` 对应 Agent 间的消息传递
+
+## 参考资料
+
+- [Swift Concurrency Programming Guide](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency/)
+- WWDC 2024: Explore Swift Concurrency

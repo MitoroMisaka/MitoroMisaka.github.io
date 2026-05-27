@@ -1,0 +1,89 @@
+---
+title: Astro v6 + Cloudflare Pages 建站笔记
+description: 从 Hexo 迁移到 Astro v6 的完整记录，包含 Content Collections、MDX、React Islands、TailwindCSS v4 配置和 Cloudflare Pages 部署。
+category: 前端/工具
+tags:
+  - astro
+  - cloudflare
+  - ssg
+  - migration
+stage: budding
+related:
+  - ai-multi-agent-patterns
+date: 2026-03-20
+updated: 2026-05-18
+---
+
+# Astro v6 + Cloudflare Pages 建站笔记
+
+记录将个人博客从 Hexo 完整迁移到 Astro v6 的过程。
+
+## 为什么选择 Astro v6
+
+- **Content Collections**：类型安全的内容管理，完美替代 Hexo 的 `_posts` 目录
+- **Islands Architecture**：按需加载交互组件，首屏几乎零 JS
+- **MDX 原生支持**：文章中可以混用 Markdown 和 React/Astro 组件
+- **Cloudflare Pages**：免费、全球 CDN、内置 Functions
+
+## 迁移步骤
+
+### 1. 内容迁移
+
+Hexo 的 frontmatter 格式与 Astro Content Collections 基本兼容。通过 [[ai-multi-agent-patterns]] 中描述的多 Agent 流水线，我们自动化了大部分转换工作。
+
+### 2. 主题重建
+
+使用 TailwindCSS v4 + CSS 变量实现日系极简风格。关键设计决策：
+
+- 高留白、低对比度、衬线字体
+- 深色模式通过 CSS 变量 + `data-theme` 属性切换
+- 响应式设计优先考虑移动端阅读体验
+
+```css
+:root {
+  --bg: #f7f8fb;
+  --fg: #1f2530;
+  --brand: #6e78f5;
+}
+
+[data-theme='dark'] {
+  --bg: #0f131a;
+  --fg: #ecf0f7;
+  --brand: #8a92ff;
+}
+```
+
+### 3. 交互功能
+
+- **Giscus 评论**：基于 GitHub Discussions，无需自建后端
+- **Pagefind 搜索**：构建时生成静态索引，零运行时成本
+- **Reaction 系统**：Cloudflare Pages Functions + KV，简单计数
+
+## 部署
+
+使用 Wrangler CLI 一键部署到 Cloudflare Pages：
+
+```bash
+npx wrangler pages deploy dist --project-name mitoromisaka-blog
+```
+
+构建后自动运行 Pagefind 索引：
+
+```json
+{
+  "scripts": {
+    "build": "astro build",
+    "postbuild": "pagefind --site dist"
+  }
+}
+```
+
+## 性能优化
+
+- 所有页面纯静态生成，无 SSR
+- 图片使用 Astro 内置的 `Image` 组件优化
+- 字体子集化，减少首屏加载
+
+## 与 Swift 开发的关系
+
+这个博客本身就是使用 [[swift-concurrency-pitfalls]] 中记录的 Swift 技术栈开发 iOS 端的笔记载体。网页端和移动端的统一内容体系正在规划中。
