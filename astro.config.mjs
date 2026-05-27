@@ -1,4 +1,3 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -6,17 +5,25 @@ import tailwindcss from '@tailwindcss/vite';
 import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import rehypeWikiLinks from './src/lib/rehype-wiki-links.ts';
+import rehypeWikiLinks from './src/lib/rehype-wiki-links.mjs';
+import { readdirSync } from 'fs';
+import { resolve } from 'path';
 
-// Scan garden directory to build a set of known garden slugs.
-// These are used by the rehype-wiki-links plugin to decide whether
-// a [[slug]] link points to an existing garden entry or is "pending".
-const gardenModules = import.meta.glob('/src/content/garden/*.mdx');
-const gardenModulesMd = import.meta.glob('/src/content/garden/*.md');
-const gardenSlugs = new Set<string>();
-for (const path of [...Object.keys(gardenModules), ...Object.keys(gardenModulesMd)]) {
-  const filename = path.split('/').pop()!;
-  gardenSlugs.add(filename.replace(/\.mdx?$/, ''));
+const gardenDir = resolve('src/content/garden');
+
+function getGardenSlugs() {
+  try {
+    const files = readdirSync(gardenDir);
+    const slugs = new Set();
+    for (const file of files) {
+      if (file.endsWith('.mdx') || file.endsWith('.md')) {
+        slugs.add(file.replace(/\.mdx?$/, ''));
+      }
+    }
+    return slugs;
+  } catch {
+    return new Set();
+  }
 }
 
 export default defineConfig({
@@ -24,7 +31,7 @@ export default defineConfig({
   integrations: [react(), expressiveCode(), mdx(), sitemap()],
   markdown: {
     rehypePlugins: [
-      [rehypeWikiLinks, { gardenSlugs }],
+      [rehypeWikiLinks, { gardenSlugs: getGardenSlugs() }],
       [
         rehypeAutolinkHeadings,
         {
