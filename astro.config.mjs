@@ -28,7 +28,56 @@ function getGardenSlugs() {
 
 export default defineConfig({
   site: 'https://mitoromisaka-blog.pages.dev',
-  integrations: [react(), expressiveCode(), mdx(), sitemap()],
+  integrations: [
+    react(),
+    expressiveCode({
+      // Only enable syntax highlighting for explicit languages.
+      // 'mermaid' is NOT listed so its code blocks stay as raw <pre><code>
+      // and are rendered client-side by mermaid.astro.
+      languages: [
+        'bash', 'sh', 'shell', 'zsh',
+        'js', 'javascript', 'cjs', 'mjs',
+        'ts', 'typescript',
+        'tsx', 'jsx',
+        'json', 'jsonc', 'json5',
+        'yaml', 'yml',
+        'md', 'mdx',
+        'html', 'css', 'scss',
+        'python', 'py',
+        'rust', 'rs',
+        'go',
+        'swift',
+        'java', 'kotlin',
+        'c', 'cpp', 'csharp', 'cs',
+        'diff',
+        'sql',
+        'text', 'plaintext', 'txt',
+        'xml', 'svg',
+        'graphql', 'gql',
+        'toml',
+        'ini', 'env',
+        'dockerfile', 'docker',
+        'makefile',
+        'nginx',
+        'php',
+        'ruby', 'rb',
+        'lua',
+        'powershell', 'ps1',
+        'astro',
+      ],
+      // frames plugin is enabled by default in 0.42,
+      // supporting title="filename.py" syntax on code fences.
+      styleOverrides: {
+        // Keep frames styling clean and aligned with the 日系 aesthetic.
+        frames: {
+          frameBoxShadowCssValue: 'none',
+          tooltipSuccessBackground: 'var(--brand)',
+        },
+      },
+    }),
+    mdx(),
+    sitemap(),
+  ],
   markdown: {
     rehypePlugins: [
       [rehypeWikiLinks, { gardenSlugs: getGardenSlugs() }],

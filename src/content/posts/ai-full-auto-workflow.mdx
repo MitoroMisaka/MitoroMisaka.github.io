@@ -41,6 +41,55 @@ seriesOrder: 1
 2. 多 Agent 并行编排
 3. session-to-skill 的知识回流
 
+## AI 工作流示意
+
+```mermaid
+graph TD
+    A[用户意图] --> B[PRD 文档]
+    B --> C[TECH 技术方案]
+    C --> D[TASKS 执行计划]
+    D --> E[AI Agent 执行]
+    E --> F{验证通过?}
+    F -->|否| D
+    F -->|是| G[代码提交]
+    G --> H[复盘 → Skill 沉淀]
+    H --> A
+```
+
+## Session 示例
+
+```ts title="src/lib/content-helpers.ts"
+export function getSeriesList(posts: CollectionEntry<'posts'>[]) {
+  const map = new Map<string, SeriesMeta>();
+  for (const post of posts) {
+    if (!post.data.series) continue;
+    const s = post.data.series;
+    if (!map.has(s)) {
+      map.set(s, { slug: s, count: 0, latest: post.data.date });
+    }
+    const meta = map.get(s)!;
+    meta.count++;
+    if (post.data.date > meta.latest) meta.latest = post.data.date;
+  }
+  return [...map.values()];
+}
+```
+
+```diff
+  // astro.config.mjs
+  integrations: [
+    react(),
+-   expressiveCode(),
++   expressiveCode({
++     languages: ['ts', 'js', 'bash', ...],
++     styleOverrides: {
++       frames: { frameBoxShadowCssValue: 'none' },
++     },
++   }),
+    mdx(),
+  ],
+```
+
 ## 后续
 
 这个站点会持续记录该工作流在真实项目中的落地过程与迭代。
