@@ -10,6 +10,13 @@
   --line-strong: #b9c4d1;
   --card: #ffffff;
   --brand: #6e78f5;
+
+  /* Heatmap colours */
+  --heatmap-bg: #ebedf0;
+  --heatmap-1: #c6ccf5;
+  --heatmap-2: #929af7;
+  --heatmap-3: #6e78f5;
+  --heatmap-4: #5058d1;
 }
 
 [data-theme='dark'] {
@@ -21,6 +28,13 @@
   --line-strong: #334156;
   --card: #141a24;
   --brand: #8a92ff;
+
+  /* Heatmap colours — dark */
+  --heatmap-bg: #1c2333;
+  --heatmap-1: #1e2940;
+  --heatmap-2: #2a3a6b;
+  --heatmap-3: #4b5bc0;
+  --heatmap-4: #8a92ff;
 }
 
 /* system preference fallback when no data-theme is set */
@@ -34,6 +48,13 @@
     --line-strong: #334156;
     --card: #141a24;
     --brand: #8a92ff;
+
+  /* Heatmap colours — dark */
+  --heatmap-bg: #1c2333;
+  --heatmap-1: #1e2940;
+  --heatmap-2: #2a3a6b;
+  --heatmap-3: #4b5bc0;
+  --heatmap-4: #8a92ff;
   }
 }
 

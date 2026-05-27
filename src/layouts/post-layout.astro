@@ -4,6 +4,7 @@ import { getCanonicalUrl } from '../lib/seo';
 import SiteHeader from '../components/site/site-header.astro';
 import SiteFooter from '../components/site/site-footer.astro';
 import AnalyticsTracker from '../components/analytics/tracker';
+import Lightbox from '../components/ui/lightbox';
 import '../styles/global.css';
 
 interface Props {
@@ -44,5 +45,6 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
       <SiteFooter />
     </div>
     <AnalyticsTracker client:idle />
+    <Lightbox client:idle />
   </body>
 </html>

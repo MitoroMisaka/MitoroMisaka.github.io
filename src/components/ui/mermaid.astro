@@ -1,0 +1,38 @@
+---
+// Mermaid chart component
+// Renders mermaid diagrams client-side to avoid SSR DOM dependency issues.
+// Usage: <Mermaid code={"graph TD\n  A-->B"} />
+// Or use ```mermaid code fences in MDX (with mermaid excluded from expressiveCode).
+
+const { code } = Astro.props;
+---
+
+<pre class="mermaid">{code}</pre>
+
+<script>
+  // Dynamic import mermaid client-side on idle.
+  // Using is:inline so Vite doesn't process this as a module.
+  // Mermaid is an ESM package so we use dynamic import().
+  (function () {
+    // Check if mermaid code blocks exist on the page
+    const blocks = document.querySelectorAll('pre.mermaid');
+    if (blocks.length === 0) return;
+
+    // Dynamic import mermaid to avoid bundling it in the initial payload
+    import('mermaid').then(function (mod) {
+      const mermaid = mod.default || mod;
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'default',
+        securityLevel: 'loose',
+        // Dark mode detection
+        themeVariables: {
+          // fontFamily will be inherited from CSS
+        },
+      });
+      mermaid.run({ nodes: Array.from(blocks) as HTMLElement[] });
+    }).catch(function (err) {
+      console.error('Failed to load mermaid:', err);
+    });
+  })();
+</script>
