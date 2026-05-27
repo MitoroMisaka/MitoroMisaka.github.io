@@ -19,6 +19,8 @@ tags:                  # 可选，用于标签页聚合
   - workflow
 draft: false           # draft: true 的文章不会发布
 slug: "my-new-post"    # URL 路径，建议与文件名一致
+series: "ai-workflow"          # 可选，系列标识 slug。同系列文章用相同 series 值
+seriesOrder: 1                 # 可选，系列内的序号 (1-indexed)
 ---
 ```
 
@@ -71,6 +73,127 @@ mood: "🤔"                            # 可选，显示在详情页日期旁
 - 比正式文章更随意，但 `draft: true` 仍生效。
 - 每条碎念都有独立详情页 `/notes/<slug>` 和 Reaction 按钮。
 - 主 RSS `/rss.xml` 只输出正式文章；碎念不会混入。
+- 每条碎念详情页底部有"分享到 X"按钮，点击弹出 `intent/tweet` 新窗口，无需 API key。
+
+---
+
+## 新建系列（Series）
+
+系列文章通过 `series` 和 `seriesOrder` 字段组织：
+
+1. 在系列中第一篇文章的 frontmatter 加上 `series: "your-series-slug"` 和 `seriesOrder: 1`
+2. 后续文章使用相同的 `series` 值，递增 `seriesOrder`
+3. 在 `src/lib/series-config.ts` 中添加系列的中文名称和描述（key 为 series slug）
+
+```ts
+// src/lib/series-config.ts
+export function getSeriesConfig(slug: string) {
+  const map: Record<string, { name: string; description: string }> = {
+    'ai-workflow': { name: 'AI 工作流', description: '探索 AI 辅助开发的完整工作流' },
+    // 在此添加新系列...
+  };
+  return map[slug] ?? null;
+}
+```
+
+系列功能：
+- `/series` 列出所有系列
+- `/series/<slug>` 展示系列详情、文章列表和进度
+- 系列内文章详情页自动显示"第 N 篇 / 共 M 篇"进度条和上一篇/下一篇导航
+
+---
+
+## 新建 Garden 条目
+
+Garden（知识库）用于长期维护的概念卡片和技术要点，以网状方式组织。
+
+1. 在 `src/content/garden/` 创建 `.mdx` 文件，文件名即 slug
+
+### Frontmatter
+
+```yaml
+---
+title: "Swift 并发陷阱"
+description: "Swift 6 并发模型中的常见误解与正确用法"
+category: "Swift/Apple"   # 自由标签，用于分组
+tags:                      # 可选
+  - swift
+  - concurrency
+stage: budding             # seedling(嫩芽) | budding(生长中) | evergreen(长青)
+related:                   # 可选，手动关联的其他 Garden 条目 slug
+  - swift-concurrency-pitfalls
+date: 2026-05-26
+updated: 2026-05-26        # 可选
+draft: false
+---
+```
+
+### Wiki 链接
+
+正文中可以用 `[[slug]]` 双括号语法引用其他 Garden 条目：
+
+```mdx
+参见 [[swift-concurrency-pitfalls]] 了解更详细的讨论。
+```
+
+- 已知 slug → 可点击链接跳转到 `/garden/<slug>`
+- 未知 slug → 显示为灰色虚线，提示该条目尚未创建
+- 每个条目底部自动显示"哪些页面引用了本文"（backlinks）
+
+### Stage 说明
+
+| stage | emoji | 中文 | 含义 |
+|-------|-------|------|------|
+| `seedling` | 🌱 | 嫩芽 | 初始想法，内容还不完整 |
+| `budding` | 🌿 | 生长中 | 内容在持续完善中 |
+| `evergreen` | 🌳 | 长青 | 内容成熟稳定，长期维护 |
+
+---
+
+## 代码块增强
+
+### 文件名提示
+
+在代码块的 fence marker 后添加 `title="文件名"` 即可显示文件名标签：
+
+````md
+```ts title="src/lib/content-helpers.ts"
+export function getSeriesList() { ... }
+```
+````
+
+### Diff 高亮
+
+使用 `diff` 语言标签，行首 `+` 会高亮为绿色（新增），`-` 为红色（删除）：
+
+````md
+```diff
+- import { oldFunction } from './old-module';
++ import { newFunction } from './new-module';
+```
+````
+
+或与其他语言组合：` ```ts diff `。
+
+### Mermaid 图表
+
+正文中用 ` ```mermaid ` 代码块即可渲染 Mermaid 图表：
+
+````md
+```mermaid
+graph TD
+    A[开始] --> B[处理]
+    B --> C{条件?}
+    C -->|是| D[分支A]
+    C -->|否| E[分支B]
+```
+````
+
+支持流程图（graph）、时序图（sequence）、类图（class）等标准 Mermaid 图表类型。图表在客户端渲染，不影响首屏加载速度。
+
+### 图片 Lightbox
+
+文章中所有 Markdown `![](url)` 或 HTML `<img>` 图片点击后自动弹出 lightbox 查看大图。按 Escape 或点击背景关闭。无需任何额外配置。
 
 ---
 

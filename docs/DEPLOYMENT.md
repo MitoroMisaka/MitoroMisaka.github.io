@@ -149,7 +149,7 @@ PATH=/opt/homebrew/opt/node@22/bin:$PATH npx wrangler pages deploy dist --projec
 | Binding 名称 | 用途 | Namespace ID |
 |---|---|---|
 | `REACTIONS` | 文章/笔记/项目 Reaction 计数 | `66a6f0b892864883b270d6ef246e3879` |
-| `ANALYTICS` | 页面浏览统计数据（按日/总计） | 待用户确认后填入 |
+| `ANALYTICS` | 页面浏览统计数据（按日/总计） | `71b964e0d8324338b921464708fdbc6c` |
 
 ### KV Binding 配置
 
@@ -164,7 +164,7 @@ KV namespace 在 `wrangler.jsonc` 中声明：
     },
     {
       "binding": "ANALYTICS",
-      "id": ""  // 待用户确认后填入 Cloudflare KV namespace ID
+      "id": "71b964e0d8324338b921464708fdbc6c"
     }
   ]
 }

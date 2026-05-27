@@ -20,15 +20,18 @@
 
 | 路径 | 说明 |
 |------|------|
-| `/` | 首页：Hero、Recent Writing、Latest Notes、Featured Projects |
-| `/posts` / `/posts/<slug>` | 文章列表与详情（含 TOC、阅读进度、Reaction、Giscus 评论） |
-| `/notes` / `/notes/<slug>` | 碎念列表与详情（含 Reaction） |
+| `/` | 首页：Hero、写作热力图、最近动态、阅读统计、Recent Writing、Latest Notes、Featured Projects |
+| `/posts` / `/posts/<slug>` | 文章列表与详情（含系列进度、TOC、阅读进度、Reaction、Giscus 评论） |
+| `/notes` / `/notes/<slug>` | 碎念列表与详情（含 Reaction、分享到 X） |
 | `/timeline` | 聚合时间线（posts + notes + projects + 手动事件） |
 | `/projects` / `/projects/<slug>` | 项目列表与详情（技术栈、状态、链接） |
+| `/series` / `/series/<slug>` | 内容系列：系列列表 + 详情页（含文章进度） |
+| `/garden` / `/garden/<slug>` | 知识库/Digital Garden：概念卡片 + wiki 链接 + backlinks |
 | `/tags/<tag>` | 标签聚合 |
 | `/categories/<category>` | 分类聚合 |
 | `/about` | 关于 |
 | `/rss.xml` | RSS 订阅 |
+| `/notes.xml` | 碎念 RSS 订阅 |
 | `/stats` | 站点数据（页面访问量、热门文章、数据摘要） |
 | `/newsletter` | RSS 订阅（文章 + 碎念） |
 
@@ -65,23 +68,33 @@ npm run deploy:cf  # 部署到 Cloudflare Pages
 │   ├── api/analytics/       # 统计 API（view + summary）
 
 ├── src/
-│   ├── content/             # posts / notes / projects / timeline
+│   ├── content/             # posts / notes / projects / timeline / garden
 │   ├── components/          # 组件
 │   │   ├── analytics/       # 统计相关组件
-│   │   ├── home/            # 首页模块
-│   │   ├── notes/           # Notes 组件
+│   │   ├── garden/          # Garden 组件
+│   │   ├── home/            # 首页模块 (heatmap, activity-feed)
+│   │   ├── notes/           # Notes 组件 (share-button)
 │   │   ├── post/            # 文章组件
 │   │   ├── projects/        # 项目组件
+│   │   ├── series/          # 系列组件
 │   │   ├── site/            # header / footer / mobile-nav
 │   │   ├── stats/           # 站点统计组件
 │   │   ├── timeline/        # Timeline 组件
-│   │   └── ui/              # theme-toggle / search / reaction-bar
+│   │   └── ui/              # theme-toggle / search / reaction-bar / mermaid / lightbox
 │   ├── layouts/             # base-layout / post-layout
 │   ├── lib/                 # 配置和工具函数
+│   │   ├── activity-feed.ts
 │   │   ├── analytics-config.ts
+│   │   ├── content-helpers.ts
+│   │   ├── garden.ts
 │   │   ├── kv-types.ts
 │   │   ├── mood-labels.ts
-│   │   └── seo.ts
+│   │   ├── rehype-wiki-links.mjs
+│   │   ├── seo.ts
+│   │   ├── series-config.ts
+│   │   ├── site-config.ts
+│   │   ├── site-stats.ts
+│   │   └── writing-heatmap.ts
 │   └── pages/               # 路由页面
 ├── public/
 ├── astro.config.mjs

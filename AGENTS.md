@@ -8,11 +8,11 @@
 
 ## 目录结构说明
 
-- `src/content/`：内容源（posts / notes / projects / timeline）
-- `src/components/`：页面组件与交互组件（含 analytics / stats）
+- `src/content/`：内容源（posts / notes / projects / timeline / garden）
+- `src/components/`：页面组件与交互组件（含 analytics / garden / home / notes / post / projects / series / site / stats / timeline / ui）
 - `src/layouts/`：基础布局与文章布局
-- `src/lib/`：站点配置、内容工具函数（含 analytics-config / kv-types / mood-labels / seo）
-- `src/pages/`：页面路由（含 stats.astro）
+- `src/lib/`：站点配置、内容工具函数（含 activity-feed / analytics-config / content-helpers / garden / kv-types / mood-labels / rehype-wiki-links / seo / series-config / site-config / site-stats / writing-heatmap）
+- `src/pages/`：页面路由（含 stats.astro / series / garden）
 - `functions/`：Cloudflare Pages Functions（API 路由）
   - `functions/api/reactions.ts` — Reaction API
   - `functions/api/analytics/` — 统计 API（view + summary）
@@ -38,11 +38,34 @@
 
 - 评论系统：Giscus（GitHub Discussions，repo-id `R_kgDOSoDQEg`，category-id `DIC_kwDOSoDQEs4C9364`）
 - 静态搜索：Pagefind（构建时自动索引）
-- 语法高亮：astro-expressive-code
+- 语法高亮：astro-expressive-code (含 frames 插件，支持 title="xxx.py" 文件名和 diff 高亮)
 - 动态 Reaction：Cloudflare Pages Functions + KV（binding `REACTIONS`）
 - Reaction API：`GET /api/reactions?target=...` / `POST /api/reactions`
 - 隐私友好统计：Cloudflare Pages Functions + KV（binding `ANALYTICS`），按日聚合，不追踪个人用户
 - 统计 API：`POST /api/analytics/view`（浏览上报）/ `GET /api/analytics/summary`（聚合摘要）
+- Mermaid 图表：客户端渲染（动态 import mermaid），expressiveCode 排除 `mermaid` 语言
+- 图片 lightbox：React island `client:idle`，自动对所有 `<img>` 生效
+
+## 新增内容类型约束
+
+### Garden 条目
+
+- 文件位置：`src/content/garden/*.mdx`，文件名 = slug
+- Frontmatter：`title`(必填)、`description`(必填)、`category`(必填)、`stage`(seedling|budding|evergreen，默认 seedling)、`related`(string[])、`tags`、`date`、`updated`、`draft`
+- 正文可用 `[[other-garden-slug]]` wiki 链接引用其他条目。已知 slug 生成可点击链接，未知显示灰色虚线。
+- Backlinks 在构建期全量计算，每个详情页底部自动展示。
+
+### 系列文章
+
+- 同系列文章使用相同的 `series` frontmatter 值（如 `"ai-workflow"`）
+- 使用 `seriesOrder`（1-indexed）指定系列内顺序
+- 系列名称和描述在 `src/lib/series-config.ts` 中维护
+
+### Mermaid 图表注意事项
+
+- `astro-expressive-code` 配置中明确列出支持的语言列表，`mermaid` 不在列表中
+- 这样 ` ```mermaid ` 代码块不会被 shiki 高亮处理，保持为原始 `<pre class="mermaid">`
+- Mermaid 组件 `<script is:inline>` 在客户端动态 `import('mermaid')` 后 `mermaid.run()` 渲染
 
 ## Cloudflare Functions / KV 注意事项
 
