@@ -222,3 +222,193 @@ Hero 模块使用一个轻量 React island (`hero-animated.tsx`)，包含：
 - C: AGPLv3 — 最强 copyleft，覆盖网络使用（包括 Cloudflare Pages 部署）
 
 **决定**: 选 C，与 Shiro 同协议，确保源码公开但禁止闭源商用。
+
+## v2 新增：页面宽度升级
+
+### 当前状态
+
+本博客全站使用 `max-w-5xl`（Tailwind 默认 1024px → 本博客 14px baseline 下约 896px）。innei.in 使用 `max-w-7xl`（1120px）+ body `max-w-[1280px]`。
+
+### 方案
+
+| 元素 | 当前 | innei.in | 新值 |
+|------|------|---------|------|
+| 全局容器 | `max-w-5xl` (896px) | `max-w-7xl` (1120px) | `max-w-7xl` |
+| 正文区 | 无限制 | `max-w-3xl` (672px) | `max-w-3xl` |
+| padding | `px-5 md:px-8` | `px-4 lg:px-8` | `px-4 lg:px-8` |
+| header/footer | 同 main | 独立 width | `mx-auto max-w-7xl px-4 lg:px-8` |
+
+文件变更：
+- `src/layouts/base-layout.astro`: `max-w-5xl` → `max-w-7xl`, `px-5 md:px-8` → `px-4 lg:px-8`
+- `src/layouts/post-layout.astro`: 同上
+- `src/components/site/site-header.astro`: `max-w-5xl` → `max-w-7xl`, `px-5 md:px-8` → `px-4 lg:px-8`
+- `src/components/site/site-footer.astro`: 同上
+- 各页面独立容器同步修改
+
+## v2 新增：樱花飘落动画
+
+### 设计
+
+innei.in 通过 Mix Space CMS 的 `scripts` 字段注入了一段自定义 Canvas 脚本。Shiro 源码中无此代码，它通过 `<ScriptInjectProvider>` 在运行时动态注入到 `<head>`。
+
+### 本博客方案
+
+使用 Astro React island (`src/components/fx/sakura-particles.tsx`, `client:load`)：
+
+```tsx
+// 粒子数据结构
+interface Petal {
+  x: number; y: number;           // 位置
+  size: number;                    // 大小 (6-14px 长轴)
+  rotation: number;                // 当前旋转角度
+  rotationSpeed: number;           // 旋转速度 (0.2-2°/frame)
+  speedX: number;                  // 水平漂移速度 (sin 波动基频)
+  speedY: number;                  // 下落速度 (0.3-0.8px/frame)
+  opacity: number;                 // 透明度 (0.1-0.4)
+  phase: number;                   // sin 波动相位偏移
+}
+```
+
+实现细节：
+- Canvas 元素：`position: fixed; inset: 0; pointer-events: none; z-index: 50`
+- 粒子数量：桌面 60 个 / 移动 30 个（通过 matchMedia 响应）
+- 绘制：每个粒子为淡粉色（`rgba(255, 183, 197, opacity)`）椭圆 + `rotate(rotation)`
+- 循环逻辑：`requestAnimationFrame` 驱动，每帧更新位置 + 清除 + 重绘
+- 性能：`ResizeObserver` 自适应 Canvas 尺寸；`document.hidden` 时暂停循环
+- 粒子重置：超出视口底部后重置到顶部随机位置
+- 暗色模式：粉色透明度微调（略增亮）
+
+文件变更：
+- `src/components/fx/sakura-particles.tsx` — 新增 React island
+- `src/layouts/base-layout.astro` — 插入 `<SakuraParticles client:load />`
+- `src/pages/index.astro` — 同上（首页优先加载）
+
+## v2 新增：全站页面结构对标
+
+### 文稿列表 /posts
+
+innei.in 结构（浏览器实测）：
+```
+<sectionheader> "BLOG" + H1 "文章" + 置顶文章条
+  └─ 文章列表
+      ├─ 每项: 标题 + 摘要(65ch 截断) + 元信息(日期·(已编辑)·分类/标签)
+      └─ 分页: 上一页 / 下一页 / "第 1 页，共 N 页"
+<complementary> 标签云（右侧栏）
+```
+
+本博客改造任务：
+- 添加置顶文章标记样式（`pinned: true` frontmatter → accent 色 strip）
+- 文章项排版：标题 → `text-title-20`，摘要 → `text-copy-14 text-neutral-7 line-clamp-2 max-w-[65ch]`
+- 元信息行：`text-label-12 text-neutral-7`，分类可点击，标签可点击
+- 添加分页导航（以下功能可用 Astro `paginate()` 或手动分页参数实现）
+- 右侧标签云（可选，考虑当前内容量较少）
+
+### 手记列表 /notes
+
+innei.in 结构（浏览器实测）：
+```
+当前最新手记（完整渲染）
+├─ 标题 + 日期(日·月·周几) + 心情(天气/五味瓶图标)
+├─ 正文全文（markdown--note 变体）
+└─ footer: "YOHAKU · LETTER №XXX" + "阅读全文 →"
+"更早的手记"
+├─ "ANNO 2026" + "7 LETTERS"
+└─ 每篇: 日期徽章(日·月·周几) + 标题 + 心情标签 + LETTER № + "阅读全文 →"
+"ANNO 2025" + "2 LETTERS"
+分页: "更近的手记" / "更早的手记"
+```
+
+本博客改造任务：
+- 手记列表页改为年鉴式排版（按年份分组）
+- 每篇手记显示：日期徽章 + 标题 + 心情图标 + 摘要
+- 首篇展开全文
+- 分页导航
+
+### 时光 /timeline
+
+innei.in 结构（浏览器实测）：
+```
+纵向时间线
+├─ 年份标题
+│   ├─ [类型图标] + 日期 + 标题(链接) + 描述 + 标签
+│   └─ ...
+└─ 按时间倒序
+```
+
+当前本博客已有基本实现，需增强：
+- 年份分组视觉分隔
+- 时间线居中竖线 + 圆点（纯 CSS `::before/::after`）
+- 混合内容类型图标
+
+### 思考 /thinking
+
+innei.in 结构（浏览器实测）：
+```
+社交媒体动态流
+├─ 每条: 头像 + 用户名 + 相对时间 + 正文
+│   ├─ TMDB 富媒体卡片（自动 enrich 链接）
+│   └─ 互动: 喜欢/踩/评论
+└─ 无限滚动（useInfiniteQuery）
+```
+
+本博客改造：
+- 新建 `/thinking` 页面（或使用现有 Garden 作为思考区）
+- 思考条目使用 Markdown/MDX 存储在 `src/content/thinking/`
+- 不需要 TMDB enrich（太复杂，超出范围）
+- 不需要无限滚动（使用 SSG 静态页面即可）
+
+### 项目 /projects
+
+innei.in 结构（浏览器实测）：
+```
+头部: "项目 — github.com/XXX ↗"
+网格: 2 列卡片 (14 projects)
+├─ 卡片: 图标 + 名称 + 描述 + 标签
+└─ 计数: "14 projects"
+```
+
+当前本博客已有 ProjectFilter 组件（分类 + 技术栈筛选），无需大改。需增强：
+- 添加 GitHub 链接行（头部）
+- 项目计数
+- 卡片 hover 微动效
+
+文件变更清单（v2）：
+- `src/layouts/base-layout.astro`：宽度 + 樱花组件
+- `src/layouts/post-layout.astro`：宽度
+- `src/components/site/site-header.astro`：宽度
+- `src/components/site/site-footer.astro`：宽度
+- `src/components/fx/sakura-particles.tsx`：新增
+- `src/pages/posts/index.astro`：列表重构 + 分页
+- `src/pages/notes/index.astro`：年鉴式排版
+- `src/pages/timeline.astro`：增强样式
+- `src/content/thinking/`：新增内容类型 + schema
+- `src/pages/thinking.astro`：新增页面
+- `src/pages/projects.astro`：增强（GitHub 链接 + 计数）
+- `src/styles/yohaku-extras.css`：樱花相关 CSS + 时间线样式
+
+## v2 ADR
+
+### ADR-P5-004: 技术栈保持 Astro，不迁移到 Next.js
+
+**背景**: 用户提出"想修改技术栈为 innei 一样的 Node.js"。innei.in 基于 Shiro（React Router Framework Mode / Next.js）+ Mix Space CMS + 后端 API。
+
+**选项**:
+- A: 迁移到 Next.js + React Router Framework Mode — 与 Shiro 同构，但引入 SSR、后端 API、CMS 依赖，运维复杂度剧增
+- B: 保持 Astro v6 SSG — 零运行时 JS、Cloudflare Pages 免费部署、内容通过 Git 管理
+
+**决定**: 选 B。原因：
+1. 本博客仅 2 篇文章 + 少量内容，SSG 完全满足且无运维开销
+2. Mix Space CMS 需要独立部署后端服务，违背零运维目标
+3. innei.in 的视觉效果（樱花、排版、动画）均可在 Astro 中复现，不依赖于特定框架
+4. 如果未来需要 SSR 功能（动态内容、API），Astro 原生支持 SSR + Cloudflare Pages Functions，无需换框架
+
+### ADR-P5-005: 樱花动画 Canvas 方案
+
+**背景**: innei.in 的樱花是通过 Mix Space CMS 后端的 `scripts` 字段注入的自定义 JS。本博客无 CMS 后端，需自行实现。
+
+**选项**:
+- A: 纯 CSS @keyframes 粒子 — 简单但缺乏随机性和自然感
+- B: React island + Canvas requestAnimationFrame — 略复杂但效果自然
+
+**决定**: 选 B。Canvas 方案能实现物理模拟（重力 + 风力波动 + 旋转），效果更接近 innei.in。
+

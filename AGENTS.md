@@ -121,3 +121,10 @@
 - 线上变更前先本地 build 成功。
 - 每个逻辑阶段完成后提交 commit。
 - 不要把未完成项标记为完成；没做的标 ❌。
+
+## 页面宽度标准
+
+- 全局内容容器：`max-w-7xl`（1120px）+ `mx-auto px-4 lg:px-8`
+- 正文文本区（prose/article）：`max-w-3xl`（672px）+ `mx-auto`
+- Header/Footer 与 main 容器同宽：`mx-auto max-w-7xl px-4 lg:px-8`
+- 禁止使用 `max-w-5xl` 及更小的容器宽度（对标 innei.in 1120px）
