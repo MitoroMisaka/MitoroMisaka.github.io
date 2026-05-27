@@ -18,6 +18,7 @@ export const siteConfig = {
     { label: '关于', href: '/about' },
     { label: '订阅', href: '/newsletter' },
     { label: '数据', href: '/stats' },
+    { label: ' Garden', href: '/garden' },
   ],
   social: [
     { label: 'GitHub', href: 'https://github.com/MitoroMisaka' },

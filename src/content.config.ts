@@ -12,6 +12,23 @@ const posts = defineCollection({
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
     slug: z.string(),
+    series: z.string().optional(),
+    seriesOrder: z.number().optional(),
+  }),
+});
+
+const garden = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/garden' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    category: z.string(),
+    tags: z.array(z.string()).default([]),
+    stage: z.enum(['seedling', 'budding', 'evergreen']).default('seedling'),
+    related: z.array(z.string()).default([]),
+    date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -75,4 +92,5 @@ export const collections = {
   notes,
   timeline,
   projects,
+  garden,
 };
