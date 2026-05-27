@@ -50,9 +50,17 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
       (function(){
         var blocks = document.querySelectorAll('pre.mermaid');
         if (!blocks.length) return;
+        // Detect current theme from data attribute or system preference
+        var html = document.documentElement;
+        var themeAttr = html.dataset.theme;
+        var isDark = themeAttr === 'dark' || (!themeAttr && window.matchMedia('(prefers-color-scheme: dark)').matches);
         import('mermaid').then(function(mod){
           var m = mod.default || mod;
-          m.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+          m.initialize({
+            startOnLoad: false,
+            theme: isDark ? 'dark' : 'default',
+            securityLevel: 'loose',
+          });
           m.run({ nodes: Array.from(blocks) });
         }).catch(function(e){ console.warn('Mermaid:', e); });
       })();

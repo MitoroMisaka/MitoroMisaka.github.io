@@ -2,26 +2,20 @@
 import BaseLayout from '../layouts/base-layout.astro';
 import { siteConfig } from '../lib/site-config';
 import { getCollection } from 'astro:content';
-import GardenCard from '../components/garden/garden-card.astro';
+import GardenFilter from '../components/garden/garden-filter';
 
 const entries = await getCollection('garden', ({ data }) => !data.draft);
 
-// Group by category
-const groups = new Map<string, typeof entries>();
-for (const entry of entries) {
-  const cat = entry.data.category;
-  if (!groups.has(cat)) groups.set(cat, []);
-  groups.get(cat)!.push(entry);
-}
-
-// Sort entries within each group by date desc
-for (const [, groupEntries] of groups) {
-  groupEntries.sort((a, b) => {
-    const aDate = a.data.updated ?? a.data.date;
-    const bDate = b.data.updated ?? b.data.date;
-    return bDate.getTime() - aDate.getTime();
-  });
-}
+// Flatten for the React island (avoid passing Astro CollectionEntry objects)
+const flatEntries = entries.map((entry) => ({
+  id: entry.id,
+  title: entry.data.title,
+  description: entry.data.description,
+  category: entry.data.category,
+  stage: entry.data.stage,
+  tags: entry.data.tags,
+  updated: (entry.data.updated ?? entry.data.date).toISOString().split('T')[0] ?? '',
+}));
 ---
 
 <BaseLayout
@@ -47,16 +41,7 @@ for (const [, groupEntries] of groups) {
           </p>
         </div>
       ) : (
-        [...groups.entries()].map(([category, groupEntries]) => (
-          <section class="mb-10">
-            <h2 class="mb-4 text-xl font-semibold">{category}</h2>
-            <div class="grid gap-4 sm:grid-cols-2">
-              {groupEntries.map((entry) => (
-                <GardenCard entry={entry} />
-              ))}
-            </div>
-          </section>
-        ))
+        <GardenFilter entries={flatEntries} client:load />
       )
     }
   </main>
