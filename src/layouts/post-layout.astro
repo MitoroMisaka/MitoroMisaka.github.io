@@ -46,5 +46,16 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     </div>
     <AnalyticsTracker client:idle />
     <Lightbox client:idle />
+    <script is:inline>
+      (function(){
+        var blocks = document.querySelectorAll('pre.mermaid');
+        if (!blocks.length) return;
+        import('mermaid').then(function(mod){
+          var m = mod.default || mod;
+          m.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
+          m.run({ nodes: Array.from(blocks) });
+        }).catch(function(e){ console.warn('Mermaid unavailable:', e); });
+      })();
+    </script>
   </body>
 </html>
