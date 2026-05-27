@@ -6,6 +6,7 @@ import expressiveCode from 'astro-expressive-code';
 import mdx from '@astrojs/mdx';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeWikiLinks from './src/lib/rehype-wiki-links.mjs';
+import remarkMermaid from './src/lib/remark-mermaid.mjs';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 
@@ -75,7 +76,9 @@ export default defineConfig({
         },
       },
     }),
-    mdx(),
+    mdx({
+      remarkPlugins: [remarkMermaid],
+    }),
     sitemap(),
   ],
   markdown: {
