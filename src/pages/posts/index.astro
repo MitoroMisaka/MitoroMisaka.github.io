@@ -18,6 +18,14 @@ const posts = await getPublishedPosts();
               <span>{post.data.category}</span>
               <span>·</span>
               <time>{formatDate(post.data.date)}</time>
+              {post.data.series && (
+                <>
+                  <span>·</span>
+                  <a href={`/series/${post.data.series}`} class="text-[var(--brand)] hover:underline">
+                    系列：{post.data.series}
+                  </a>
+                </>
+              )}
             </div>
           </a>
         </li>

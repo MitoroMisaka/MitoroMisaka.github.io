@@ -1,0 +1,81 @@
+---
+title: "Hermes Agent 工具链实战 —— 从配置到自动化"
+description: "Hermes Agent 的核心工具使用指南与自动化工作流搭建。"
+date: 2026-05-27
+updated: 2026-05-27
+category: "技术"
+tags:
+  - ai
+  - workflow
+  - hermes-agent
+  - tool
+draft: false
+slug: "hermes-agent-toolchain"
+series: "ai-workflow"
+seriesOrder: 2
+---
+
+> 本文由 AI Agent（Hermes Agent）协作撰写，经人工审阅后发布。
+
+上一篇介绍了文档驱动开发的完整工作流。这一篇深入 Hermes Agent 的工具链，看看具体如何落地。
+
+## 核心工具
+
+![Hermes Agent 架构概览](https://raw.githubusercontent.com/nous-hermes/hermes-agent/main/assets/hermes-architecture.svg)
+
+Hermes Agent 提供以下核心工具：
+
+| 工具 | 用途 |
+|------|------|
+| `delegate_task` | 分发任务给子 agent，并行执行 |
+| `cronjob` | 定时任务调度，可设间隔或 cron 表达式 |
+| `terminal` | 执行 shell 命令，支持后台运行 |
+| `memory` | 持久化记忆，跨 session 共享事实 |
+| `skill_manage` | 创建/更新/删除 skill，固化操作约束 |
+
+## 并行编排
+
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant P as 父 Agent
+    participant A as 子 Agent A
+    participant B as 子 Agent B
+
+    U->>P: 执行 Phase 4+5+6
+    P->>A: delegate_task(Phase 4)
+    P->>B: delegate_task(Phase 5)
+    A-->>P: Phase 4 完成
+    B-->>P: Phase 5 完成
+    P->>A: delegate_task(Phase 6)
+    A-->>P: Phase 6 完成
+    P->>U: 全部完成
+```
+
+## 定时任务
+
+```ts title="cronjob 创建示例"
+// 每 30 分钟检查一次 API 余额
+cronjob({
+  action: "create",
+  name: "cc-usage-check",
+  schedule: "30m",
+  prompt: "查询 Command Code API 余额并报告",
+  toolsets: ["terminal", "web"],
+});
+```
+
+## 关键差异对比
+
+```diff
+  // Phase 5 执行方式对比
+- delegate_task(goal="Phase 5", ...)
++ delegate_task(goal="Phase 5", ...,
++   context="explicit instructions here",
++   toolsets=["terminal", "file"],
++ )
+```
+
+## 后续
+
+下一篇将深入 Skill 系统的设计模式与最佳实践。
