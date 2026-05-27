@@ -5,6 +5,7 @@ import { formatDate, getPublishedNotes } from '../../lib/content-helpers';
 import { getMoodLabel } from '../../lib/mood-labels';
 import { siteConfig } from '../../lib/site-config';
 import ReactionBar from '../../components/ui/reaction-bar';
+import ShareButton from '../../components/notes/share-button';
 
 export async function getStaticPaths() {
   const notes = await getPublishedNotes();
@@ -65,6 +66,8 @@ const readingTime = Math.max(1, Math.ceil(wordCount / 300));
   <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
     <Content />
   </div>
+
+  <ShareButton title={title} client:idle />
 
   <ReactionBar target={`note:${note.data.slug}`} client:load />
 </PostLayout>
