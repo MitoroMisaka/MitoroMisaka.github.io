@@ -196,3 +196,73 @@ export async function getAllCategories(): Promise<Map<string, number>> {
   }
   return catCounts;
 }
+
+// ─── Series ─────────────────────────────────────────────────────────
+
+import { getSeriesConfig, type SeriesConfig } from './series-config';
+
+export interface SeriesEntry {
+  posts: PostEntry[];
+  config: SeriesConfig | undefined;
+}
+
+/**
+ * 从 posts 按 series 分组，返回 Map<seriesSlug, { posts, config }>
+ * 只包含有 series 字段且非 draft 的已发布文章
+ */
+export async function getSeriesList(): Promise<Map<string, SeriesEntry>> {
+  const posts = await getPublishedPosts();
+  const map = new Map<string, SeriesEntry>();
+
+  for (const post of posts) {
+    const slug = post.data.series;
+    if (!slug) continue;
+    if (!map.has(slug)) {
+      map.set(slug, { posts: [], config: getSeriesConfig(slug) });
+    }
+    map.get(slug)!.posts.push(post);
+  }
+
+  // Sort posts within each series by seriesOrder
+  for (const [, entry] of map) {
+    entry.posts.sort((a, b) => {
+      const aOrder = a.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+      return aOrder - bOrder;
+    });
+  }
+
+  return map;
+}
+
+/**
+ * 返回指定系列的已发布文章，按 seriesOrder 排序
+ */
+export async function getPostsInSeries(seriesSlug: string): Promise<PostEntry[]> {
+  const posts = await getPublishedPosts();
+  return posts
+    .filter((p) => p.data.series === seriesSlug)
+    .sort((a, b) => {
+      const aOrder = a.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.data.seriesOrder ?? Number.MAX_SAFE_INTEGER;
+      return aOrder - bOrder;
+    });
+}
+
+/**
+ * 返回系列中某篇文章的上一篇/下一篇
+ * slug: 当前文章的 slug
+ * seriesSlug: 系列标识
+ */
+export async function getSeriesNeighbors(
+  slug: string,
+  seriesSlug: string,
+): Promise<{ prev: PostEntry | null; next: PostEntry | null }> {
+  const posts = await getPostsInSeries(seriesSlug);
+  const idx = posts.findIndex((p) => p.data.slug === slug);
+  if (idx === -1) return { prev: null, next: null };
+  return {
+    prev: idx > 0 ? posts[idx - 1] : null,
+    next: idx < posts.length - 1 ? posts[idx + 1] : null,
+  };
+}

@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import { siteConfig } from '../lib/site-config';
+import { getSeriesList, formatDate } from '../lib/content-helpers';
+
+const seriesMap = await getSeriesList();
+const seriesEntries = [...seriesMap.entries()];
+---
+
+<BaseLayout title={`系列文章 | ${siteConfig.title}`} description="按专题组织的系列文章，深入探索特定技术领域。">
+  <main class="mx-auto max-w-3xl px-4 py-12">
+    <header class="mb-10">
+      <h1 class="text-3xl font-semibold md:text-4xl">系列文章</h1>
+      <p class="mt-2 text-[var(--fg-muted)]">
+        按专题组织的系列文章。每个系列多篇文章，循序渐进深入一个主题。
+      </p>
+    </header>
+
+    {
+      seriesEntries.length === 0 ? (
+        <div class="rounded-xl border border-dashed border-[var(--line)] px-8 py-16 text-center">
+          <p class="text-lg text-[var(--fg-muted)]">暂无系列文章</p>
+          <p class="mt-2 text-sm text-[var(--fg-soft)]">
+            当文章被归入某个系列后，会在这里展示。
+          </p>
+        </div>
+      ) : (
+        <div class="grid gap-4 sm:grid-cols-2">
+          {seriesEntries.map(([slug, entry]) => {
+            const config = entry.config;
+            const posts = entry.posts;
+            const latestDate = posts.length > 0
+              ? new Date(Math.max(...posts.map((p: any) => p.data.date.getTime())))
+              : null;
+
+            return (
+              <a
+                href={`/series/${slug}`}
+                class="group rounded-xl border border-[var(--line)] p-5 transition hover:border-[var(--line-strong)] hover:shadow-sm"
+              >
+                <h2 class="text-lg font-semibold group-hover:text-[var(--brand)] transition-colors">
+                  {config?.name ?? slug}
+                </h2>
+                <p class="mt-1 text-sm text-[var(--fg-muted)] line-clamp-2">
+                  {config?.description ?? ''}
+                </p>
+                <div class="mt-3 flex items-center gap-3 text-xs text-[var(--fg-soft)]">
+                  <span>{posts.length} 篇文章</span>
+                  {latestDate && <span>最近更新 {formatDate(latestDate)}</span>}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )
+    }
+  </main>
+</BaseLayout>

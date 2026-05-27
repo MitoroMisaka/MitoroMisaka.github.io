@@ -1,0 +1,52 @@
+---
+/**
+ * 文章头部系列进度指示器
+ *
+ * 显示系列名 + "第 N 篇 / 共 M 篇"
+ * 不属任何系列时不渲染
+ */
+import { type CollectionEntry } from 'astro:content';
+import { getSeriesConfig } from '../../lib/series-config';
+import { getPostsInSeries } from '../../lib/content-helpers';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const seriesSlug = post.data.series;
+const seriesOrder = post.data.seriesOrder;
+
+if (!seriesSlug) {
+  // 不属任何系列，不渲染
+  return new Response(null);
+}
+
+const config = getSeriesConfig(seriesSlug);
+const allPosts = await getPostsInSeries(seriesSlug);
+const total = allPosts.length;
+const current = seriesOrder ?? allPosts.findIndex((p) => p.data.slug === post.data.slug) + 1;
+---
+
+<div
+  class="mb-4 rounded-lg border border-[var(--line)] bg-[var(--card)] px-4 py-2.5"
+>
+  <div class="flex flex-wrap items-center justify-between gap-2">
+    <a
+      href={`/series/${seriesSlug}`}
+      class="text-sm font-medium text-[var(--brand)] hover:underline"
+    >
+      {config?.name ?? seriesSlug}
+    </a>
+    <span class="text-xs text-[var(--fg-muted)]">
+      第 {current} 篇 / 共 {total} 篇
+    </span>
+  </div>
+  <!-- Progress bar -->
+  <div class="mt-2 h-1 w-full overflow-hidden rounded-full bg-[var(--line)]">
+    <div
+      class="h-full rounded-full bg-[var(--brand)] transition-all"
+      style={`width: ${total > 0 ? (current / total) * 100 : 0}%`}
+    />
+  </div>
+</div>

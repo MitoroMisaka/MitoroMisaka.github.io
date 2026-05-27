@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/base-layout.astro';
+import { siteConfig } from '../../lib/site-config';
+import { getSeriesList, getPostsInSeries, formatDate } from '../../lib/content-helpers';
+import { getSeriesConfig } from '../../lib/series-config';
+
+export async function getStaticPaths() {
+  const seriesMap = await getSeriesList();
+  return [...seriesMap.keys()].map((slug) => ({
+    params: { slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const config = getSeriesConfig(slug as string);
+const posts = await getPostsInSeries(slug as string);
+const seriesTitle = config?.name ?? slug;
+const description = config?.description ?? '';
+---
+
+<BaseLayout
+  title={`${seriesTitle} | ${siteConfig.title}`}
+  description={description || `${seriesTitle} 系列文章`}
+>
+  <main class="mx-auto max-w-3xl px-4 py-12">
+    <header class="mb-10">
+      <a
+        href="/series"
+        class="text-sm text-[var(--fg-muted)] hover:text-[var(--fg)] transition"
+      >
+        ← 系列文章
+      </a>
+      <h1 class="mt-3 text-3xl font-semibold md:text-4xl">{seriesTitle}</h1>
+      {description && (
+        <p class="mt-2 text-[var(--fg-muted)]">{description}</p>
+      )}
+      <div class="mt-3 flex items-center gap-2 text-sm">
+        <span class="inline-flex items-center rounded-full bg-[var(--brand)]/10 px-3 py-0.5 text-xs font-medium text-[var(--brand)]">
+          {posts.length} 篇已完成
+        </span>
+      </div>
+    </header>
+
+    {
+      posts.length === 0 ? (
+        <div class="rounded-xl border border-dashed border-[var(--line)] px-8 py-16 text-center">
+          <p class="text-lg text-[var(--fg-muted)]">该系列暂无文章</p>
+        </div>
+      ) : (
+        <div class="space-y-3">
+          {posts.map((post) => (
+            <a
+              href={`/posts/${post.data.slug}`}
+              class="group flex items-start gap-4 rounded-xl border border-[var(--line)] p-4 transition hover:border-[var(--line-strong)]"
+            >
+              {post.data.seriesOrder != null && (
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--brand)]/10 text-xs font-medium text-[var(--brand)]">
+                  {post.data.seriesOrder}
+                </span>
+              )}
+              <div class="min-w-0 flex-1">
+                <h2 class="font-medium group-hover:text-[var(--brand)] transition-colors line-clamp-1">
+                  {post.data.title}
+                </h2>
+                <p class="mt-1 text-sm text-[var(--fg-muted)] line-clamp-2">
+                  {post.data.description}
+                </p>
+                <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-[var(--fg-soft)]">
+                  <time>{formatDate(post.data.date)}</time>
+                  {post.data.tags.slice(0, 3).map((tag: string) => (
+                    <span class="rounded-full border border-[var(--line)] px-2 py-0.5">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </main>
+</BaseLayout>

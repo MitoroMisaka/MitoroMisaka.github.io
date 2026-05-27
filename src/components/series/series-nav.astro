@@ -1,0 +1,57 @@
+---
+/**
+ * 文章底部系列导航：上一篇 / 下一篇
+ *
+ * 首篇隐藏 ←，末篇隐藏 →
+ * 不属任何系列时不渲染
+ */
+import { type CollectionEntry } from 'astro:content';
+import { getSeriesNeighbors } from '../../lib/content-helpers';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const seriesSlug = post.data.series;
+
+if (!seriesSlug) {
+  return new Response(null);
+}
+
+const { prev, next } = await getSeriesNeighbors(post.data.slug, seriesSlug);
+
+// 没有 prev 也没有 next —— 理论上不应该（至少有一篇），但仍处理
+if (!prev && !next) {
+  return new Response(null);
+}
+---
+
+<nav class="mt-8 grid grid-cols-2 gap-4">
+  {prev ? (
+    <a
+      href={`/posts/${prev.data.slug}`}
+      class="rounded-xl border border-[var(--line)] px-4 py-3 text-left transition hover:border-[var(--line-strong)]"
+    >
+      <span class="text-xs text-[var(--fg-soft)]">← 上一篇</span>
+      <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">
+        {prev.data.title}
+      </p>
+    </a>
+  ) : (
+    <div />
+  )}
+  {next ? (
+    <a
+      href={`/posts/${next.data.slug}`}
+      class="rounded-xl border border-[var(--line)] px-4 py-3 text-right transition hover:border-[var(--line-strong)]"
+    >
+      <span class="text-xs text-[var(--fg-soft)]">下一篇 →</span>
+      <p class="mt-1 text-sm font-medium text-[var(--fg)] line-clamp-1">
+        {next.data.title}
+      </p>
+    </a>
+  ) : (
+    <div />
+  )}
+</nav>
