@@ -1,17 +1,19 @@
 @import "tailwindcss";
+@import "@yohaku/design-system/tokens.css";
 @plugin "@tailwindcss/typography";
 
-:root {
-  --bg: #f7f8fb;
-  --fg: #1f2530;
-  --fg-muted: #566070;
-  --fg-soft: #8d96a3;
-  --line: #dde3ec;
-  --line-strong: #b9c4d1;
-  --card: #ffffff;
-  --brand: #6e78f5;
+/*
+ * ─── Yohaku Design Token 覆盖 ─────────────────────────────────
+ * 继承 @yohaku/design-system 的全部 token (MIT 协议)
+ * 以下为亮/暗模式下的 surface-paper, bg-opacity, border 运行时覆盖
+ */
 
-  /* Heatmap colours */
+:root {
+  --surface-paper: #fefefb;
+  --bg-opacity: rgba(254, 254, 251, 0.72);
+  --color-border: rgba(24, 24, 27, 0.1);
+
+  /* Heatmap colours — 与 Yohaku 不冲突，保留 */
   --heatmap-bg: #ebedf0;
   --heatmap-1: #c6ccf5;
   --heatmap-2: #929af7;
@@ -20,16 +22,10 @@
 }
 
 [data-theme='dark'] {
-  --bg: #0f131a;
-  --fg: #ecf0f7;
-  --fg-muted: #b1bccb;
-  --fg-soft: #7b8798;
-  --line: #232c3a;
-  --line-strong: #334156;
-  --card: #141a24;
-  --brand: #8a92ff;
+  --surface-paper: #242424;
+  --bg-opacity: rgba(28, 28, 30, 0.72);
+  --color-border: #3f3f46;
 
-  /* Heatmap colours — dark */
   --heatmap-bg: #1c2333;
   --heatmap-1: #1e2940;
   --heatmap-2: #2a3a6b;
@@ -37,25 +33,31 @@
   --heatmap-4: #8a92ff;
 }
 
-/* system preference fallback when no data-theme is set */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --bg: #0f131a;
-    --fg: #ecf0f7;
-    --fg-muted: #b1bccb;
-    --fg-soft: #7b8798;
-    --line: #232c3a;
-    --line-strong: #334156;
-    --card: #141a24;
-    --brand: #8a92ff;
+    --surface-paper: #242424;
+    --bg-opacity: rgba(28, 28, 30, 0.72);
+    --color-border: #3f3f46;
 
-  /* Heatmap colours — dark */
-  --heatmap-bg: #1c2333;
-  --heatmap-1: #1e2940;
-  --heatmap-2: #2a3a6b;
-  --heatmap-3: #4b5bc0;
-  --heatmap-4: #8a92ff;
+    --heatmap-bg: #1c2333;
+    --heatmap-1: #1e2940;
+    --heatmap-2: #2a3a6b;
+    --heatmap-3: #4b5bc0;
+    --heatmap-4: #8a92ff;
   }
+}
+
+/*
+ * ─── 全局基线 ────────────────────────────────────────────────
+ * Yohaku 约定: html { font-size: 14px; line-height: 1.5; }
+ * accent 色 #c56473 (柔和珊瑚) — 由 tokens.css 定义
+ */
+
+html {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  background-color: var(--color-root-bg, var(--surface-paper));
 }
 
 html,
@@ -70,10 +72,19 @@ a {
 }
 
 .prose a {
-  color: var(--brand);
+  color: var(--color-accent);
 }
 
-/* heading anchor links — hidden until hover */
+::selection {
+  background-color: var(--color-accent);
+  color: #fff;
+}
+
+[data-theme='dark'] ::selection {
+  background-color: oklch(from var(--color-accent) l c h / 0.3);
+}
+
+/* heading anchor links */
 .heading-anchor {
   opacity: 0;
   padding-left: 0.25em;
@@ -81,18 +92,17 @@ a {
   transition: opacity 0.15s;
 }
 h2:hover .heading-anchor,
-h3:hover .heading-anchor {
-  opacity: 0.4;
-}
+h3:hover .heading-anchor { opacity: 0.4; }
 h2 .heading-anchor:hover,
-h3 .heading-anchor:hover {
-  opacity: 1;
-}
+h3 .heading-anchor:hover    { opacity: 1; }
 
-/* Wiki links for pending (non-existent) garden entries */
+/* Wiki links for pending garden entries */
 .prose a.pending {
-  color: var(--fg-soft);
+  color: var(--color-neutral-7);
   text-decoration: underline;
   text-decoration-style: dashed;
   text-underline-offset: 4px;
 }
+
+/* ─── Yohaku extras ─────────────────────────────────────────── */
+@import "./yohaku-extras.css";

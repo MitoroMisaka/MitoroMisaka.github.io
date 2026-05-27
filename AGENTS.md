@@ -3,7 +3,8 @@
 ## 项目简介与技术栈
 
 - 项目目标：个人技术博客，聚焦 AI workflow、开发实践和技术写作。
-- 技术栈：Astro v6 + MDX + React islands + TailwindCSS v4 + Cloudflare Pages。
+- 技术栈：Astro v6 + MDX + React islands + TailwindCSS v4 + **[@yohaku/design-system](https://www.npmjs.com/package/@yohaku/design-system)** + Cloudflare Pages。
+- 设计系统：Yohaku (余白) — MIT 协议的开源排版系统。
 - 部署目标：Cloudflare Pages（`mitoromisaka-blog.pages.dev`）。
 
 ## 目录结构说明
@@ -11,12 +12,11 @@
 - `src/content/`：内容源（posts / notes / projects / timeline / garden）
 - `src/components/`：页面组件与交互组件（含 analytics / garden / home / notes / post / projects / series / site / stats / timeline / ui）
 - `src/layouts/`：基础布局与文章布局
-- `src/lib/`：站点配置、内容工具函数（含 activity-feed / analytics-config / content-helpers / garden / kv-types / mood-labels / rehype-wiki-links / seo / series-config / site-config / site-stats / writing-heatmap）
-- `src/pages/`：页面路由（含 stats.astro / series / garden）
+- `src/lib/`：站点配置、内容工具函数
+- `src/pages/`：页面路由
+- `src/styles/`：Yohaku Token + 动画 + 排版变体（`global.css` + `yohaku-extras.css`）
 - `functions/`：Cloudflare Pages Functions（API 路由）
-  - `functions/api/reactions.ts` — Reaction API
-  - `functions/api/analytics/` — 统计 API（view + summary）
-- `docs/`：PRD / TECH / TASKS / WRITING / DEPLOYMENT
+- `docs/`：PRD / TECH / TASKS / WRITING / DEPLOYMENT / ANALYSIS
 
 ## 构建与运行命令
 
@@ -34,69 +34,78 @@
 - 风格目标：日系极简、高留白、内容优先。
 - 文档优先于代码：改动前先更新 PRD / TECH / TASKS。
 
+## Yohaku 设计约束（必须遵守）
+
+### 颜色
+- **禁止** `text-neutral-50…950`（Tailwind 默认 gray scale — 全项目禁用）
+- **禁止** `text-neutral-5`（对比度不够 — 仅用于边框/分割线）
+- 使用 Yohaku 10 级中性色阶：`text-neutral-1…10`
+- accent 色 `#c56473`（变量 `--color-accent`），占表面 ≤5%
+- 语义色仅用 `info/success/warning/error`
+
+### 字号
+- **禁止** `text-xs/sm/base/lg/xl/2xl/3xl/4xl/5xl/6xl/7xl/8xl/9xl`
+- **禁止** 硬编码 `text-[Npx]`
+- 仅使用 Yohaku 字号 token：
+  - `text-caption-10` / `text-label-12`
+  - `text-copy-13` / `text-copy-14` (默认) / `text-copy-15` / `text-copy-16`
+  - `text-title-20` / `text-title-24` / `text-title-28`
+  - `text-display-36` / `text-display-48`
+- 加粗中文只允许 `font-medium` (500)，禁止 `font-bold` (700) — CJK 没有真正的粗体
+
+### 字体
+- 三个字体角色：`--font-sans` / `--font-serif` / `--font-mono`
+- 中文/日文渲染必须带有 CJK 回退链
+- 禁止硬编码 `font-family`
+
+### 深度和阴影
+- **禁止** 硬 drop shadow（`box-shadow: 0 4px 6px ...`）
+- 使用 ring 或 whisper shadow（0 0 0 1px + 微弱的 blur shadow）
+- 毛玻璃使用四个预定义的 opacity+blur 级别
+
 ## 外部依赖说明
 
 - 评论系统：Giscus（GitHub Discussions，repo-id `R_kgDOSoDQEg`，category-id `DIC_kwDOSoDQEs4C9364`）
 - 静态搜索：Pagefind（构建时自动索引）
-- 语法高亮：astro-expressive-code (含 frames 插件，支持 title="xxx.py" 文件名和 diff 高亮)
+- 语法高亮：astro-expressive-code (含 frames 插件)
 - 动态 Reaction：Cloudflare Pages Functions + KV（binding `REACTIONS`）
-- Reaction API：`GET /api/reactions?target=...` / `POST /api/reactions`
-- 隐私友好统计：Cloudflare Pages Functions + KV（binding `ANALYTICS`），按日聚合，不追踪个人用户
-- 统计 API：`POST /api/analytics/view`（浏览上报）/ `GET /api/analytics/summary`（聚合摘要）
-- Mermaid 图表：客户端渲染（动态 import mermaid），expressiveCode 排除 `mermaid` 语言
-- 图片 lightbox：React island `client:idle`，自动对所有 `<img>` 生效
+- 隐私友好统计：Cloudflare Pages Functions + KV（binding `ANALYTICS`）
+- Mermaid 图表：客户端渲染（动态 import mermaid）
+- 图片 lightbox：React island `client:idle`
+- 设计系统：`@yohaku/design-system` v0.0.2 (MIT)
 
 ## 新增内容类型约束
 
 ### Garden 条目
 
 - 文件位置：`src/content/garden/*.mdx`，文件名 = slug
-- Frontmatter：`title`(必填)、`description`(必填)、`category`(必填)、`stage`(seedling|budding|evergreen，默认 seedling)、`related`(string[])、`tags`、`date`、`updated`、`draft`
-- 正文可用 `[[other-garden-slug]]` wiki 链接引用其他条目。已知 slug 生成可点击链接，未知显示灰色虚线。
-- Backlinks 在构建期全量计算，每个详情页底部自动展示。
+- Frontmatter：`title`(必填)、`description`(必填)、`category`(必填)、`stage`(seedling|budding|evergreen)、`related`(string[])、`tags`、`date`、`updated`、`draft`
+- 正文可用 `[[other-garden-slug]]` wiki 链接
+- Backlinks 在构建期全量计算
 
 ### 系列文章
 
-- 同系列文章使用相同的 `series` frontmatter 值（如 `"ai-workflow"`）
+- 同系列文章使用相同的 `series` frontmatter 值
 - 使用 `seriesOrder`（1-indexed）指定系列内顺序
 - 系列名称和描述在 `src/lib/series-config.ts` 中维护
 
 ### Mermaid 图表注意事项
 
-- `astro-expressive-code` 配置中明确列出支持的语言列表，`mermaid` 不在列表中
-- 这样 ` ```mermaid ` 代码块不会被 shiki 高亮处理，保持为原始 `<pre class="mermaid">`
-- Mermaid 组件 `<script is:inline>` 在客户端动态 `import('mermaid')` 后 `mermaid.run()` 渲染
+- `astro-expressive-code` 排除 `mermaid` 语言
+- Mermaid 在客户端动态 import 渲染
 
 ## Cloudflare Functions / KV 注意事项
 
-- `functions/api/reactions.ts` 使用 Cloudflare Workers 运行时类型（KVNamespace），本地 IDE 报 TS 错误属正常。
-- `functions/api/analytics/` 目录下的 view 和 summary 函数同样使用 KV 绑定（`ANALYTICS`），按日聚合计数字段。
 - KV namespace 通过 `wrangler.jsonc` 绑定：
-  - `REACTIONS` id 为 `66a6f0b892864883b270d6ef246e3879`
-  - `ANALYTICS` id 待填入
-- 前端 `reaction-bar.tsx` 通过 `localStorage` 防止同设备重复点击；API 层只做简单计数，无用户鉴权。
-- 如果部署后 API 不可用，检查 Cloudflare Pages 项目是否关联了 KV namespace。
+  - `REACTIONS` id: `66a6f0b892864883b270d6ef246e3879`
+  - `ANALYTICS` id: `71b964e0d8324338b921464708fdbc6c`
+- 前端 `reaction-bar.tsx` 通过 `localStorage` 防止同设备重复点击
 
 ## 安全与发布约束
 
 - 禁止读取 `.env` 文件内容。
 - 禁止提交任何密钥或令牌。
-- 环境变量通过 Cloudflare Pages 后台配置，不在代码仓库中存储。
+- 环境变量通过 Cloudflare Pages 后台配置。
 - 线上变更前先本地 build 成功。
 - 每个逻辑阶段完成后提交 commit。
 - 不要把未完成项标记为完成；没做的标 ❌。
-
-## 新增内容类型说明
-
-### Stats 页面（`/stats`）
-
-- 数据来源：Cloudflare KV（`ANALYTICS` binding），通过 `/api/analytics/summary` 获取
-- 页面组件位于 `src/components/stats/`，路由页面为 `src/pages/stats.astro`
-- 新增统计组件时添加到 `src/components/analytics/` 目录
-
-### 订阅页面（`/newsletter`）
-
-- 路由页面为 `src/pages/newsletter.astro`
-- 展示正式文章和碎念两个 RSS feed 链接
-- 推荐 RSS 阅读器（NetNewsWire / Reeder / Feedly / Inoreader）
-- 无需外部依赖
