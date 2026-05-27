@@ -1,21 +1,12 @@
 ---
 import { siteConfig } from '../../lib/site-config';
 import { getPublishedPosts } from '../../lib/content-helpers';
+import { getTotalWordCount, getTotalDays } from '../../lib/site-stats';
 
 const posts = await getPublishedPosts();
 const postCount = posts.length;
-// rough total word count
-let totalWords = 0;
-for (const post of posts) {
-  totalWords += (post.body?.split(/\s+/).length ?? 0);
-}
+const [totalWords, totalDays] = await Promise.all([getTotalWordCount(), getTotalDays()]);
 const totalChars = Math.round(totalWords / 10000 * 10) / 10; // in 万字
-
-// days since first post (or site creation)
-const firstDate = posts.length > 0
-  ? posts[posts.length - 1].data.date
-  : new Date('2026-05-26');
-const daysRunning = Math.floor((Date.now() - firstDate.getTime()) / (1000 * 60 * 60 * 24));
 ---
 
 <section class="space-y-6 pt-6 md:pt-12">
@@ -38,7 +29,7 @@ const daysRunning = Math.floor((Date.now() - firstDate.getTime()) / (1000 * 60 *
     <span class="text-[var(--fg-soft)]">·</span>
     <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{totalChars}</span> 万字</span>
     <span class="text-[var(--fg-soft)]">·</span>
-    <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{daysRunning}</span> 天</span>
+    <span class="text-[var(--fg-muted)]"><span class="tabular-nums text-[var(--fg)] font-medium">{totalDays}</span> 天</span>
   </div>
 
   <div class="flex flex-wrap gap-2 text-sm">

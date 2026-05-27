@@ -5,10 +5,14 @@ import HeroSection from '../components/home/hero-section.astro';
 import RecentWriting from '../components/home/recent-writing.astro';
 import LatestNotes from '../components/home/latest-notes.astro';
 import FeaturedProjects from '../components/home/featured-projects.astro';
+import ActivityFeed from '../components/home/activity-feed.astro';
+import WritingHeatmap from '../components/home/writing-heatmap';
 import { getRecentPosts } from '../lib/content-helpers';
+import { getHeatmapData } from '../lib/writing-heatmap';
 
 const recentPosts = await getRecentPosts(5);
 const featuredProjects = await getCollection('projects', ({ data }) => data.featured);
+const heatmapData = await getHeatmapData();
 
 const postItems = recentPosts.map((post) => ({
   slug: post.data.slug,
@@ -21,6 +25,8 @@ const postItems = recentPosts.map((post) => ({
 
 <BaseLayout>
   <HeroSection />
+  <ActivityFeed />
+  <WritingHeatmap data={heatmapData} client:idle />
   <RecentWriting posts={postItems} />
   <LatestNotes />
   {featuredProjects.length > 0 && <FeaturedProjects projects={featuredProjects} />}
