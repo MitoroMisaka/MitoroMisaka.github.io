@@ -5,6 +5,7 @@ import SiteHeader from '../components/site/site-header.astro';
 import SiteFooter from '../components/site/site-footer.astro';
 import AnalyticsTracker from '../components/analytics/tracker';
 import Lightbox from '../components/ui/lightbox';
+import SakuraParticles from '../components/fx/sakura-particles';
 import '../styles/global.css';
 
 interface Props {
@@ -55,6 +56,7 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
       </main>
       <SiteFooter />
     </div>
+    <SakuraParticles client:load />
     <AnalyticsTracker client:idle />
     <Lightbox client:idle />
   </body>

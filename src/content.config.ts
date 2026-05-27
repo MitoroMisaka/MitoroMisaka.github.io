@@ -88,10 +88,20 @@ const projects = defineCollection({
   }),
 });
 
+const thinking = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/thinking' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
 export const collections = {
   posts,
   notes,
   timeline,
   projects,
   garden,
+  thinking,
 };

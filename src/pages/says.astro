@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import { getRandomQuote } from '../lib/quotes';
+
+const quote = getRandomQuote();
+---
+
+<BaseLayout title="一言 | 静かな森" description="每日一言，感君倾耳。">
+  <section class="mx-auto max-w-3xl">
+    <header>
+      <h1 class="text-title-28 font-medium">一言</h1>
+    </header>
+
+    <blockquote class="mt-10 text-center">
+      <p class="text-title-20 italic" style="font-family: var(--font-serif)">
+        「{quote.text}」
+      </p>
+      <footer class="mt-4 text-copy-14 text-neutral-7">
+        —— {quote.source}
+      </footer>
+    </blockquote>
+
+    <div class="mt-8 text-center">
+      <p class="text-caption-10 text-neutral-7">
+        刷新页面获取随机语录
+      </p>
+    </div>
+  </section>
+</BaseLayout>

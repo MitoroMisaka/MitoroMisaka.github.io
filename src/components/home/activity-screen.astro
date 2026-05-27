@@ -1,0 +1,98 @@
+---
+import { getRecentPosts, getRecentNotes, formatDate } from '../../lib/content-helpers';
+
+const posts = await getRecentPosts(5);
+const notes = await getRecentNotes(2);
+
+function relativeDate(d: Date): string {
+  const now = new Date();
+  const ms = now.getTime() - d.getTime();
+  const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+
+  if (days === 0) return '今天';
+  if (days === 1) return '昨天';
+  if (days < 7) return `${days} 天前`;
+  const weeks = Math.floor(days / 7);
+  if (weeks < 5) return `${weeks} 周前`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return `${months} 个月前`;
+  return `${Math.floor(days / 365)} 年前`;
+}
+---
+
+<section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+  <!-- 左栏: 近期笔墨 -->
+  <div>
+    <h2 class="text-caption-10 uppercase tracking-[0.2em] text-neutral-7 mb-4">
+      近期笔墨
+    </h2>
+    <div class="space-y-3">
+      {posts.length === 0 && (
+        <p class="text-copy-14 text-neutral-7">还没有文章。</p>
+      )}
+      {posts.map((post) => (
+        <a
+          href={`/posts/${post.data.slug}`}
+          class="block group"
+        >
+          <div class="flex items-start gap-2">
+            <span class="mt-0.5 flex-shrink-0 text-copy-14 leading-none" role="img" aria-label="文章">
+              📝
+            </span>
+            <div class="min-w-0 flex-1">
+              <p class="text-copy-14 text-neutral-7 group-hover:text-neutral-9 transition-colors truncate">
+                {post.data.title}
+              </p>
+            </div>
+            <span class="flex-shrink-0 text-caption-10 text-neutral-7">
+              {relativeDate(post.data.date)}
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- 中栏: 碎念 -->
+  <div>
+    <h2 class="text-caption-10 uppercase tracking-[0.2em] text-neutral-7 mb-4">
+      碎念
+    </h2>
+    <div class="space-y-4">
+      {notes.length === 0 && (
+        <p class="text-copy-14 text-neutral-7">还没有碎念。</p>
+      )}
+      {notes.map((note) => (
+        <a
+          href={`/notes/${note.data.slug}`}
+          class="block group"
+        >
+          <p class="text-copy-14 text-neutral-7 group-hover:text-neutral-9 transition-colors line-clamp-2">
+            {note.data.description ?? note.data.title ?? note.data.slug}
+          </p>
+          <p class="mt-1 text-caption-10 text-neutral-7">
+            {formatDate(note.data.date)}
+          </p>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <!-- 右栏: 来信 -->
+  <div>
+    <h2 class="text-caption-10 uppercase tracking-[0.2em] text-neutral-7 mb-4">
+      来信
+    </h2>
+    <div class="bg-neutral-2 rounded-2xl p-6 space-y-3">
+      <p class="text-copy-14 text-neutral-7">
+        想收到新文章通知？订阅我的 Newsletter，不定期推送。
+      </p>
+      <a
+        href="/newsletter"
+        class="inline-block text-label-12 font-medium text-accent hover:underline"
+      >
+        前往订阅 →
+      </a>
+    </div>
+  </div>
+</section>

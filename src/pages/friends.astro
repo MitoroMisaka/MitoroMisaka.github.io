@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/base-layout.astro';
+import type { FriendLink } from '../lib/friends';
+import { friends } from '../lib/friends';
+---
+
+<BaseLayout title="朋友们 | 静かな森" description="海内存知己，天涯若比邻。">
+  <section class="mx-auto max-w-3xl">
+    <header>
+      <h1 class="text-title-28 font-medium">朋友们</h1>
+      <p class="mt-2 text-title-20 italic text-neutral-7" style="font-family: var(--font-serif)">
+        海内存知己，天涯若比邻
+      </p>
+    </header>
+
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {friends.map((friend: FriendLink) => (
+        <a
+          href={friend.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block border border-neutral-3 rounded-2xl p-4 transition hover:border-accent group"
+        >
+          <h2 class="text-title-20 font-medium text-neutral-9 group-hover:text-accent transition-colors">
+            {friend.name}
+          </h2>
+          <p class="mt-2 text-copy-14 text-neutral-7 line-clamp-2">
+            {friend.description}
+          </p>
+          <span class="mt-3 inline-block text-caption-10 text-neutral-7">
+            {new URL(friend.url).hostname}
+          </span>
+        </a>
+      ))}
+      {friends.length === 0 && (
+        <p class="col-span-full text-copy-14 text-neutral-7">还没有友链，期待你的来信。</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
