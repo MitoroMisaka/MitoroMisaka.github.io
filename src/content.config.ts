@@ -14,6 +14,7 @@ const posts = defineCollection({
     slug: z.string(),
     series: z.string().optional(),
     seriesOrder: z.number().optional(),
+    pinned: z.boolean().default(false),
   }),
 });
 

@@ -18,7 +18,17 @@ const flatProjects = projects.map((p) => ({
 
 <BaseLayout title="项目 | 静かな森" description="MitoroMisaka 的公开项目。">
   <section class="space-y-8">
-    <h1 class="text-title-28 font-medium">项目</h1>
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-title-28 font-medium">项目</h1>
+      <a
+        href="https://github.com/MitoroMisaka"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-copy-14 text-neutral-7 hover:text-accent transition"
+      >
+        github.com/MitoroMisaka ↗
+      </a>
+    </div>
 
     <noscript>
       <div class="space-y-6">
@@ -43,6 +53,10 @@ const flatProjects = projects.map((p) => ({
 
     {projects.length === 0 && (
       <div class="py-10 text-center text-label-12 text-neutral-7">暂无项目</div>
+    )}
+
+    {projects.length > 0 && (
+      <p class="mt-8 text-label-12 text-neutral-7">{projects.length} projects</p>
     )}
   </section>
 </BaseLayout>

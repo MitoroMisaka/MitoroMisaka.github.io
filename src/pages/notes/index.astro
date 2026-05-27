@@ -1,28 +1,120 @@
 ---
 import BaseLayout from '../../layouts/base-layout.astro';
-import NotesList from '../../components/notes/notes-list.astro';
-import { getPublishedNotes } from '../../lib/content-helpers';
+import { render } from 'astro:content';
+import { getPublishedNotes, formatDay, formatMonthCN, formatWeekdayCN, formatDateFullCN } from '../../lib/content-helpers';
+import { getMoodLabel } from '../../lib/mood-labels';
 
 const allNotes = await getPublishedNotes();
+
+// First note: the latest, fully rendered. Remainder grouped by year.
+const firstNote = allNotes.length > 0 ? allNotes[0] : null;
+const restNotes = allNotes.length > 1 ? allNotes.slice(1) : [];
+
+// Group rest by year descending
+const restByYear = new Map<number, typeof restNotes>();
+for (const note of restNotes) {
+  const year = note.data.date.getFullYear();
+  if (!restByYear.has(year)) restByYear.set(year, []);
+  restByYear.get(year)!.push(note);
+}
+// Sort years descending
+const sortedYears = [...restByYear.keys()].sort((a, b) => b - a);
+
+// Render the first note's content
+let FirstContent: any = null;
+if (firstNote) {
+  const rendered = await render(firstNote);
+  FirstContent = rendered.Content;
+}
 
 const pageTitle = '碎念 | 静かな森';
 const pageDesc = '短想法、开发随笔、AI 工作流记录。';
 ---
 
 <BaseLayout title={pageTitle} description={pageDesc}>
-  <section class="space-y-6">
+  <section>
     <h1 class="text-title-28 font-medium">碎念</h1>
-    <p class="text-label-12 text-neutral-7">{pageDesc}</p>
 
-    <div class="space-y-2">
-      <h2 class="text-label-12 font-medium text-neutral-7 uppercase tracking-wide">
-        全部碎念 ({allNotes.length})
-      </h2>
-      {allNotes.length > 0 ? (
-        <NotesList notes={allNotes} />
-      ) : (
-        <p class="text-label-12 text-neutral-7 py-4">暂无碎念</p>
-      )}
-    </div>
+    {allNotes.length === 0 ? (
+      <p class="mt-4 text-label-12 text-neutral-7 py-4">暂无碎念</p>
+    ) : (
+      <>
+        <!-- 首篇完整渲染 -->
+        {firstNote && (
+          <section class="mt-8">
+            <article>
+              <header>
+                {firstNote.data.mood && (
+                  <p class="text-caption-10">{getMoodLabel(firstNote.data.mood)}</p>
+                )}
+                <p class="text-label-12 text-neutral-7">{formatDateFullCN(firstNote.data.date)}</p>
+                {firstNote.data.title && (
+                  <h2 class="text-title-24 font-medium">{firstNote.data.title}</h2>
+                )}
+              </header>
+              {FirstContent && (
+                <div class="prose markdown--note mt-8">
+                  <FirstContent />
+                </div>
+              )}
+              <footer class="mt-8 pt-4 border-t border-neutral-3">
+                <p class="text-caption-10 text-neutral-5">YOHAKU · LETTER N°{allNotes.length}</p>
+                <a href={`/notes/${firstNote.data.slug}`} class="text-label-12 text-neutral-7 hover:text-accent link-underline">阅读全文 →</a>
+              </footer>
+            </article>
+          </section>
+        )}
+
+        <!-- 更早的手记 -->
+        {restNotes.length > 0 && (
+          <>
+            <p class="text-label-12 text-neutral-7 mt-16 mb-6">更早的手记</p>
+
+            {sortedYears.map((year) => {
+              const notes = restByYear.get(year)!;
+              return (
+                <section class="mb-12">
+                  <div class="flex items-center gap-4 mb-6">
+                    <h2 class="text-display-36 font-[family-name:var(--font-serif)]">ANNO {year}</h2>
+                    <p class="text-copy-14 text-neutral-7">{notes.length} LETTERS</p>
+                  </div>
+
+                  {notes.map((note, idx) => {
+                    const globalIdx = allNotes.indexOf(note) + 1;
+                    return (
+                      <div class="flex gap-4 py-4 border-b border-neutral-3">
+                        <!-- 日期徽章 -->
+                        <div class="flex flex-col items-center w-14 shrink-0">
+                          <span class="text-title-28 font-medium leading-none">{formatDay(note.data.date)}</span>
+                          <span class="text-label-12 text-neutral-7">{formatMonthCN(note.data.date)}</span>
+                          <span class="text-caption-10 text-neutral-7">{formatWeekdayCN(note.data.date)}</span>
+                        </div>
+                        <!-- 内容 -->
+                        <div class="flex-1 min-w-0">
+                          {note.data.mood && (
+                            <p class="text-caption-10 text-neutral-7">{getMoodLabel(note.data.mood)}</p>
+                          )}
+                          <h3 class="text-title-20 font-medium">
+                            <a href={`/notes/${note.data.slug}`} class="hover:text-accent transition-colors">
+                              {note.data.title ?? note.data.slug}
+                            </a>
+                          </h3>
+                          {note.data.description && (
+                            <p class="mt-1 text-copy-14 text-neutral-7 line-clamp-2">{note.data.description}</p>
+                          )}
+                          <p class="mt-2 text-label-12 text-neutral-5">
+                            LETTER N°{globalIdx} · <a href={`/notes/${note.data.slug}`} class="hover:text-accent">阅读全文 →</a>
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </section>
+              );
+            })}
+          </>
+        )}
+      </>
+    )}
   </section>
 </BaseLayout>

@@ -176,6 +176,25 @@ export function formatDate(date: Date): string {
   }).format(date);
 }
 
+const CN_MONTHS = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+const CN_WEEKDAYS = ['周日','周一','周二','周三','周四','周五','周六'];
+
+export function formatDay(date: Date): string {
+  return String(date.getDate());
+}
+
+export function formatMonthCN(date: Date): string {
+  return CN_MONTHS[date.getMonth()];
+}
+
+export function formatWeekdayCN(date: Date): string {
+  return CN_WEEKDAYS[date.getDay()];
+}
+
+export function formatDateFullCN(date: Date): string {
+  return `${date.getFullYear()}年${formatMonthCN(date)}${formatDay(date)}日${formatWeekdayCN(date)}`;
+}
+
 export async function getAllTags(): Promise<Map<string, number>> {
   const posts = await getPublishedPosts();
   const tagCounts = new Map<string, number>();

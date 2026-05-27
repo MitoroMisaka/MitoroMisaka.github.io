@@ -277,3 +277,37 @@ a:hover .read-more-arrow,
 .read-more-link:hover .read-more-arrow {
   transform: translateX(4px);
 }
+
+/* ═══ Timeline CSS 竖线 + 圆点 ═══════════════════════════════ */
+
+.shiro-timeline ul {
+  list-style: none;
+  position: relative;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 3px 0;
+  margin-left: 1rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -1rem;
+  top: 0;
+  bottom: 0;
+  border-left: 2px solid var(--color-accent);
+}
+
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  left: calc(-1rem - 4px);
+  top: 50%;
+  transform: translateY(-50%);
+}

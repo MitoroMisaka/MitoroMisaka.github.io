@@ -16,14 +16,6 @@ const typeLabels: Record<string, string> = {
   life: '生活',
 };
 
-const typeColors: Record<string, string> = {
-  post: 'text-blue-500',
-  note: 'text-emerald-500',
-  project: 'text-purple-500',
-  milestone: 'text-amber-500',
-  life: 'text-rose-500',
-};
-
 const typeIcons: Record<string, string> = {
   post: '📝',
   note: '💭',
@@ -33,15 +25,12 @@ const typeIcons: Record<string, string> = {
 };
 ---
 
-<li class="flex gap-4 py-3">
-  <div class="flex flex-col items-center shrink-0">
-    <span class="text-label-12" title={typeLabels[entry.type] ?? entry.type}>{typeIcons[entry.type] ?? '•'}</span>
-    <div class="w-px flex-1 bg-neutral-3 mt-1" />
-  </div>
-  <div class="min-w-0 pb-4">
+<li class="timeline-item">
+  <div class="min-w-0">
     <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+      <span class="text-copy-14">{typeIcons[entry.type] ?? '•'}</span>
       <time class="text-caption-10 text-neutral-7 shrink-0">{formatDate(entry.date)}</time>
-      <span class={`text-[10px] uppercase tracking-wide font-medium ${typeColors[entry.type] ?? 'text-neutral-7'}`}>
+      <span class="text-caption-10 text-neutral-7 uppercase">
         {typeLabels[entry.type] ?? entry.type}
       </span>
     </div>
@@ -61,7 +50,7 @@ const typeIcons: Record<string, string> = {
     {entry.tags.length > 0 && (
       <div class="mt-1.5 flex flex-wrap gap-1">
         {entry.tags.map((tag: string) => (
-          <span class="rounded-full border border-neutral-3 px-1.5 py-px text-[10px] text-neutral-7">
+          <span class="rounded-full border border-neutral-3 px-1.5 py-px text-caption-10 text-neutral-7">
             #{tag}
           </span>
         ))}
