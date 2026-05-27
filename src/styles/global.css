@@ -12,6 +12,7 @@
   --surface-paper: #fefefb;
   --bg-opacity: rgba(254, 254, 251, 0.72);
   --color-border: rgba(24, 24, 27, 0.1);
+  --color-root-bg: rgb(255, 255, 255);
 
   /* Instrument Sans 作为首选西文无衬线体 */
   --app-font-sans: 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
@@ -28,6 +29,7 @@
   --surface-paper: #242424;
   --bg-opacity: rgba(28, 28, 30, 0.72);
   --color-border: #3f3f46;
+  --color-root-bg: rgb(28, 28, 30);
 
   /* Neutral scale — inverted for dark mode (pure gray, R=G=B) */
   --color-neutral-1: #141414;
@@ -38,7 +40,7 @@
   --color-neutral-6: #787878;
   --color-neutral-7: #a0a0a0;
   --color-neutral-8: #c0c0c0;
-  --color-neutral-9: #e8e8e8;
+  --color-neutral-9: #f0f0f0;
   --color-neutral-10: #f8f8f8;
 
   /* Semantic — slightly desaturated for dark surfaces */
@@ -59,6 +61,7 @@
     --surface-paper: #242424;
     --bg-opacity: rgba(28, 28, 30, 0.72);
     --color-border: #3f3f46;
+    --color-root-bg: rgb(28, 28, 30);
 
     --color-neutral-1: #141414;
     --color-neutral-2: #1a1a1a;
@@ -68,7 +71,7 @@
     --color-neutral-6: #787878;
     --color-neutral-7: #a0a0a0;
     --color-neutral-8: #c0c0c0;
-    --color-neutral-9: #e8e8e8;
+    --color-neutral-9: #f0f0f0;
     --color-neutral-10: #f8f8f8;
 
     --heatmap-bg: #1c2333;

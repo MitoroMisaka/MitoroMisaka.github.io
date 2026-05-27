@@ -7,14 +7,14 @@ const posts = await getPublishedPosts();
 
 <BaseLayout title="文章 | 静かな森" description="技术文章与开发随笔。">
   <section class="space-y-6">
-    <h1 class="text-3xl font-semibold">文章</h1>
+    <h1 class="text-title-28 font-medium">文章</h1>
     <ol class="space-y-3">
       {posts.map((post) => (
         <li class="rounded-2xl border border-neutral-3 bg-neutral-1 px-4 py-4">
           <a class="block" href={`/posts/${post.data.slug}`}>
-            <h2 class="text-lg font-medium">{post.data.title}</h2>
-            <p class="mt-2 text-sm text-neutral-7">{post.data.description}</p>
-            <div class="mt-3 flex items-center gap-2 text-xs text-neutral-7">
+            <h2 class="text-copy-16 font-medium">{post.data.title}</h2>
+            <p class="mt-2 text-label-12 text-neutral-7">{post.data.description}</p>
+            <div class="mt-3 flex items-center gap-2 text-caption-10 text-neutral-7">
               <span>{post.data.category}</span>
               <span>·</span>
               <time>{formatDate(post.data.date)}</time>

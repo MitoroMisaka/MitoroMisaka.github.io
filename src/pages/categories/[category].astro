@@ -18,15 +18,15 @@ const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
 
 <BaseLayout title={`${category} | 静かな森`} description={`分类 ${category} 下的所有文章。`}>
   <section class="space-y-6">
-    <h1 class="text-3xl font-semibold">{category}</h1>
-    <p class="text-sm text-neutral-7">共 {sorted.length} 篇文章</p>
+    <h1 class="text-title-28 font-medium">{category}</h1>
+    <p class="text-label-12 text-neutral-7">共 {sorted.length} 篇文章</p>
     <ol class="space-y-3">
       {sorted.map((post) => (
         <li class="rounded-2xl border border-neutral-3 bg-neutral-1 px-4 py-4">
           <a class="block" href={`/posts/${post.data.slug}`}>
-            <h2 class="text-lg font-medium">{post.data.title}</h2>
-            <p class="mt-2 text-sm text-neutral-7">{post.data.description}</p>
-            <div class="mt-3 flex items-center gap-2 text-xs text-neutral-7">
+            <h2 class="text-copy-16 font-medium">{post.data.title}</h2>
+            <p class="mt-2 text-label-12 text-neutral-7">{post.data.description}</p>
+            <div class="mt-3 flex items-center gap-2 text-caption-10 text-neutral-7">
               <span>{post.data.category}</span>
               <span>·</span>
               <time>{formatDate(post.data.date)}</time>
@@ -35,6 +35,6 @@ const sorted = allPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTi
         </li>
       ))}
     </ol>
-    <a href="/posts" class="inline-block text-sm text-neutral-7 hover:text-neutral-9">← 所有文章</a>
+    <a href="/posts" class="inline-block text-label-12 text-neutral-7 hover:text-neutral-9">← 所有文章</a>
   </section>
 </BaseLayout>

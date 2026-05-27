@@ -74,7 +74,7 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
         {/* Category filter */}
         <button
           onClick={() => setActiveCategory(null)}
-          className={`rounded-full border px-3 py-1 text-sm transition ${
+          className={`rounded-full border px-3 py-1 text-label-12 transition ${
             !activeCategory
               ? 'border-accent bg-accent/10 text-accent'
               : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -86,7 +86,7 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
           <button
             key={cat}
             onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-            className={`rounded-full border px-3 py-1 text-sm transition ${
+            className={`rounded-full border px-3 py-1 text-label-12 transition ${
               activeCategory === cat
                 ? 'border-accent bg-accent/10 text-accent'
                 : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -103,7 +103,7 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
           <button
             key={stage}
             onClick={() => setActiveStage(activeStage === stage ? null : stage)}
-            className={`rounded-full border px-3 py-1 text-sm transition ${
+            className={`rounded-full border px-3 py-1 text-label-12 transition ${
               activeStage === stage
                 ? 'border-accent bg-accent/10 text-accent'
                 : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -117,14 +117,14 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
       {/* No results */}
       {filtered.length === 0 && (
         <div className="rounded-xl border border-dashed border-neutral-3 px-8 py-16 text-center">
-          <p className="text-lg text-neutral-7">没有匹配的条目</p>
+          <p className="text-copy-16 text-neutral-7">没有匹配的条目</p>
         </div>
       )}
 
       {/* Grouped results */}
       {groups.map(([category, groupEntries]) => (
         <section key={category} className="mb-10">
-          <h2 className="mb-4 text-xl font-semibold">{category}</h2>
+          <h2 className="mb-4 text-title-20 font-medium">{category}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {groupEntries.map((entry) => (
               <a
@@ -135,10 +135,10 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
                 <h3 className="font-medium group-hover:text-accent transition-colors line-clamp-1">
                   {entry.title}
                 </h3>
-                <p className="mt-1 text-sm text-neutral-7 line-clamp-2">
+                <p className="mt-1 text-label-12 text-neutral-7 line-clamp-2">
                   {entry.description}
                 </p>
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-neutral-7">
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-caption-10 text-neutral-7">
                   <span>{STAGE_EMOJI[entry.stage]} {STAGE_LABEL[entry.stage]}</span>
                   <span>·</span>
                   <span>{formatDate(entry.updated)}</span>
@@ -148,7 +148,7 @@ export default function GardenFilter({ entries }: GardenFilterProps) {
                     {entry.tags.slice(0, 3).map((tag: string) => (
                       <span
                         key={tag}
-                        className="rounded-full border border-neutral-3 px-2 py-0.5 text-xs text-neutral-7"
+                        className="rounded-full border border-neutral-3 px-2 py-0.5 text-caption-10 text-neutral-7"
                       >
                         #{tag}
                       </span>

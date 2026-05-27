@@ -43,7 +43,7 @@ const actionMap: Record<string, Record<string, string>> = {
 ---
 
 <section class="mt-12">
-  <h2 class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-7">
+  <h2 class="mb-4 text-label-12 font-medium uppercase tracking-[0.2em] text-neutral-7">
     最近动态
   </h2>
   <div class="space-y-2">
@@ -52,22 +52,22 @@ const actionMap: Record<string, Record<string, string>> = {
         href={item.url}
         class="flex items-start gap-3 rounded-lg px-3 py-2 transition hover:bg-neutral-1"
       >
-        <span class="mt-0.5 flex-shrink-0 text-base leading-none" role="img" aria-label={item.type}>
+        <span class="mt-0.5 flex-shrink-0 text-copy-14 leading-none" role="img" aria-label={item.type}>
           {emojiMap[item.type] ?? '📌'}
         </span>
         <div class="min-w-0 flex-1">
-          <span class="text-sm text-neutral-9">
+          <span class="text-label-12 text-neutral-9">
             {actionMap[item.type]?.[item.action] ?? '更新了'}
             <span class="font-medium">「{item.title}」</span>
           </span>
         </div>
-        <span class="flex-shrink-0 text-xs text-neutral-7">
+        <span class="flex-shrink-0 text-caption-10 text-neutral-7">
           {relativeDate(item.date)}
         </span>
       </a>
     ))}
     {feed.length === 0 && (
-      <p class="text-sm text-neutral-7">还没有动态。</p>
+      <p class="text-label-12 text-neutral-7">还没有动态。</p>
     )}
   </div>
 </section>

@@ -35,6 +35,14 @@ export default function HeroAnimated({ children }: Props) {
         .hero-animated > *:nth-child(5) { animation-delay: 650ms; }
         .hero-animated > *:nth-child(6) { animation-delay: 800ms; }
         .hero-animated > *:nth-child(7) { animation-delay: 950ms; }
+
+        /* per-char hero title animation */
+        .hero-char {
+          display: inline-block;
+          animation: heroFadeIn 0.6s ease forwards;
+          animation-delay: calc(var(--i) * 50ms);
+          opacity: 0;
+        }
       `}</style>
       {children}
     </div>

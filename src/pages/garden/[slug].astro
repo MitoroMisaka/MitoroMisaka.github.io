@@ -65,13 +65,13 @@ if (entryBacklinks.length > 0) {
   <header class="space-y-3">
     <a
       href="/garden"
-      class="text-sm text-neutral-7 hover:text-neutral-9 transition"
+      class="text-label-12 text-neutral-7 hover:text-neutral-9 transition"
     >
       ←  Garden
     </a>
-    <h1 class="text-3xl font-semibold leading-tight md:text-4xl">{data.title}</h1>
-    <p class="text-sm text-neutral-7">{data.description}</p>
-    <div class="flex flex-wrap items-center gap-2 text-xs text-neutral-7">
+    <h1 class="text-title-28 font-medium leading-tight md:text-display-48">{data.title}</h1>
+    <p class="text-label-12 text-neutral-7">{data.description}</p>
+    <div class="flex flex-wrap items-center gap-2 text-caption-10 text-neutral-7">
       <span class="inline-flex items-center gap-1 rounded-full border border-neutral-3 px-2 py-0.5">
         {stageEmoji[data.stage]} {stageLabel[data.stage]}
       </span>
@@ -83,7 +83,7 @@ if (entryBacklinks.length > 0) {
     {data.tags.length > 0 && (
       <div class="flex flex-wrap gap-2 pt-1">
         {data.tags.map((tag: string) => (
-          <span class="rounded-full border border-neutral-3 px-2 py-0.5 text-xs text-neutral-7">
+          <span class="rounded-full border border-neutral-3 px-2 py-0.5 text-caption-10 text-neutral-7">
             #{tag}
           </span>
         ))}
@@ -91,7 +91,7 @@ if (entryBacklinks.length > 0) {
     )}
   </header>
 
-  <div class="prose prose-zinc max-w-none dark:prose-invert mt-8">
+  <div class="prose max-w-none mt-8">
     <Content />
   </div>
 
@@ -99,12 +99,12 @@ if (entryBacklinks.length > 0) {
   {
     relatedEntries.length > 0 && (
       <section class="mt-10 border-t border-neutral-3 pt-6">
-        <h2 class="text-lg font-semibold">关联条目</h2>
+        <h2 class="text-copy-16 font-medium">关联条目</h2>
         <div class="mt-3 flex flex-wrap gap-2">
           {relatedEntries.map((re) => (
             <a
               href={`/garden/${re.id}`}
-              class="rounded-lg border border-neutral-3 px-3 py-1.5 text-sm text-neutral-7 hover:border-neutral-4 hover:text-neutral-9 transition"
+              class="rounded-lg border border-neutral-3 px-3 py-1.5 text-label-12 text-neutral-7 hover:border-neutral-4 hover:text-neutral-9 transition"
             >
               {re.data.title}
             </a>
@@ -118,12 +118,12 @@ if (entryBacklinks.length > 0) {
   {
     backlinkEntries.length > 0 && (
       <section class="mt-6 border-t border-neutral-3 pt-6">
-        <h2 class="text-lg font-semibold">哪些页面引用了本文</h2>
+        <h2 class="text-copy-16 font-medium">哪些页面引用了本文</h2>
         <div class="mt-3 flex flex-wrap gap-2">
           {backlinkEntries.map((be) => (
             <a
               href={`/garden/${be.id}`}
-              class="rounded-lg border border-neutral-3 px-3 py-1.5 text-sm text-neutral-7 hover:border-neutral-4 hover:text-neutral-9 transition"
+              class="rounded-lg border border-neutral-3 px-3 py-1.5 text-label-12 text-neutral-7 hover:border-neutral-4 hover:text-neutral-9 transition"
             >
               {be.data.title}
             </a>

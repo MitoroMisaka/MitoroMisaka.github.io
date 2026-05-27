@@ -7,30 +7,30 @@ const pageDesc = '通过 RSS 阅读器订阅博客更新。';
 
 <BaseLayout title={pageTitle} description={pageDesc} canonicalPath="/subscribe">
   <section class="mx-auto max-w-3xl space-y-6">
-    <h1 class="text-3xl font-semibold">订阅</h1>
+    <h1 class="text-title-28 font-medium">订阅</h1>
     <p class="text-neutral-7">通过 RSS 阅读器订阅博客更新，无需注册、无需邮箱。</p>
 
     <div class="space-y-2 rounded-2xl border border-neutral-3 bg-neutral-1 p-6">
-      <h2 class="text-lg font-medium">RSS Feed</h2>
-      <p class="text-sm text-neutral-7">
+      <h2 class="text-copy-16 font-medium">RSS Feed</h2>
+      <p class="text-label-12 text-neutral-7">
         将以下链接添加到你的 RSS 阅读器，即可在发布新文章时自动收到更新。
       </p>
       <div class="flex flex-col gap-2 pt-2">
-        <a href="/rss.xml" class="rounded-xl border border-neutral-3 px-4 py-3 text-sm hover:bg-neutral-1 transition">
+        <a href="/rss.xml" class="rounded-xl border border-neutral-3 px-4 py-3 text-label-12 hover:bg-neutral-1 transition">
           <span class="font-medium text-neutral-9">正式文章</span>
           <span class="ml-2 text-neutral-7">/rss.xml</span>
-          <p class="mt-1 text-xs text-neutral-7">所有正式技术文章更新。</p>
+          <p class="mt-1 text-caption-10 text-neutral-7">所有正式技术文章更新。</p>
         </a>
-        <a href="/notes.xml" class="rounded-xl border border-neutral-3 px-4 py-3 text-sm hover:bg-neutral-1 transition">
+        <a href="/notes.xml" class="rounded-xl border border-neutral-3 px-4 py-3 text-label-12 hover:bg-neutral-1 transition">
           <span class="font-medium text-neutral-9">碎念</span>
           <span class="ml-2 text-neutral-7">/notes.xml</span>
-          <p class="mt-1 text-xs text-neutral-7">短想法、开发随笔、AI 工作流记录。</p>
+          <p class="mt-1 text-caption-10 text-neutral-7">短想法、开发随笔、AI 工作流记录。</p>
         </a>
       </div>
     </div>
 
-    <div class="space-y-2 text-sm text-neutral-7">
-      <h2 class="text-base font-medium text-neutral-9">推荐阅读器</h2>
+    <div class="space-y-2 text-label-12 text-neutral-7">
+      <h2 class="text-copy-14 font-medium text-neutral-9">推荐阅读器</h2>
       <ul class="list-disc pl-5 space-y-1">
         <li><a href="https://netnewswire.com/" class="hover:text-neutral-9 underline">NetNewsWire</a> — macOS / iOS，免费开源</li>
         <li><a href="https://reederapp.com/" class="hover:text-neutral-9 underline">Reeder</a> — macOS / iOS，设计精美</li>
@@ -39,7 +39,7 @@ const pageDesc = '通过 RSS 阅读器订阅博客更新。';
       </ul>
     </div>
 
-    <p class="text-xs text-neutral-7 pt-4 border-t border-neutral-3">
+    <p class="text-caption-10 text-neutral-7 pt-4 border-t border-neutral-3">
       RSS 是一种开放的订阅协议，无需登录、无需提供个人信息。用 RSS 阅读器订阅后，新文章会自动出现在你的阅读器里。
     </p>
   </section>

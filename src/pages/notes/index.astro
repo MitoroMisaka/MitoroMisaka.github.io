@@ -11,17 +11,17 @@ const pageDesc = '短想法、开发随笔、AI 工作流记录。';
 
 <BaseLayout title={pageTitle} description={pageDesc}>
   <section class="space-y-6">
-    <h1 class="text-3xl font-semibold">碎念</h1>
-    <p class="text-sm text-neutral-7">{pageDesc}</p>
+    <h1 class="text-title-28 font-medium">碎念</h1>
+    <p class="text-label-12 text-neutral-7">{pageDesc}</p>
 
     <div class="space-y-2">
-      <h2 class="text-sm font-medium text-neutral-7 uppercase tracking-wide">
+      <h2 class="text-label-12 font-medium text-neutral-7 uppercase tracking-wide">
         全部碎念 ({allNotes.length})
       </h2>
       {allNotes.length > 0 ? (
         <NotesList notes={allNotes} />
       ) : (
-        <p class="text-sm text-neutral-7 py-4">暂无碎念</p>
+        <p class="text-label-12 text-neutral-7 py-4">暂无碎念</p>
       )}
     </div>
   </section>

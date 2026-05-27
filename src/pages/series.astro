@@ -10,7 +10,7 @@ const seriesEntries = [...seriesMap.entries()];
 <BaseLayout title={`系列文章 | ${siteConfig.title}`} description="按专题组织的系列文章，深入探索特定技术领域。">
   <main class="mx-auto max-w-3xl px-4 py-12">
     <header class="mb-10">
-      <h1 class="text-3xl font-semibold md:text-4xl">系列文章</h1>
+      <h1 class="text-title-28 font-medium md:text-display-48">系列文章</h1>
       <p class="mt-2 text-neutral-7">
         按专题组织的系列文章。每个系列多篇文章，循序渐进深入一个主题。
       </p>
@@ -19,8 +19,8 @@ const seriesEntries = [...seriesMap.entries()];
     {
       seriesEntries.length === 0 ? (
         <div class="rounded-xl border border-dashed border-neutral-3 px-8 py-16 text-center">
-          <p class="text-lg text-neutral-7">暂无系列文章</p>
-          <p class="mt-2 text-sm text-neutral-7">
+          <p class="text-copy-16 text-neutral-7">暂无系列文章</p>
+          <p class="mt-2 text-label-12 text-neutral-7">
             当文章被归入某个系列后，会在这里展示。
           </p>
         </div>
@@ -38,10 +38,10 @@ const seriesEntries = [...seriesMap.entries()];
                 href={`/series/${slug}`}
                 class="group rounded-xl border border-neutral-3 p-5 transition hover:border-neutral-4 hover:shadow-sm"
               >
-                <h2 class="text-lg font-semibold group-hover:text-accent transition-colors">
+                <h2 class="text-copy-16 font-medium group-hover:text-accent transition-colors">
                   {config?.name ?? slug}
                 </h2>
-                <p class="mt-1 text-sm text-neutral-7 line-clamp-2">
+                <p class="mt-1 text-label-12 text-neutral-7 line-clamp-2">
                   {config?.description ?? ''}
                 </p>
                 <div class="mt-3 flex items-center gap-3 text-xs text-neutral-7">

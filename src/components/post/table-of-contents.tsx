@@ -42,13 +42,13 @@ export default function TableOfContents() {
 
   return (
     <nav className="hidden lg:block fixed right-[max(2rem,calc((100vw-64rem)/2))] top-32 w-52">
-      <p className="text-xs font-semibold text-neutral-7 uppercase tracking-wide mb-2">目录</p>
+      <p className="text-caption-10 font-medium text-neutral-7 uppercase tracking-wide mb-2">目录</p>
       <ul className="space-y-1 border-l border-neutral-3 pl-3">
         {items.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
-              className={`block text-xs leading-relaxed transition-colors ${
+              className={`block text-caption-10 leading-relaxed transition-colors ${
                 item.level === 3 ? 'pl-3' : ''
               } ${
                 activeId === item.id

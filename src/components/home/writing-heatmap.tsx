@@ -144,14 +144,14 @@ export default function WritingHeatmap({ data }: WritingHeatmapProps) {
 
   return (
     <section className="mt-12">
-      <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-neutral-7">
+      <h2 className="mb-4 text-label-12 font-medium uppercase tracking-[0.2em] text-neutral-7">
         写作热力图
       </h2>
 
       <div className="overflow-x-auto pb-2">
         {/* Month labels row */}
         <div
-          className="mb-1 ml-7 flex text-xs text-neutral-7"
+          className="mb-1 ml-7 flex text-caption-10 text-neutral-7"
           style={{ gap: 'var(--cell-gap, 3px)' }}
         >
           {monthLabels.map((m, i) => (
@@ -162,7 +162,7 @@ export default function WritingHeatmap({ data }: WritingHeatmapProps) {
                 position: 'relative',
                 left: `calc(${(m.col - grid.weekOffset)} * (var(--cell-size, 12px) + var(--cell-gap, 3px)))`,
               }}
-              className="absolute text-[10px]"
+              className="absolute text-caption-10"
             >
               {m.label}
             </span>
@@ -173,7 +173,7 @@ export default function WritingHeatmap({ data }: WritingHeatmapProps) {
         <div className="flex">
           {/* Day labels (y-axis) */}
           <div
-            className="mr-1.5 flex flex-col pt-px text-[10px] leading-none text-neutral-7"
+            className="mr-1.5 flex flex-col pt-px text-caption-10 leading-none text-neutral-7"
             style={{ gap: 'var(--cell-gap, 3px)' }}
           >
             {[0, 1, 2, 3, 4, 5, 6].map((d) => (
@@ -219,7 +219,7 @@ export default function WritingHeatmap({ data }: WritingHeatmapProps) {
       </div>
 
       {/* Legend */}
-      <div className="mt-2 flex items-center gap-1.5 text-[10px] text-neutral-7">
+      <div className="mt-2 flex items-center gap-1.5 text-caption-10 text-neutral-7">
         <span>Less</span>
         {[0, 1, 2, 3].map((level) => (
           <div
