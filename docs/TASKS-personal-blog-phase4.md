@@ -42,58 +42,57 @@
 - [x] `npm run check` 0 errors，`npm run build` 20 pages
 - [x] 提交: `feat: add content series with prev/next navigation` (89b2c5b)
 
-## Phase 3: Feature 2 — 知识库/Digital Garden
+## Phase 3: Feature 2 — 知识库/Digital Garden ✅
 
 > 前向链接（`[[slug]]`）和 backlinks 是这个 Feature 的核心复杂度——务必先在独立分支中跑通一个简单 case，再扩展到所有条目。
 
-### 3.1: Garden 页面与列表
+### 3.1: Garden 页面与列表 ✅
 
-- [ ] `src/pages/garden.astro`：
-  - [ ] 按 `category` 分组展示所有非 draft garden 条目。
-  - [ ] 每个条目卡片：title、description（截断）、🌱🌿🌳 stage emoji+label、tags、updated date。
-  - [ ] 空态：若无条目，提示 "Garden 尚未播种 🌱"。
-- [ ] `src/components/garden/garden-card.astro`：可复用卡片组件。
-- [ ] `src/pages/garden/[slug].astro`：
-  - [ ] `getStaticPaths` 枚举所有已发布条目。
-  - [ ] 展示 title、stage badge、category + tags、正文（MDX `Content`）、`related` 链接列表。
-  - [ ] 底部展示 backlinks（从预计算数据读取）。
+- [x] `src/pages/garden.astro`：
+  - [x] 按 `category` 分组展示所有非 draft garden 条目。
+  - [x] 每个条目卡片：title、description（截断）、🌱🌿🌳 stage emoji+label、tags、updated date。
+  - [x] 空态：若无条目，提示 "Garden 尚未播种 🌱"。
+- [x] `src/components/garden/garden-card.astro`：可复用卡片组件。
+- [x] `src/pages/garden/[slug].astro`：
+  - [x] `getStaticPaths` 枚举所有已发布条目。
+  - [x] 展示 title、stage badge、category + tags、正文（MDX `Content`）、`related` 链接列表。
+  - [x] 底部展示 backlinks（从预计算数据读取）。
 
-### 3.2: `[[]]` Wiki 链接解析
+### 3.2: `[[]]` Wiki 链接解析 ✅
 
-- [ ] `src/lib/garden.ts`：
-  - [ ] `getGardenSlugSet()` → `Set<string>`（所有已发布条目的 slug）。
-  - [ ] `extractWikiLinks(body: string)` → `string[]`（正则提取 `[[slug]]`）。
-  - [ ] `computeBacklinks()` → `Map<string, string[]>`（target slug → 引用它的 source slugs）。
-- [ ] `src/lib/rehype-wiki-links.ts`（自定义 rehype plugin）：
-  - [ ] 遍历 AST text 节点，正则匹配 `[[slug]]`。
-  - [ ] 将匹配到的文本替换为 `<a href="/garden/${slug}">slug</a>`。
-  - [ ] 如果 slug 不在 `getGardenSlugSet()` 中，添加 `.pending` class（灰字+虚线）。
-- [ ] `astro.config.mjs`：在 MDX 的 rehypePlugins 中注册 `rehype-wiki-links`。
-  - [ ] 注意：插件需要在构建时获取 garden slugs，使用 Astro 的 `getCollection`（只能在 `.astro` 或 content layer 中使用）可能有限制。**PITFALL**: rehype 插件运行在 unified 管道中，不能直接调用 `getCollection`。替代方案：在 `astro.config.mjs` 中通过文件系统手动扫描 `src/content/garden/` 目录获取 slug 列表，或使用 `import.meta.glob` (Vite)。或者更简单的：在 `garden/[slug].astro` 的 MDX render 步骤中 pass 一个 `gardenSlugs` prop 给组件，由 React/Astro 组件在渲染后处理。最优方案：用构建期 `getCollection('garden')` 计算 `slugSet`，传给 `rehype-wiki-links` 作为配置。Astro v6 支持在 `astro.config.mjs` 中 `import { getCollection } from 'astro:content'` 吗？大概率不支持——内容在 config 执行时尚不可用。**Fallback**: 使用 `import.meta.glob('/src/content/garden/*.mdx')` 在 `astro.config.mjs` 中静态获取文件名列表，构造 slugs。或者最简方案：rehype 插件不做存在校验，直接转成链接；不存在的 slug 在 `garden/[slug].astro` 中标记 pending（CSS 处理，但这样所有页面都会出现灰色链接）。选方案 A：用 `import.meta.glob` 在 config 层获取 slugs。
+- [x] `src/lib/garden.ts`：
+  - [x] `extractWikiLinks(body: string)` → `string[]`（正则提取 `[[slug]]`）。
+  - [x] `computeBacklinks()` → `Map<string, string[]>`（target slug → 引用它的 source slugs）。
+- [x] `src/lib/rehype-wiki-links.mjs`（自定义 rehype plugin）：
+  - [x] 遍历 AST text 节点，正则匹配 `[[slug]]`。
+  - [x] 将匹配到的文本替换为 `<a href="/garden/${slug}">slug</a>`。
+  - [x] 如果 slug 不在 garden slug set 中，添加 `.pending` class（灰字+虚线）。
+- [x] `astro.config.mjs`：在 MDX 的 rehypePlugins 中注册 `rehype-wiki-links`。
+  - [x] 方案: 用 `fs.readdirSync` 在 config 层获取 garden slugs（mjs 文件不能用 TypeScript 泛型，用 `.mjs` 格式处理）。
 
-### 3.3: Backlinks 计算
+### 3.3: Backlinks 计算 ✅
 
-- [ ] `src/pages/garden/[slug].astro`：
-  - [ ] 在 `getStaticPaths` 中调用 `computeBacklinks()` 一次。
-  - [ ] 将结果按 slug 分配到各自页面的 props。
-  - [ ] 详情页底部渲染 backlinks 列表（"哪些页面引用了本文"）。
+- [x] `src/pages/garden/[slug].astro`：
+  - [x] 在 `getStaticPaths` 中调用 `computeBacklinks()` 一次。
+  - [x] 将结果按 slug 分配到各自页面的 props。
+  - [x] 详情页底部渲染 backlinks 列表（"哪些页面引用了本文"）。
 
-### 3.4: 示例内容
+### 3.4: 示例内容 ✅
 
-- [ ] 创建 2-3 个 garden 示例条目：
-  - [ ] `src/content/garden/ai-multi-agent-patterns.mdx` — seedling，包含 `[[ai-full-auto-workflow]]` 式前向链接。
-  - [ ] `src/content/garden/swift-concurrency-pitfalls.mdx` — budding。
-  - [ ] `src/content/garden/astro-v6-cf-pages.mdx` — budding。
-- [ ] 在至少一个条目的正文中使用 `[[another-garden-slug]]`，确保双向链接可工作。
+- [x] 创建 3 个 garden 示例条目：
+  - [x] `src/content/garden/ai-multi-agent-patterns.mdx` — seedling，包含 `[[ai-full-auto-workflow]]`（pending）和 `[[astro-v6-cf-pages]]`。
+  - [x] `src/content/garden/swift-concurrency-pitfalls.mdx` — budding，包含 `[[ai-multi-agent-patterns]]`。
+  - [x] `src/content/garden/astro-v6-cf-pages.mdx` — budding，包含 `[[ai-multi-agent-patterns]]` 和 `[[swift-concurrency-pitfalls]]`。
+- [x] 互相引用：ai-multi-agent-patterns ↔ swift-concurrency-pitfalls ↔ astro-v6-cf-pages（全连通）。
 
-### 3.5: 验证
+### 3.5: 验证 ✅
 
-- [ ] `/garden` 可访问，按 category 分组展示 2-3 个条目。
-- [ ] `/garden/[slug]` 可访问，backlinks 正确显示。
-- [ ] `[[slug]]` 链接在详情页正文中可点击。
-- [ ] 不存在的 `[[slug]]` 显示为灰色 pending 样式。
-- [ ] `npm run check && npm run build` 通过，Pagefind 索引覆盖 `/garden` 页面。
-- [ ] 提交: `feat: add garden/knowledge-base with wiki links and backlinks`
+- [x] `/garden` 可访问，按 category 分组展示 3 个条目。
+- [x] `/garden/[slug]` 可访问，backlinks 正确显示。
+- [x] `[[slug]]` 链接在详情页正文中可点击。
+- [x] 不存在的 `[[slug]]`（ai-full-auto-workflow）显示为灰色 pending 样式（`.pending` class）。
+- [x] `npm run check` 0 errors，`npm run build` 24 pages 通过，Pagefind 索引覆盖 `/garden` 页面。
+- [x] 提交: 4 commits (e24efa8, 2998bb9, d95a49b, b837ccc)
 
 ## Phase 4: Feature 3 — Notes 社交同步（intent/tweet）
 
