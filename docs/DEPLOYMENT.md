@@ -190,7 +190,6 @@ npx wrangler kv namespace create ANALYTICS
 
 | 变量名 | 用途 | 备注 |
 |---|---|---|
-| `BUTTONDOWN_API_KEY` | Buttondown 邮件订阅 API key | 格式 `sk-*`，来自 Buttondown 后台 Settings → API |
 | `SITE_URL` | 生产环境站点 URL | 用于 canonical URL 等场景 |
 | `GISCUS_REPO` | Giscus 评论仓库 | 当前硬编码在组件中 |
 
@@ -206,7 +205,6 @@ npx wrangler kv namespace create ANALYTICS
 | POST | `/api/reactions` | 提交 Reaction 计数 +1 | KV `REACTIONS` |
 | POST | `/api/analytics/view` | 页面浏览上报 | KV `ANALYTICS` |
 | GET | `/api/analytics/summary` | 获取聚合摘要（总 PV、热门页面） | KV `ANALYTICS` |
-| POST | `/api/newsletter/subscribe` | 邮件订阅 | 环境变量 `BUTTONDOWN_API_KEY` |
 
 ## 发布检查清单
 
@@ -221,4 +219,4 @@ npx wrangler kv namespace create ANALYTICS
 - [ ] 未提交 `.env` 文件或 API key
 - [ ] 如涉及 KV binding 变更，确认 Cloudflare 侧已同步
 - [ ] 验证 `/stats` 页面可正常访问，数据加载无报错
-- [ ] 验证 `/newsletter` 页面可正常访问，订阅表单渲染正常
+- [ ] 验证 `/newsletter` 页面可正常访问，RSS 链接和阅读器推荐正确

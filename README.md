@@ -13,7 +13,7 @@
 - Giscus (评论)
 - Cloudflare Pages Functions + KV (Reaction)
 - Cloudflare Pages Functions + KV (隐私友好统计)
-- Buttondown (邮件订阅 provider)
+
 - Cloudflare Pages + Wrangler
 
 ## 页面
@@ -30,7 +30,7 @@
 | `/about` | 关于 |
 | `/rss.xml` | RSS 订阅 |
 | `/stats` | 站点数据（页面访问量、热门文章、数据摘要） |
-| `/newsletter` | 邮件订阅（Buttondown） |
+| `/newsletter` | RSS 订阅（文章 + 碎念） |
 
 ## 本地开发
 
@@ -63,13 +63,12 @@ npm run deploy:cf  # 部署到 Cloudflare Pages
 ├── functions/               # Cloudflare Pages Functions
 │   ├── api/reactions.ts     # Reaction API (GET + POST)
 │   ├── api/analytics/       # 统计 API（view + summary）
-│   └── api/newsletter/      # Newsletter 订阅 API
+
 ├── src/
 │   ├── content/             # posts / notes / projects / timeline
 │   ├── components/          # 组件
 │   │   ├── analytics/       # 统计相关组件
 │   │   ├── home/            # 首页模块
-│   │   ├── newsletter/      # Newsletter 订阅组件
 │   │   ├── notes/           # Notes 组件
 │   │   ├── post/            # 文章组件
 │   │   ├── projects/        # 项目组件
@@ -82,7 +81,6 @@ npm run deploy:cf  # 部署到 Cloudflare Pages
 │   │   ├── analytics-config.ts
 │   │   ├── kv-types.ts
 │   │   ├── mood-labels.ts
-│   │   ├── newsletter-provider.ts
 │   │   └── seo.ts
 │   └── pages/               # 路由页面
 ├── public/
@@ -101,8 +99,6 @@ npm run deploy:cf  # 部署到 Cloudflare Pages
 注意：`mitoromisaka.github.io` 域名无法直接由 Cloudflare Pages 托管。
 后续可绑定自定义域名。
 
-Newsletter 功能需要在 Cloudflare Pages 环境变量中配置 `BUTTONDOWN_API_KEY`（格式 `sk-*`），否则订阅 API 不可用。
-
 ## Reaction API
 
 - `GET  /api/reactions?target=post:<slug>` — 获取计数
@@ -115,11 +111,6 @@ Newsletter 功能需要在 Cloudflare Pages 环境变量中配置 `BUTTONDOWN_AP
 - `POST /api/analytics/view` `{"path":"/posts/my-slug","title":"文章标题"}` — 页面浏览上报
 - `GET  /api/analytics/summary?days=30` — 获取聚合摘要（总 PV、热门页面、访客趋势）
 - 存储：Cloudflare KV (`ANALYTICS` binding)，按日聚合，不存储个人标识信息
-
-## Newsletter API
-
-- `POST /api/newsletter/subscribe` `{"email":"user@example.com"}` — 邮件订阅
-- Provider：Buttondown，需 `BUTTONDOWN_API_KEY` 环境变量
 
 ## 写作指南
 
