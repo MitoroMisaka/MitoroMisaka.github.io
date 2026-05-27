@@ -18,7 +18,7 @@ const flatProjects = projects.map((p) => ({
 
 <BaseLayout title="项目 | 静かな森" description="MitoroMisaka 的公开项目。">
   <section class="space-y-8">
-    <h1 class="text-3xl font-semibold">项目</h1>
+    <h1 class="text-title-28 font-medium">项目</h1>
 
     <noscript>
       <div class="space-y-6">
@@ -27,7 +27,7 @@ const flatProjects = projects.map((p) => ({
           if (items.length === 0) return null;
           return (
             <div class="space-y-3">
-              <h2 class="text-sm font-medium text-neutral-7 uppercase tracking-wide">
+              <h2 class="text-label-12 font-medium text-neutral-7 uppercase tracking-wide">
                 {status === 'active' ? '进行中' : status === 'planned' ? '计划中' : '已归档'}
               </h2>
               <div class="grid gap-4 md:grid-cols-2">
@@ -42,7 +42,7 @@ const flatProjects = projects.map((p) => ({
     <ProjectFilter projects={flatProjects} client:load />
 
     {projects.length === 0 && (
-      <div class="py-10 text-center text-sm text-neutral-7">暂无项目</div>
+      <div class="py-10 text-center text-label-12 text-neutral-7">暂无项目</div>
     )}
   </section>
 </BaseLayout>

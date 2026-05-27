@@ -77,10 +77,10 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
       <div className="flex flex-wrap gap-4 mb-6">
         {/* Status filter */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-medium text-neutral-7 mr-1">状态:</span>
+          <span className="text-caption-10 font-medium text-neutral-7 mr-1">状态:</span>
           <button
             onClick={() => setSelectedStatus(null)}
-            className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
+            className={`rounded-full border px-2.5 py-0.5 text-caption-10 transition ${
               !selectedStatus
                 ? 'border-accent bg-accent/10 text-accent'
                 : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -94,7 +94,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
               <button
                 key={s}
                 onClick={() => setSelectedStatus(s)}
-                className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
+                className={`rounded-full border px-2.5 py-0.5 text-caption-10 transition ${
                   selectedStatus === s
                     ? 'border-accent bg-accent/10 text-accent'
                     : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -109,10 +109,10 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
         {/* Stack filter */}
         {availableStacks.length > 0 && (
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-medium text-neutral-7 mr-1">技术栈:</span>
+            <span className="text-caption-10 font-medium text-neutral-7 mr-1">技术栈:</span>
             <button
               onClick={() => setSelectedStack(null)}
-              className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
+              className={`rounded-full border px-2.5 py-0.5 text-caption-10 transition ${
                 !selectedStack
                   ? 'border-accent bg-accent/10 text-accent'
                   : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -124,7 +124,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
               <button
                 key={s}
                 onClick={() => setSelectedStack(s)}
-                className={`rounded-full border px-2.5 py-0.5 text-xs transition ${
+                className={`rounded-full border px-2.5 py-0.5 text-caption-10 transition ${
                   selectedStack === s
                     ? 'border-accent bg-accent/10 text-accent'
                     : 'border-neutral-3 text-neutral-7 hover:border-neutral-4'
@@ -139,7 +139,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
 
       {/* Project grid */}
       {filteredProjects.length === 0 ? (
-        <div className="py-10 text-center text-sm text-neutral-7">
+        <div className="py-10 text-center text-label-12 text-neutral-7">
           没有符合条件的项目
         </div>
       ) : (
@@ -150,7 +150,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
             return (
               <div key={status} className="space-y-3">
                 {selectedStatus === null && (
-                  <h2 className="text-sm font-medium text-neutral-7 uppercase tracking-wide">
+                  <h2 className="text-label-12 font-medium text-neutral-7 uppercase tracking-wide">
                     {STATUS_LABELS[status]}
                   </h2>
                 )}
@@ -162,8 +162,8 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                       className="rounded-xl border border-neutral-3 px-5 py-4 transition hover:border-neutral-4 hover:bg-neutral-1"
                     >
                       <div className="flex items-start justify-between gap-3">
-                        <h3 className="font-semibold text-neutral-9">{project.name}</h3>
-                        <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${
+                        <h3 className="font-medium text-neutral-9">{project.name}</h3>
+                        <span className={`shrink-0 rounded-full px-2 py-0.5 text-caption-10 font-medium ${
                           project.status === 'active' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
                           project.status === 'planned' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400' :
                           'bg-zinc-500/10 text-zinc-500'
@@ -172,7 +172,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                         </span>
                       </div>
                       {project.description && (
-                        <p className="mt-2 text-sm text-neutral-7 line-clamp-2">
+                        <p className="mt-2 text-label-12 text-neutral-7 line-clamp-2">
                           {project.description}
                         </p>
                       )}
@@ -181,7 +181,7 @@ export default function ProjectFilter({ projects }: ProjectFilterProps) {
                           {project.stack.map((s: string) => (
                             <span
                               key={s}
-                              className="rounded-full border border-neutral-3 px-2 py-px text-xs text-neutral-7"
+                              className="rounded-full border border-neutral-3 px-2 py-px text-caption-10 text-neutral-7"
                             >
                               {s}
                             </span>

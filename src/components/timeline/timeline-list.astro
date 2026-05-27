@@ -13,12 +13,12 @@ const grouped = groupTimelineEntriesByYear(entries);
 
 {
   entries.length === 0 ? (
-    <div class="py-10 text-center text-sm text-neutral-7">暂无记录</div>
+    <div class="py-10 text-center text-label-12 text-neutral-7">暂无记录</div>
   ) : (
     <div class="space-y-8">
       {[...grouped.entries()].map(([year, yearEntries]) => (
         <section>
-          <h2 class="text-lg font-semibold text-neutral-9 mb-2 sticky top-4 bg-neutral-1/80 backdrop-blur px-1 py-1 z-10">
+          <h2 class="text-copy-16 font-medium text-neutral-9 mb-2 sticky top-4 bg-neutral-1/80 backdrop-blur px-1 py-1 z-10">
             {year}
           </h2>
           <ul class="space-y-0">

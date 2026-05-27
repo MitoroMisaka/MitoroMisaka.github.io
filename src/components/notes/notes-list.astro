@@ -11,7 +11,7 @@ const { notes } = Astro.props;
 
 {
   notes.length === 0 ? (
-    <div class="py-10 text-center text-sm text-neutral-7">暂无碎念</div>
+    <div class="py-10 text-center text-label-12 text-neutral-7">暂无碎念</div>
   ) : (
     <div class="space-y-3">
       {notes.map((note) => <NoteCard note={note} />)}

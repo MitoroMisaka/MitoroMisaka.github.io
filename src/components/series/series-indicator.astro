@@ -34,11 +34,11 @@ const current = seriesOrder ?? allPosts.findIndex((p) => p.data.slug === post.da
   <div class="flex flex-wrap items-center justify-between gap-2">
     <a
       href={`/series/${seriesSlug}`}
-      class="text-sm font-medium text-accent hover:underline"
+      class="text-label-12 font-medium text-accent hover:underline"
     >
       {config?.name ?? seriesSlug}
     </a>
-    <span class="text-xs text-neutral-7">
+    <span class="text-caption-10 text-neutral-7">
       第 {current} 篇 / 共 {total} 篇
     </span>
   </div>

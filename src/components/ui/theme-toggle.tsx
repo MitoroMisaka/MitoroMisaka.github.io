@@ -39,7 +39,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={cycle}
-      className="rounded-full border border-neutral-3 px-3 py-1 text-xs text-neutral-7 transition hover:bg-neutral-1 hover:text-neutral-9"
+      className="rounded-full border border-neutral-3 px-3 py-1 text-caption-10 text-neutral-7 transition hover:bg-neutral-1 hover:text-neutral-9"
       aria-label={`Theme: ${label}`}
     >
       {label}
