@@ -5,6 +5,7 @@ import SiteHeader from '../components/site/site-header.astro';
 import SiteFooter from '../components/site/site-footer.astro';
 import AnalyticsTracker from '../components/analytics/tracker';
 import Lightbox from '../components/ui/lightbox';
+import MermaidRenderer from '../components/ui/mermaid-renderer';
 import '../styles/global.css';
 
 interface Props {
@@ -46,16 +47,6 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     </div>
     <AnalyticsTracker client:idle />
     <Lightbox client:idle />
-    <script is:inline>
-      (function(){
-        var blocks = document.querySelectorAll('pre.mermaid');
-        if (!blocks.length) return;
-        import('mermaid').then(function(mod){
-          var m = mod.default || mod;
-          m.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
-          m.run({ nodes: Array.from(blocks) });
-        }).catch(function(e){ console.warn('Mermaid unavailable:', e); });
-      })();
-    </script>
+    <MermaidRenderer client:idle />
   </body>
 </html>
