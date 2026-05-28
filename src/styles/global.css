@@ -84,6 +84,26 @@ a {
   color: var(--color-accent);
 }
 
+/* ─── prose 暗色变量覆盖 ─────────────────────────────────── */
+[data-theme='dark'] .prose {
+  --tw-prose-body: var(--color-neutral-9);
+  --tw-prose-headings: var(--color-neutral-9);
+  --tw-prose-lead: var(--color-neutral-8);
+  --tw-prose-links: var(--color-accent);
+  --tw-prose-bold: var(--color-neutral-9);
+  --tw-prose-counters: var(--color-neutral-7);
+  --tw-prose-bullets: var(--color-neutral-5);
+  --tw-prose-hr: var(--color-neutral-4);
+  --tw-prose-quotes: var(--color-neutral-8);
+  --tw-prose-quote-borders: var(--color-neutral-4);
+  --tw-prose-captions: var(--color-neutral-7);
+  --tw-prose-code: var(--color-neutral-9);
+  --tw-prose-pre-code: var(--color-neutral-8);
+  --tw-prose-pre-bg: var(--color-neutral-2);
+  --tw-prose-th-borders: var(--color-neutral-4);
+  --tw-prose-td-borders: var(--color-neutral-3);
+}
+
 ::selection {
   background-color: var(--color-accent);
   color: #fff;
