@@ -25,7 +25,7 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script is:inline>
-      (function(){var t=localStorage.getItem('theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');else if(t==='light')document.documentElement.setAttribute('data-theme','light')})();
+      (function(){var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t)})();
     </script>
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
@@ -40,7 +40,7 @@ const canonicalUrl = canonicalPath ? getCanonicalUrl(canonicalPath) : getCanonic
     <title>{title}</title>
   </head>
   <body>
-    <div class="min-h-screen bg-neutral-1 text-neutral-9 transition-colors duration-300">
+    <div class="min-h-screen bg-neutral-1 text-neutral-9">
       <div class="h-[4.5rem]"></div>
       <SiteHeader />
       <main class="mx-auto w-full max-w-7xl px-4 lg:px-8 py-10">

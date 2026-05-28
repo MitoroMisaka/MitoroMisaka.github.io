@@ -56,32 +56,6 @@
   --heatmap-4: #8a92ff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --surface-paper: #242424;
-    --bg-opacity: rgba(28, 28, 30, 0.72);
-    --color-border: #3f3f46;
-    --color-root-bg: rgb(28, 28, 30);
-
-    --color-neutral-1: #141414;
-    --color-neutral-2: #1a1a1a;
-    --color-neutral-3: #242424;
-    --color-neutral-4: #2e2e2e;
-    --color-neutral-5: #555555;
-    --color-neutral-6: #787878;
-    --color-neutral-7: #a0a0a0;
-    --color-neutral-8: #c0c0c0;
-    --color-neutral-9: #f0f0f0;
-    --color-neutral-10: #f8f8f8;
-
-    --heatmap-bg: #1c2333;
-    --heatmap-1: #1e2940;
-    --heatmap-2: #2a3a6b;
-    --heatmap-3: #4b5bc0;
-    --heatmap-4: #8a92ff;
-  }
-}
-
 /*
  * ─── 全局基线 ────────────────────────────────────────────────
  * Yohaku 约定: html { font-size: 14px; line-height: 1.5; }

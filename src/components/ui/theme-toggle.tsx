@@ -1,25 +1,18 @@
 import { useState, useEffect } from 'react';
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = 'light' | 'dark';
 
 function getStoredTheme(): Theme {
-  if (typeof localStorage === 'undefined') return 'system';
-  return (localStorage.getItem('theme') as Theme) || 'system';
+  if (typeof localStorage === 'undefined') return 'dark';
+  return (localStorage.getItem('theme') as Theme) || 'dark';
 }
 
 function applyTheme(t: Theme) {
-  const root = document.documentElement;
-  if (t === 'light') {
-    root.setAttribute('data-theme', 'light');
-  } else if (t === 'dark') {
-    root.setAttribute('data-theme', 'dark');
-  } else {
-    root.removeAttribute('data-theme');
-  }
+  document.documentElement.setAttribute('data-theme', t);
 }
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>('system');
+  const [theme, setTheme] = useState<Theme>('dark');
 
   useEffect(() => {
     const stored = getStoredTheme();
@@ -27,18 +20,18 @@ export default function ThemeToggle() {
     applyTheme(stored);
   }, []);
 
-  const cycle = () => {
-    const next: Theme = theme === 'system' ? 'light' : theme === 'light' ? 'dark' : 'system';
+  const toggle = () => {
+    const next: Theme = theme === 'dark' ? 'light' : 'dark';
     setTheme(next);
     applyTheme(next);
     localStorage.setItem('theme', next);
   };
 
-  const label = theme === 'system' ? 'System' : theme === 'light' ? 'Light' : 'Dark';
+  const label = theme === 'light' ? 'Light' : 'Dark';
 
   return (
     <button
-      onClick={cycle}
+      onClick={toggle}
       className="rounded-full border border-neutral-3 px-3 py-1 text-caption-10 text-neutral-7 transition hover:bg-neutral-1 hover:text-neutral-9"
       aria-label={`Theme: ${label}`}
     >
