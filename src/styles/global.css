@@ -67,6 +67,7 @@ html {
   line-height: 1.5;
   font-family: var(--font-sans);
   background-color: var(--color-root-bg, var(--surface-paper));
+  scrollbar-gutter: stable;
 }
 
 html,
